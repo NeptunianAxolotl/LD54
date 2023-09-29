@@ -18,6 +18,8 @@ local globals = {
 	GRAVITY_MULT = 900,
 	SPEED_LIMIT = 1800,
 	TURN_MULT = 175,
+    
+    JUNK_VARIABLE_TO_TEST_GIT = 0;
 }
 
 return globals
