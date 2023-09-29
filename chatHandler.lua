@@ -1,5 +1,4 @@
 
-local util = require("include/util")
 local Font = require("include/font")
 
 local EffectsHandler = require("effectsHandler")

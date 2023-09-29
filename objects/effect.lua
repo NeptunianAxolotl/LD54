@@ -1,5 +1,4 @@
 
-local util = require("include/util")
 local Resources = require("resourceHandler")
 local Font = require("include/font")
 

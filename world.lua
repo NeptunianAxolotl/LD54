@@ -1,18 +1,16 @@
 
 local ModuleTest = require("moduleTest")
-SoundHandler = require("soundHandler")
-MusicHandler = require("musicHandler")
 EffectsHandler = require("effectsHandler")
 ComponentHandler = require("componentHandler")
 DialogueHandler = require("dialogueHandler")
-LevelHandler = require("levelHandler")
-ModuleTest = require("moduleTest")
+TerrainHandler = require("terrainHandler")
+
+PlayerHandler = require("playerHandler")
 
 Camera = require("utilities/cameraUtilities")
 InterfaceUtil = require("utilities/interfaceUtilities")
 Delay = require("utilities/delay")
 
-local ShadowHandler = require("shadowHandler")
 local PhysicsHandler = require("physicsHandler")
 ChatHandler = require("chatHandler")
 DeckHandler = require("deckHandler")
@@ -27,36 +25,24 @@ function api.SetMenuState(newState)
 	self.menuState = newState
 end
 
-function api.ToggleMusic()
-	self.musicEnabled = not self.musicEnabled
-	if not self.musicEnabled then
-		MusicHandler.StopCurrentTrack()
-	end
-end
-
 function api.GetPaused()
 	return self.paused or self.menuState
-end
-
-function api.MusicEnabled()
-	return self.musicEnabled
 end
 
 function api.GetGameOver()
 	return self.gameWon or self.gameLost, self.gameWon, self.gameLost, self.overType
 end
 
-function api.Restart()
-	--PhysicsHandler.Destroy()
-	api.Initialize(self.levelIndex, self.levelTableOverride, self.musicEnabled)
-end
-
-function api.LoadLevelByTable(levelTable)
-	api.Initialize(self.levelIndex, levelTable, self.musicEnabled)
-end
-
 function api.GetLifetime()
 	return self.lifetime
+end
+
+function api.Restart()
+	self.cosmos.RestartWorld()
+end
+
+function api.GetCosmos()
+	return self.cosmos
 end
 
 function api.TakeScreenshot()
@@ -67,7 +53,7 @@ function api.TakeScreenshot()
 end
 
 function api.SetGameOver(hasWon, overType)
-	if self.gameWon or self.gameLost or LevelHandler.InEditMode() then
+	if self.gameWon or self.gameLost or TerrainHandler.InEditMode() then
 		return
 	end
 	
@@ -84,8 +70,12 @@ function api.SetPaused(newPause, force)
 	self.forcePaused = force
 end
 
+--------------------------------------------------
+-- Input
+--------------------------------------------------
+
 function api.KeyPressed(key, scancode, isRepeat)
-	if LevelHandler.KeyPressed(key, scancode, isRepeat) then
+	if TerrainHandler.KeyPressed and TerrainHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
 	if key == "escape" or key == "return" or key == "kpenter" then
@@ -112,7 +102,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if api.GetGameOver() then
 		return -- No doing actions
 	end
-	if GameHandler.KeyPressed(key, scancode, isRepeat) then
+	if GameHandler.KeyPressed and GameHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
 end
@@ -123,9 +113,6 @@ function api.MousePressed(x, y, button)
 	end
 	local uiX, uiY = self.interfaceTransform:inverse():transformPoint(x, y)
 	
-	if LevelHandler.MousePressed(x, y, button) then
-		return
-	end
 	if GameHandler.MousePressed(x, y, button) then
 		return
 	end
@@ -155,6 +142,10 @@ end
 function api.MouseMoved(x, y, dx, dy)
 	
 end
+
+--------------------------------------------------
+-- Transforms
+--------------------------------------------------
 
 function api.WorldToScreen(pos)
 	local x, y = self.cameraTransform:transformPoint(pos[1], pos[2])
@@ -205,15 +196,21 @@ end
 local function UpdateCamera()
 	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(dt, 
 		{
-			{pos = {0, 0}, radius = 30 + (LevelHandler.InEditMode() and 180 or 0)},
-			{pos = {Global.VIEW_WIDTH, Global.VIEW_HEIGHT}, radius = 30 + (LevelHandler.InEditMode() and 180 or 0)}
-		}, 0, 0)
+			{pos = {Global.WORLD_WIDTH/2, Global.WORLD_HEIGHT/2}, xOff = Global.WORLD_WIDTH/2 + 80, yOff = Global.WORLD_HEIGHT/2 + 80},
+		}
+		, 0, 0
+	)
 	Camera.UpdateTransform(self.cameraTransform, cameraX, cameraY, cameraScale)
 end
 
-function api.Update(dt, realDt)
-	MusicHandler.Update(realDt)
-	SoundHandler.Update(realDt)
+--------------------------------------------------
+-- Updates
+--------------------------------------------------
+
+function api.ViewResize(width, height)
+end
+
+function api.Update(dt)
 	GameHandler.Update(dt)
 	if api.GetPaused() then
 		UpdateCamera()
@@ -224,12 +221,11 @@ function api.Update(dt, realDt)
 	Delay.Update(dt)
 	InterfaceUtil.Update(dt)
 	ComponentHandler.Update(dt)
-	--ModuleTest.Update(dt)
+	PlayerHandler.Update(dt)
+	ModuleTest.Update(dt)
 	
 	PhysicsHandler.Update(dt)
-	--ShadowHandler.Update(dt)
 
-	ModuleTest.Update(dt)
 	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
 	UpdateCamera()
@@ -241,7 +237,7 @@ function api.Draw()
 
 	-- Draw world
 	love.graphics.replaceTransform(self.cameraTransform)
-	--ModuleTest.Draw(drawQueue)
+	ModuleTest.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(self.cameraTransform)
 	while true do
@@ -251,20 +247,15 @@ function api.Draw()
 	end
 	
 	ComponentHandler.Draw(drawQueue)
-	ModuleTest.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
+	PlayerHandler.Draw(drawQueue)
+	TerrainHandler.Draw(drawQueue)
 	
-	if not Global.DEBUG_NO_SHADOW and not (Global.DEBUG_SPACE_ZOOM_OUT and love.keyboard.isDown("space")) then
-		--ShadowHandler.DrawGroundShadow(self.cameraTransform)
-	end
 	love.graphics.replaceTransform(self.cameraTransform)
 	while true do
 		local d = drawQueue:pop()
 		if not d then break end
 		d.f()
-	end
-	if not Global.DEBUG_NO_SHADOW and not (Global.DEBUG_SPACE_ZOOM_OUT and love.keyboard.isDown("space")) then
-		--ShadowHandler.DrawVisionShadow(self.cameraTransform)
 	end
 	
 	--local windowX, windowY = love.window.getMode()
@@ -276,7 +267,6 @@ function api.Draw()
 	love.graphics.replaceTransform(self.emptyTransform)
 	
 	-- Draw interface
-	LevelHandler.DrawInterface()
 	GameHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
 	DialogueHandler.DrawInterface()
@@ -285,24 +275,18 @@ function api.Draw()
 	love.graphics.replaceTransform(self.emptyTransform)
 end
 
-function api.ViewResize(width, height)
-	--ShadowHandler.ViewResize(width, height)
-end
-
-function api.Initialize(levelIndex, levelTableOverride, musicEnabled)
+function api.Initialize(cosmos, levelIndex, levelTableOverride, musicEnabled)
 	self = {}
+	self.cosmos = cosmos
 	self.cameraTransform = love.math.newTransform()
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	self.paused = false
 	self.musicEnabled = false
 	self.lifetime = Global.DEBUG_START_LIFETIME or 0
-	self.levelIndex = levelIndex or Global.INIT_LEVEL
-	self.levelTableOverride = levelTableOverride
 	
 	Delay.Initialise()
 	InterfaceUtil.Initialize()
-	--ShadowHandler.Initialize(api)
 	EffectsHandler.Initialize(api)
 	SoundHandler.Initialize()
 	MusicHandler.Initialize(api)
@@ -312,11 +296,12 @@ function api.Initialize(levelIndex, levelTableOverride, musicEnabled)
 	ChatHandler.Initialize(api)
 	DialogueHandler.Initialize(api)
 	
-	LevelHandler.Initialize(api, self.levelIndex, self.levelTableOverride)
+	TerrainHandler.Initialize(api, self.levelIndex, self.levelTableOverride)
+	PlayerHandler.Initialize(api)
 	
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
-	ModuleTest.Initialize(api)
+	--ModuleTest.Initialize(api)
 	
 	-- Note that the camera pins only function for these particular second entries.
 	Camera.Initialize({

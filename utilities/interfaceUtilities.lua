@@ -1,6 +1,5 @@
 
 local Font = require("include/font")
-local util = require("include/util")
 
 local self = {}
 local api = {}

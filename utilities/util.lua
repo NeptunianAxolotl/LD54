@@ -59,9 +59,9 @@ end
 function util.Unit(v)
 	local mag = util.AbsVal(v)
 	if mag > 0 then
-		return {v[1]/mag, v[2]/mag}
+		return {v[1]/mag, v[2]/mag}, mag
 	else
-		return v
+		return v, mag
 	end
 end
 

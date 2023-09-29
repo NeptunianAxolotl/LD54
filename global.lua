@@ -12,8 +12,12 @@ local globals = {
 	LINE_SPACING = 36,
 	INC_OFFSET = -15,
 	
-	VIEW_WIDTH = 3000,
-	VIEW_HEIGHT = 1560,
+	WORLD_WIDTH = 5400,
+	WORLD_HEIGHT = 3000,
+	
+	GRAVITY_MULT = 900,
+	SPEED_LIMIT = 1800,
+	TURN_MULT = 175,
 }
 
 return globals

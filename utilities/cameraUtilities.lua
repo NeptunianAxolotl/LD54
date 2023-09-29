@@ -1,5 +1,4 @@
 
-local util = require("include/util")
 
 local self = {}
 
@@ -17,11 +16,13 @@ local function UpdateCameraToViewPoints(dt, pointList, moveSmooth, scaleSmooth)
 	local left, right, top, bottom
 	
 	if pointList and #pointList > 0 then
-		left, right = pointList[1].pos[1] - pointList[1].radius, pointList[1].pos[1] + pointList[1].radius
-		top, bottom = pointList[1].pos[2] - pointList[1].radius, pointList[1].pos[2] + pointList[1].radius
+		left, right = pointList[1].pos[1] - (pointList[1].radius or pointList[1].xOff), pointList[1].pos[1] + (pointList[1].radius or pointList[1].xOff)
+		top, bottom = pointList[1].pos[2] - (pointList[1].radius or pointList[1].yOff), pointList[1].pos[2] + (pointList[1].radius or pointList[1].yOff)
 		for i = 2, #pointList do
-			left, right = math.min(left, pointList[i].pos[1] - pointList[i].radius), math.max(right, pointList[i].pos[1] + pointList[i].radius)
-			top, bottom = math.min(top, pointList[i].pos[2] - pointList[i].radius), math.max(bottom, pointList[i].pos[2] + pointList[i].radius)
+			left = math.min(left, pointList[i].pos[1] - (pointList[i].radius or pointList[i].xOff))
+			right = math.max(right, pointList[i].pos[1] + (pointList[i].radius or pointList[i].xOff))
+			top = math.min(top, pointList[i].pos[1] - (pointList[i].radius or pointList[i].yOff))
+			bottom = math.max(bottom, pointList[i].pos[1] + (pointList[i].radius or pointList[i].yOff))
 		end
 	else
 		left, right, top, bottom = self.oldLeft, self.oldRight, self.oldTop, self.oldBottom

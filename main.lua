@@ -1,9 +1,11 @@
 
-local Font = require("include/font")
+util = require("utilities/util")
 Global = require("global")
-local World = require("world")
+IterableMap = require("include/IterableMap")
+
+local Font = require("include/font")
+local Cosmos = require("cosmos")
 Resources = require("resourceHandler")
-util = require("include/util")
 
 local api = {}
 
@@ -12,11 +14,11 @@ local api = {}
 --------------------------------------------------
 
 function love.draw()
-	World.Draw()
+	Cosmos.Draw()
 end
 
 function love.resize(width, height)
-	World.ViewResize(width, height)
+	Cosmos.ViewResize(width, height)
 end
 
 --------------------------------------------------
@@ -24,19 +26,19 @@ end
 --------------------------------------------------
 
 function love.mousemoved(x, y, dx, dy, istouch)
-	World.MouseMoved(x, y, dx, dy)
+	Cosmos.MouseMoved(x, y, dx, dy)
 end
 
 function love.mousereleased(x, y, button, istouch, presses)
-	World.MouseReleased(x, y, button, istouch, presses)
+	Cosmos.MouseReleased(x, y, button, istouch, presses)
 end
 
 function love.keypressed(key, scancode, isRepeat)
-	World.KeyPressed(key, scancode, isRepeat)
+	Cosmos.KeyPressed(key, scancode, isRepeat)
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
-	World.MousePressed(x, y, button, istouch, presses)
+	Cosmos.MousePressed(x, y, button, istouch, presses)
 end
 
 --------------------------------------------------
@@ -52,9 +54,6 @@ function love.update(dt)
 	frames = frames + 1
 	if dt > 0.05 then
 		longFrames = longFrames + 1
-		if not Global.DEBUG_PRINT_CLICK_POS and not LevelHandler.InEditMode() then
-			print(math.floor(frames *100 / longFrames), dt)
-		end
 	end
 	if dt > MAX_DT then
 		missingDt = (dt - MAX_DT)
@@ -68,14 +67,13 @@ function love.update(dt)
 		dt = dt + toReturn
 		missingDt = missingDt - toReturn
 	end
-	World.Update(dt, realDt)
+	Cosmos.Update(dt, realDt)
 end
 
 function Global.ResetMissingDt()
 	missingDt = 0
 end
 
-local util = require("include/util")
 --------------------------------------------------
 -- Loading
 --------------------------------------------------
@@ -92,7 +90,7 @@ function love.load(arg)
 	love.keyboard.setKeyRepeat(true)
 	math.randomseed(os.clock())
 	Resources.LoadResources()
-	World.Initialize()
+	Cosmos.Initialize()
 	
 	love.filesystem.setIdentity("RegularRailway", true)
 	love.window.maximize() -- Do not fullscreen since we lack an exit button.

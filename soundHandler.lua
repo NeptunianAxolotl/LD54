@@ -1,16 +1,14 @@
 
-local IterableMap = require("include/IterableMap")
-local util = require("include/util")
 
 local api = {}
 local sounds = IterableMap.New()
 
-local soundFiles = util.LoadDefDirectory("sounds/defs")
+local soundFiles = util.LoadDefDirectory("resources/soundDefs")
 
 function AddSource(name)
 	local def = soundFiles[name]
 	if def then
-		return love.audio.newSource(def.file, "static")
+		return love.audio.newSource("resources/sounds/" .. def.file, "static")
 	end
 end
 

@@ -4,7 +4,7 @@ local EffectsHandler = require("effectsHandler")
 local SoundHandler = require("soundHandler")
 local ChatHandler = require("chatHandler")
 local ComponentHandler = require("componentHandler")
-local util = require("include/util")
+local util = require("utilities/util")
 local ShadowHandler = require("shadowHandler")
 
 local TEST_SHADOW = false

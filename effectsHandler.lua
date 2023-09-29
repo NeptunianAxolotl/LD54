@@ -1,6 +1,4 @@
-
-local IterableMap = require("include/IterableMap")
-local util = require("include/util")
+
 
 local EffectDefs = util.LoadDefDirectory("effects")
 local NewEffect = require("objects/effect")

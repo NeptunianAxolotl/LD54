@@ -1,9 +1,7 @@
 
-local IterableMap = require("include/IterableMap")
-local util = require("include/util")
 
 local SoundHandler = require("soundHandler")
-local soundFiles = util.LoadDefDirectory("sounds/defs")
+local soundFiles = util.LoadDefDirectory("resources/soundDefs")
 
 local self = {}
 local api = {}
@@ -74,7 +72,7 @@ function api.Update(dt)
 	end
 	currentTrackRemaining = (currentTrackRemaining or 0) - dt
 	if currentTrackRemaining < 0 then
-		if world.MusicEnabled() then
+		if world.GetCosmos().MusicEnabled() then
 			if trackRunning then
 				for i = 1, #currentTrack do
 					SoundHandler.StopSound(currentTrack[i].sound, trackParity)
