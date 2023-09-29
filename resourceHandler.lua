@@ -50,7 +50,27 @@ local function LoadIsoImage(resData)
 	return data
 end
 
+local function LoadFileListAnimation(resData)
+	local images = {}
+	local fileList = resData.fileList
+	local singleFrameData = util.CopyTable(resData)
+	singleFrameData.fileList = false
+	for i = 1, #fileList do
+		singleFrameData.file = fileList[i]
+		images[#images + 1] = LoadImage(singleFrameData)
+	end
+	
+	local animData = {}
+	animData.duration = resData.duration
+	animData.imageList = images
+	animData.frames = #images
+	return animData
+end
+
 local function LoadAnimation(resData)
+	if resData.fileList then
+		return LoadFileListAnimation(resData)
+	end
 	local data = LoadImage(resData)
 	
 	data.quads = {}
@@ -178,12 +198,7 @@ function api.SetTexture(mesh, name)
 	mesh:setTexture(self.images[name].image)
 end
 
-function api.DrawImage(name, x, y, rotation, alpha, scale, color)
-	if not self.images[name] then
-		print("Invalid DrawImage ", name)
-		return
-	end
-	
+function api.DrawImageInternal(data, x, y, rotation, alpha, scale, color)
 	rotation = rotation or 0
 	local scaleX, scaleY = scale, scale
 	if type(scale) == "table" then
@@ -199,8 +214,15 @@ function api.DrawImage(name, x, y, rotation, alpha, scale, color)
 		((color and color[4]) or 1)*(alpha or 1)
 	)
 	
-	local data = self.images[name]
 	love.graphics.draw(data.image, x, y, rotation, data.xScale*scaleX, data.yScale*scaleY, data.xOffset, data.yOffset, 0, 0)
+end
+
+function api.DrawImage(name, x, y, rotation, alpha, scale, color)
+	if not self.images[name] then
+		print("Invalid DrawImage ", name)
+		return
+	end
+	api.DrawImageInternal(self.images[name], x, y, rotation, alpha, scale, color)
 end
 
 function api.DrawIsoImage(name, x, y, direction, alpha, scale, color)
@@ -246,6 +268,12 @@ function api.GetAnimationDuration(name)
 end
 
 function api.DrawAnimInternal(data, x, y, progress, rotation, alpha, scale, color)
+	if data.imageList then
+		local imageToDraw = GetAnimationFrame(progress, data.duration, data.frames)
+		api.DrawImageInternal(data.imageList[imageToDraw], x, y, rotation, alpha, scale, color)
+		return
+	end
+	
 	love.graphics.setColor(
 		(color and color[1]) or 1,
 		(color and color[2]) or 1,
@@ -305,6 +333,15 @@ function api.GetIsoAnimationAnchorOffset(name, anchorName, progress, direction, 
 	local animFrame = GetAnimationFrame(progress, dirData.duration, dirData.frames)
 	local offset = dirData.anchors[anchorName][animFrame]
 	return {offset[1]*dirData.xScale*scale, offset[2]*dirData.yScale*scale}
+end
+
+
+function api.DrawImageOrAnimation(name, x, y, progress, rotation, alpha, scale, color)
+	if self.animations[name] then
+		api.DrawAnimation(name, x, y, progress, rotation, alpha, scale, color)
+	elseif self.images[name] then
+		api.DrawImage(name, x, y, rotation, alpha, scale, color)
+	end
 end
 
 --------------------------------------------------
