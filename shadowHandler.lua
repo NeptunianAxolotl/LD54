@@ -10,14 +10,13 @@ local NormalShadow = require("shadows.ShadowShapes.NormalShadow")
 
 local api = {}
 local self = {}
-local world
 
 --------------------------------------------------
 -- Light Handling
 --------------------------------------------------
 
 function api.UpdateLightParams(light, pos, radius, color)
-	local left, top, right, bot = world.GetCameraExtents(radius*0.95)
+	local left, top, right, bot = self.world.GetCameraExtents(radius*0.95)
 	local inWorld = (pos[1] > left) and (pos[2] > top) and (pos[1] < right) and (pos[2] < bot)
 	
 	if not inWorld then
@@ -39,12 +38,12 @@ function api.UpdateLightParams(light, pos, radius, color)
 		light.useStar = newLight.useStar
 	end
 	
-	pos = world.WorldToScreen(pos)
+	pos = self.world.WorldToScreen(pos)
 	if radius < 1 then
 		radius = 1
 	end
-	local radiusGround = radius * world.WorldScaleToScreenScale()
-	local radiusVision = (radius * 1.3) * world.WorldScaleToScreenScale()
+	local radiusGround = radius * self.world.WorldScaleToScreenScale()
+	local radiusVision = (radius * 1.3) * self.world.WorldScaleToScreenScale()
 	
 	if color then
 		if light.ground then
@@ -93,8 +92,8 @@ end
 --------------------------------------------------
 
 function api.UpdateShadowParams(shadow, pos, radius)
-	pos = world.WorldToScreen(pos)
-	shadow.circleShape:SetRadius(radius * world.WorldScaleToScreenScale())
+	pos = self.world.WorldToScreen(pos)
+	shadow.circleShape:SetRadius(radius * self.world.WorldScaleToScreenScale())
 	shadow.body:SetPosition(pos[1], pos[2])
 end
 
@@ -134,7 +133,7 @@ end
 --------------------------------------------------
 
 function api.Update(dt)
-	api.UpdateLightParams(self.mouseLight, world.GetMousePosition(), 200)
+	api.UpdateLightParams(self.mouseLight, self.world.GetMousePosition(), 1500)
 end
 
 function api.ViewResize(width, height)
@@ -147,8 +146,9 @@ function api.ViewResize(width, height)
 end
 
 function api.Initialize(parentWorld)
-	self = {}
-	world = parentWorld
+	self = {
+		world = parentWorld,
+	}
 	
 	-- Create a light world
 	self.groundShadow = LightWorld:new()
@@ -157,7 +157,7 @@ function api.Initialize(parentWorld)
 	self.groundShadow:SetColor(20, 20, 20)
 	self.visionShadow:SetColor(20, 20, 20)
 
-	self.mouseLight = api.AddLight(true, 300, {120, 120, 120})
+	self.mouseLight = api.AddLight(true, 900, {120, 120, 120})
 end
 
 return api

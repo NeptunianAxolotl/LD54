@@ -7,7 +7,7 @@ local ComponentHandler = require("componentHandler")
 local util = require("utilities/util")
 local ShadowHandler = require("shadowHandler")
 
-local TEST_SHADOW = false
+local TEST_SHADOW = true
 
 local api = {}
 local self = {}
@@ -41,7 +41,7 @@ function api.Draw(drawQueue)
 		Resources.DrawAnimation("test_anim", 500, 500, animDt)
 	end})
 	if TEST_SHADOW then
-		ShadowHandler.UpdateShadowParams(self.guyShadow, {500, 500}, 16)
+		ShadowHandler.UpdateShadowParams(self.guyShadow, {800, 800}, 80)
 	end
 end
 
@@ -57,7 +57,7 @@ function api.Initialize()
 	ComponentHandler.SpawnComponent("", {600, 200}, data)
 	
 	if TEST_SHADOW then
-		self.guyShadow = ShadowHandler.AddCircleShadow(8)
+		self.guyShadow = ShadowHandler.AddCircleShadow(80)
 	end
 end
 

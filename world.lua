@@ -4,6 +4,7 @@ EffectsHandler = require("effectsHandler")
 ComponentHandler = require("componentHandler")
 DialogueHandler = require("dialogueHandler")
 TerrainHandler = require("terrainHandler")
+ShadowHandler = require("shadowHandler")
 
 PlayerHandler = require("playerHandler")
 
@@ -200,6 +201,7 @@ function api.Update(dt)
 	ComponentHandler.Update(dt)
 	PlayerHandler.Update(dt)
 	ModuleTest.Update(dt)
+	ShadowHandler.Update(api)
 	
 	PhysicsHandler.Update(dt)
 
@@ -223,6 +225,7 @@ function api.Draw()
 		d.f()
 	end
 	
+	ShadowHandler.DrawGroundShadow(self.cameraTransform)
 	ComponentHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
@@ -234,6 +237,7 @@ function api.Draw()
 		if not d then break end
 		d.f()
 	end
+	ShadowHandler.DrawVisionShadow(self.cameraTransform)
 	
 	--local windowX, windowY = love.window.getMode()
 	--if windowX/windowY > 16/9 then
@@ -272,10 +276,11 @@ function api.Initialize(cosmos, levelData)
 	
 	PlayerHandler.Initialize(api)
 	TerrainHandler.Initialize(api, levelData)
+	ShadowHandler.Initialize(api)
 	
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
-	--ModuleTest.Initialize(api)
+	ModuleTest.Initialize(api)
 	
 	-- Note that the camera pins only function for these particular second entries.
 	Camera.Initialize({
