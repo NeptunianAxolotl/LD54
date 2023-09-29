@@ -25,6 +25,10 @@ function api.SetMenuState(newState)
 	self.menuState = newState
 end
 
+function api.ToggleMenu()
+	self.menuState = not self.menuState
+end
+
 function api.GetPaused()
 	return self.paused or self.menuState
 end
@@ -45,13 +49,6 @@ function api.GetCosmos()
 	return self.cosmos
 end
 
-function api.TakeScreenshot()
-	love.filesystem.createDirectory("screenshots")
-	print("working", love.filesystem.getWorkingDirectory())
-	print("save", love.filesystem.getSaveDirectory())
-	love.graphics.captureScreenshot("screenshots/screenshot_" .. math.floor(math.random()*100000) .. "_.png")
-end
-
 function api.SetGameOver(hasWon, overType)
 	if self.gameWon or self.gameLost or TerrainHandler.InEditMode() then
 		return
@@ -65,11 +62,6 @@ function api.SetGameOver(hasWon, overType)
 	end
 end
 
-function api.SetPaused(newPause, force)
-	self.paused = newPause
-	self.forcePaused = force
-end
-
 --------------------------------------------------
 -- Input
 --------------------------------------------------
@@ -78,26 +70,11 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if TerrainHandler.KeyPressed and TerrainHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
-	if key == "escape" or key == "return" or key == "kpenter" then
-		self.paused = not self.paused
-	end
-	if key == "r" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
-		api.Restart()
+	if key == "escape" then
+		api.ToggleMenu()
 	end
 	if key == "p" then
-		self.paused = not self.paused
-	end
-	if key == "m" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
-		api.ToggleMusic()
-	end
-	if key == "s" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
-		api.TakeScreenshot()
-	end
-	if key == "n" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
-		api.SwitchLevel(1)
-	end
-	if key == "p" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
-		api.SwitchLevel(-1)
+		api.ToggleMenu()
 	end
 	if api.GetGameOver() then
 		return -- No doing actions
@@ -108,14 +85,14 @@ function api.KeyPressed(key, scancode, isRepeat)
 end
 
 function api.MousePressed(x, y, button)
+	if GameHandler.MousePressed(x, y, button) then
+		return
+	end
 	if api.GetPaused() then
 		return
 	end
 	local uiX, uiY = self.interfaceTransform:inverse():transformPoint(x, y)
 	
-	if GameHandler.MousePressed(x, y, button) then
-		return
-	end
 	if api.GetGameOver() then
 		return -- No doing actions
 	end
@@ -275,14 +252,13 @@ function api.Draw()
 	love.graphics.replaceTransform(self.emptyTransform)
 end
 
-function api.Initialize(cosmos, levelIndex, levelTableOverride, musicEnabled)
+function api.Initialize(cosmos, levelData)
 	self = {}
 	self.cosmos = cosmos
 	self.cameraTransform = love.math.newTransform()
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	self.paused = false
-	self.musicEnabled = false
 	self.lifetime = Global.DEBUG_START_LIFETIME or 0
 	
 	Delay.Initialise()
@@ -294,8 +270,8 @@ function api.Initialize(cosmos, levelIndex, levelTableOverride, musicEnabled)
 	ChatHandler.Initialize(api)
 	DialogueHandler.Initialize(api)
 	
-	TerrainHandler.Initialize(api, self.levelIndex, self.levelTableOverride)
 	PlayerHandler.Initialize(api)
+	TerrainHandler.Initialize(api, levelData)
 	
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
@@ -305,7 +281,9 @@ function api.Initialize(cosmos, levelIndex, levelTableOverride, musicEnabled)
 	Camera.Initialize({
 		minScale = 1000,
 		initPos = {0, 0},
+		initScale = 900
 	})
+	UpdateCamera()
 end
 
 return api
