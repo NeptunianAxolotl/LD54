@@ -288,8 +288,6 @@ function api.Initialize(cosmos, levelIndex, levelTableOverride, musicEnabled)
 	Delay.Initialise()
 	InterfaceUtil.Initialize()
 	EffectsHandler.Initialize(api)
-	SoundHandler.Initialize()
-	MusicHandler.Initialize(api)
 	
 	PhysicsHandler.Initialize(api)
 	ComponentHandler.Initialize(api)
