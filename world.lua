@@ -2,6 +2,8 @@
 EffectsHandler = require("effectsHandler")
 DialogueHandler = require("dialogueHandler")
 TerrainHandler = require("terrainHandler")
+ShopHandler = require("shopHandler")
+LevelHandler = require("levelHandler")
 
 Camera = require("utilities/cameraUtilities")
 InterfaceUtil = require("utilities/interfaceUtilities")
@@ -62,6 +64,9 @@ end
 --------------------------------------------------
 
 function api.KeyPressed(key, scancode, isRepeat)
+	if ShopHandler.KeyPressed and ShopHandler.KeyPressed(key, scancode, isRepeat) then
+		return
+	end
 	if TerrainHandler.KeyPressed and TerrainHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
@@ -80,6 +85,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 end
 
 function api.MousePressed(x, y, button)
+	if ShopHandler.MousePressed and ShopHandler.MousePressed(x, y, button) then
+		return
+	end
 	if GameHandler.MousePressed(x, y, button) then
 		return
 	end
@@ -112,7 +120,9 @@ function api.MouseReleased(x, y, button)
 end
 
 function api.MouseMoved(x, y, dx, dy)
-	
+	if ShopHandler.MouseMoved and ShopHandler.MouseMoved(x, y, dx, dy) then
+		return
+	end
 end
 
 --------------------------------------------------
@@ -222,15 +232,20 @@ function api.Draw()
 		d.f()
 	end
 	
-	--local windowX, windowY = love.window.getMode()
-	--if windowX/windowY > 16/9 then
-	--	self.interfaceTransform:setTransformation(0, 0, 0, windowY/1080, windowY/1080, 0, 0)
-	--else
-	--	self.interfaceTransform:setTransformation(0, 0, 0, windowX/1920, windowX/1920, 0, 0)
-	--end
-	love.graphics.replaceTransform(self.emptyTransform)
+	local windowX, windowY = love.window.getMode()
+	local aspectRatio = Global.VIEW_WIDTH/Global.VIEW_HEIGHT
+	local aspectDifference = windowX/windowY - aspectRatio
+	if aspectDifference > 0 then
+		-- Wider than tall
+		self.interfaceTransform:setTransformation(windowX - windowY*aspectRatio, 0, 0, windowY/Global.VIEW_HEIGHT, windowY/Global.VIEW_HEIGHT, 0, 0)
+	else
+		-- Taller than wide
+		self.interfaceTransform:setTransformation(0, 0.5*(windowY - windowX/aspectRatio), 0, windowX/Global.VIEW_WIDTH, windowX/Global.VIEW_WIDTH, 0, 0)
+	end
+	love.graphics.replaceTransform(self.interfaceTransform)
 	
 	-- Draw interface
+	ShopHandler.DrawInterface()
 	GameHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
 	DialogueHandler.DrawInterface()
@@ -255,7 +270,9 @@ function api.Initialize(cosmos, levelData)
 	ChatHandler.Initialize(api)
 	DialogueHandler.Initialize(api)
 	
-	TerrainHandler.Initialize(api, levelData)
+	LevelHandler.Initialize(api, levelData)
+	ShopHandler.Initialize(api)
+	TerrainHandler.Initialize(api)
 	
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)

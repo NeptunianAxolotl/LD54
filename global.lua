@@ -4,7 +4,7 @@ local globals = {
 	PANEL_COL = {0.53, 0.53, 0.55},
 	
 	MASTER_VOLUME = 0.75,
-	MUSIC_VOLUME = 0.8,
+	MUSIC_VOLUME = 0.01,
 	DEFAULT_MUSIC_DURATION = 174.69,
 	CROSSFADE_TIME = 0,
 	
@@ -13,6 +13,14 @@ local globals = {
 	LINE_SPACING = 36,
 	
 	GRID_SIZE = 96,
+	
+	DECK_SIZE_MULT = 1,
+	INIT_LEVEL = "testLevel",
+	SHOP_SLOTS = 3,
+	
+	SHOP_WIDTH = 450,
+	VIEW_WIDTH = 1920,
+	VIEW_HEIGHT = 1080,
 }
 
 return globals

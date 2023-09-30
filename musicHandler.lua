@@ -75,7 +75,6 @@ end
 function api.Initialize(newCosmos)
 	self = {}
 	cosmos = newCosmos
-	util.PrintTable(cosmos)
 	initialDelay = 0
 end
 

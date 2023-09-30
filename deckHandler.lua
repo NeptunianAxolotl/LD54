@@ -1,31 +1,14 @@
 
-
-local EffectsHandler = require("effectsHandler")
-
 local api = {}
 local self = {}
-local world
 
-local initialDeck = {
-	"wind",
-	"nuclear_generator",
-	"fuelcell",
-	"wind",
-	"research",
-	"wind",
-}
-
-local function GetDrawSize()
-	return self.drawSize
-end
-
-local function DrawCard()
-	if not self.deck[self.drawIndex] then
-		util.Permute(self.deck)
-		self.drawIndex = 1
+local function DrawCard(deck)
+	if not deck.cards[deck.drawIndex] then
+		util.Permute(deck.cards)
+		deck.drawIndex = 1
 	end
-	local draw = self.deck[self.drawIndex]
-	self.drawIndex = self.drawIndex + 1
+	local draw = deck.cards[deck.drawIndex]
+	deck.drawIndex = deck.drawIndex + 1
 	return draw
 end
 
@@ -33,38 +16,39 @@ end
 -- API
 --------------------------------------------------
 
-function api.GetNextDraw()
-	local drawCount = GetDrawSize()
+function api.GetNextDraw(deck, drawCount, toAvoid)
+	drawCount = drawCount or 1
 	local toDraw = {}
-	local drawnType = {}
-	local tries = 10
+	local drawnType = toAvoid or {}
+	local tries = 200
 	while #toDraw < drawCount and tries > 0 do
-		local card = DrawCard()
+		local card = DrawCard(deck)
 		if not drawnType[card] then
 			toDraw[#toDraw + 1] = card
 			drawnType[card] = true
 		end
 		tries = tries - 1
 	end
-	
 	return toDraw
 end
 
-function api.GetTechLevel()
-	return self.currentTech
+function api.GetDeck(newCards, shuffled)
+	local newDeck = {
+		cards = util.CopyTable(newCards),
+		drawIndex = 1,
+	}
+	if shuffled then
+		util.Permute(newDeck.cards)
+	end
+	return newDeck
 end
 
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
 
-function api.Initialize(parentWorld)
-	world = parentWorld
+function api.Initialize(world)
 	self = {}
-	self.deck = util.CopyTable(initialDeck)
-	self.drawIndex = 1
-	self.drawSize = 1
-	self.currentTech = 1
 end
 
 return api

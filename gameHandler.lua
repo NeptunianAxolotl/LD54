@@ -32,6 +32,10 @@ function api.GetViewRestriction()
 	return pointsToView
 end
 
+function api.GetShopSlots()
+	return Global.SHOP_SLOTS
+end
+
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
