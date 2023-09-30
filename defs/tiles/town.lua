@@ -2,7 +2,7 @@ local data = {
 	image = "town",
 	building = "town",
 	inShop = true,
-	--cannotPairWith = {"town"},
+	cannotPairWith = {"town"},
 	population = 1,
 	popType = "worker",
 	bonusOnEdges = true,
@@ -18,8 +18,8 @@ local data = {
 		return guy.def.resourceAmount
 	end,
 	residentSpeedFunc = function (self, guy)
-		if self.needDelay then
-			return 1.25
+		if self.GetActive() then
+			return 1.5
 		end
 		return 1
 	end

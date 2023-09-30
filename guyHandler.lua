@@ -32,6 +32,17 @@ local function ClosestToWithDistSq(guy, maxDistSq, fromPos, resource)
 	return distSq
 end
 
+local function CountResourceType(self, resource)
+	if self.def.globalStockResource ~= resource then
+		return false
+	end
+	return self.def.globalStockResourceFunc(self)
+end
+
+function api.CountResourceType(resource)
+	return IterableMap.FilterCount(self.guyList, CountResourceType, resource)
+end
+
 function api.GetClosestIdleGuy(pos, maxDist, resource)
 	local other = IterableMap.GetMinimum(self.guyList, ClosestToWithDistSq, maxDist and maxDist*maxDist, pos, resource)
 	return other

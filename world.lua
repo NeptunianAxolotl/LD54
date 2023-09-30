@@ -96,7 +96,7 @@ function api.MousePressed(x, y, button)
 	if api.GetPaused() then
 		return
 	end
-	local uiX, uiY = self.interfaceTransform:inverse():transformPoint(x, y)
+	local uiX, uiY = self.rightInterfaceTransform:inverse():transformPoint(x, y)
 	
 	if api.GetGameOver() then
 		return -- No doing actions
@@ -142,7 +142,7 @@ function api.ScreenToWorld(pos)
 end
 
 function api.ScreenToInterface(pos)
-	local x, y = self.interfaceTransform:inverse():transformPoint(pos[1], pos[2])
+	local x, y = self.rightInterfaceTransform:inverse():transformPoint(pos[1], pos[2])
 	return {x, y}
 end
 
@@ -248,14 +248,14 @@ function api.Draw()
 	local aspectDifference = windowX/windowY - aspectRatio
 	if aspectDifference > 0 then
 		-- Wider than tall
-		self.interfaceTransform:setTransformation(windowX - windowY*aspectRatio, 0, 0, windowY/Global.VIEW_HEIGHT, windowY/Global.VIEW_HEIGHT, 0, 0)
+		self.rightInterfaceTransform:setTransformation(windowX - windowY*aspectRatio, 0, 0, windowY/Global.VIEW_HEIGHT, windowY/Global.VIEW_HEIGHT, 0, 0)
 	else
 		-- Taller than wide
-		self.interfaceTransform:setTransformation(0, 0.5*(windowY - windowX/aspectRatio), 0, windowX/Global.VIEW_WIDTH, windowX/Global.VIEW_WIDTH, 0, 0)
+		self.rightInterfaceTransform:setTransformation(0, 0.5*(windowY - windowX/aspectRatio), 0, windowX/Global.VIEW_WIDTH, windowX/Global.VIEW_WIDTH, 0, 0)
 	end
-	love.graphics.replaceTransform(self.interfaceTransform)
+	love.graphics.replaceTransform(self.rightInterfaceTransform)
 	
-	-- Draw interface
+	-- Draw right interface
 	ShopHandler.DrawInterface()
 	GameHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
@@ -269,7 +269,7 @@ function api.Initialize(cosmos, levelData)
 	self = {}
 	self.cosmos = cosmos
 	self.cameraTransform = love.math.newTransform()
-	self.interfaceTransform = love.math.newTransform()
+	self.rightInterfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	self.paused = false
 	self.lifetime = Global.DEBUG_START_LIFETIME or 0

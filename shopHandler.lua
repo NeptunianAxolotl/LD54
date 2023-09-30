@@ -190,8 +190,10 @@ function api.DrawInterface()
 		return
 	end
 	
+	local food = BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger")
 	Font.SetSize(1)
-	love.graphics.printf("Tile Shop" , shopItemsX - 200, shopItemsY + 30, 400, "center")
+	love.graphics.printf("Food " .. food, shopItemsX - 200, shopItemsY + 30, 400, "center")
+	
 	
 	local shopItemsSpacing = 240
 	for i = 1, Global.SHOP_SLOTS do
@@ -228,8 +230,8 @@ function api.DrawInterface()
 	)
 	if drawHeld then
 		for i = 1, 2 do
-			local pos = util.Add(mousePos, util.CardinalToVector(self.tileRotation, (i - 1) * Global.GRID_SIZE))
-			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1)
+			local pos = util.Add(mousePos, TerrainHandler.ToIsometricBasis(util.CardinalToVector(self.tileRotation, (i - 1) * Global.GRID_SIZE*0.4)))
+			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 0.5)
 		end
 	end
 end

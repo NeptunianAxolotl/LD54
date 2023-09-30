@@ -22,6 +22,17 @@ local api = {}
 	return distSq
 end
 
+local function CountResourceType(self, resource)
+	if self.def.globalStockResource ~= resource then
+		return false
+	end
+	return self.def.globalStockResourceFunc(self)
+end
+
+function api.CountResourceType(resource)
+	return IterableMap.FilterCount(self.buildingList, CountResourceType, resource)
+end
+
 function api.GetClosestFreeBuilding(pos, resource)
 	local other = IterableMap.GetMinimum(self.buildingList, ClosestToWithDistSq, pos, resource)
 	return other
