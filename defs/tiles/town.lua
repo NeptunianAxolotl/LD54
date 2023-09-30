@@ -8,13 +8,21 @@ local data = {
 	bonusOnEdges = true,
 	drawWiggle = 0.25,
 	
-	
 	needResource = "wood",
 	needResourceCount = 1,
-	workTime = 5,
-	idleTimeout = 4,
-	searchRadius = 4,
+	workTime = 1,
+	idleTimeout = 0,
+	searchRadius = 6,
 	homeWaitTime = 1,
+	needDelayFunction = function (self, guy)
+		return guy.def.resourceAmount
+	end,
+	residentSpeedFunc = function (self, guy)
+		if self.needDelay then
+			return 1.25
+		end
+		return 1
+	end
 }
 
 return data

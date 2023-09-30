@@ -4,6 +4,7 @@ local data = {
 	resourceType = "wood",
 	hideWhenInactive = true,
 	activationUsesStockpile = 1,
+	resourceAmount = 35,
 }
 
 return data

@@ -101,6 +101,9 @@ local function NewGuy(self, building)
 	-- Updating
 	
 	function self.Update(dt)
+		if self.homeBuilding.residentSpeedFunc then
+			dt = dt*self.homeBuilding.residentSpeedFunc(self.homeBuilding, self)
+		end
 		HandleGoHome(self, dt)
 		HandleAssignedBuilding(self, dt)
 		

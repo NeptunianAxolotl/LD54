@@ -40,7 +40,6 @@ local function NewBuilding(self, building)
 	function self.ReleaseGuyFromBuilding(guy, finished)
 		IterableMap.Remove(self.activeWorkers, guy.index)
 		IterableMap.Remove(self.pendingWorkers, guy.index)
-		LookForWorkersCheck(self)
 		if finished and self.def.maximumStockpile then
 			self.stockpile = math.min(self.stockpile + self.def.stockpilePerJob, self.def.maximumStockpile)
 			if self.guys then
@@ -49,6 +48,14 @@ local function NewBuilding(self, building)
 				end
 			end
 		end
+		
+		if self.def.needDelayFunction then
+			self.needDelay = self.def.needDelayFunction(self, guy)
+		end
+		if self.needDelay then
+			return
+		end
+		LookForWorkersCheck(self)
 	end
 	
 	function self.GuyReachedBuilding(guy)
@@ -69,6 +76,9 @@ local function NewBuilding(self, building)
 		end
 		if self.def.maximumStockpile and self.stockpile >= self.def.maximumStockpile then
 			return false
+		end
+		if self.needDelay then
+			return
 		end
 		return self.def.needResourceCount > (IterableMap.Count(self.activeWorkers) + IterableMap.Count(self.pendingWorkers))
 	end
@@ -122,6 +132,13 @@ local function NewBuilding(self, building)
 			if self.inactiveTimer < 0 then
 				self.active = false
 				self.inactiveTimer = false
+			end
+		end
+		if self.needDelay then
+			self.needDelay = self.needDelay - dt
+			if self.needDelay < 0 then
+				LookForWorkersCheck(self)
+				self.needDelay = false
 			end
 		end
 		if self.def.updateFunc then
