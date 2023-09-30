@@ -3,13 +3,20 @@ local Font = require("include/font")
 
 local GuyDefs = util.LoadDefDirectory("defs/guys")
 
+local function BecomeIdleWorkCheck(self)
+	local building = BuildingHandler.GetClosestFreeBuilding(self.homeBuilding.pos)
+	if building then
+		building.AssignGuyToBuilding(self)
+	end
+end
+
 local function HandleAssignedBuilding(self, dt)
 	if not self.assignedBuilding then
 		return
 	end
 	if not self.atBuilding then
 		local unit, dist = util.UnitTowards(self.pos, self.assignedBuilding.GetPos())
-		if dist < self.def.speed * 0.05 then
+		if dist < self.def.speed * dt then
 			self.atBuildingTimer = self.assignedBuilding.def.workTime
 			self.atBuilding = true
 			self.assignedBuilding.GuyReachedBuilding(self)
@@ -34,6 +41,7 @@ local function HandleGoHome(self, dt)
 		if self.atHomeTimer < 0 then
 			self.atHomeTimer = false
 			self.idle = true
+			BecomeIdleWorkCheck(self)
 		end
 		return
 	end
@@ -51,8 +59,8 @@ local function HandleGoHome(self, dt)
 end
 
 local function NewGuy(self, building)
-	
-	self.idle = true
+
+	-- API
 	
 	function self.GetPos()
 		return self.pos
@@ -64,13 +72,19 @@ local function NewGuy(self, building)
 	
 	function self.AssignToBuilding(building)
 		self.idle = false
-		print("building", building)
 		if self.assignedBuilding then
 			self.assignedBuilding.ReleaseGuyFromBuilding(self)
 		end
 		self.assignedBuilding = building
 		self.atBuilding = false
 	end
+	
+	-- Init
+	
+	self.idle = true
+	BecomeIdleWorkCheck(self)
+	
+	-- Updating
 	
 	function self.Update(dt)
 		HandleGoHome(self, dt)

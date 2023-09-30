@@ -21,6 +21,7 @@ local globals = {
 	SHOP_WIDTH = 350,
 	VIEW_WIDTH = 1920,
 	VIEW_HEIGHT = 1080,
+	GAME_SPEED = 10,
 }
 
 return globals

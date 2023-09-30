@@ -198,6 +198,7 @@ function api.ViewResize(width, height)
 end
 
 function api.Update(dt)
+	dt = dt * Global.GAME_SPEED
 	GameHandler.Update(dt)
 	if api.GetPaused() then
 		UpdateCamera()

@@ -10,7 +10,24 @@ local api = {}
 	for i = 1, #parentTiles do
 		parentTiles[i].AddBuilding(buildingData, building)
 	end
-	IterableMap.Add(self.buildingList, building)endfunction api.Update(dt)	IterableMap.ApplySelf(self.buildingList, "Update", dt)endfunction api.Draw(drawQueue)	IterableMap.ApplySelf(self.buildingList, "Draw", drawQueue)end
+	IterableMap.Add(self.buildingList, building)end
+local function ClosestToWithDistSq(building, fromPos)
+	if not building.WantsWorker() then
+		return false
+	end
+	local distSq = util.DistSq(building.GetPos(), fromPos)
+	if not building.DistSqWithinWorkRange(distSq) then
+		return false
+	end
+	return distSq
+end
+
+function api.GetClosestFreeBuilding(pos)
+	local other = IterableMap.GetMinimum(self.buildingList, ClosestToWithDistSq, pos)
+	return other
+end
+
+function api.Update(dt)	IterableMap.ApplySelf(self.buildingList, "Update", dt)endfunction api.Draw(drawQueue)	IterableMap.ApplySelf(self.buildingList, "Draw", drawQueue)end
 
 function api.Initialize(world)
 	self = {		buildingList = IterableMap.New(),

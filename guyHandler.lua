@@ -16,15 +16,11 @@ function api.AddGuy(guyType, pos, guyData)
 	return IterableMap.Add(self.guyList, NewGuy(guyData))
 end
 
-local function CheckIdle(guy)
-	return guy.IsIdle()
-end
-
-local function ClosestToWithDistSq(data, maxDistSq, fromPos, filterFunc)
-	if filterFunc and not filterFunc(data) then
+local function ClosestToWithDistSq(guy, maxDistSq, fromPos)
+	if not guy.IsIdle() then
 		return false
 	end
-	local distSq = util.DistSq(data.GetPos(), fromPos)
+	local distSq = util.DistSq(guy.homeBuilding.GetPos(), fromPos)
 	if maxDistSq and distSq > maxDistSq then
 		return false
 	end
@@ -32,7 +28,7 @@ local function ClosestToWithDistSq(data, maxDistSq, fromPos, filterFunc)
 end
 
 function api.GetClosestIdleGuy(pos, maxDist)
-	local other = IterableMap.GetMinimum(self.guyList, ClosestToWithDistSq, maxDist and maxDist*maxDist, pos, CheckIdle)
+	local other = IterableMap.GetMinimum(self.guyList, ClosestToWithDistSq, maxDist and maxDist*maxDist, pos)
 	return other
 end
 

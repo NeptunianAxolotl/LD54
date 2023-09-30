@@ -3,14 +3,21 @@ local Font = require("include/font")
 
 local TileDefs = util.LoadDefDirectory("defs/tiles")
 
+local function LookForWorkersCheck(self)
+	while self.WantsWorker() do
+		local closestGuy = GuyHandler.GetClosestIdleGuy(self.pos, self.def.searchRadius)
+		if closestGuy then
+			self.AssignGuyToBuilding(closestGuy)
+		else
+			return
+		end
+	end
+end
+
 local function InitWork(self)
 	self.pendingWorkers = IterableMap.New()
 	self.activeWorkers = IterableMap.New()
-	local closestGuy = GuyHandler.GetClosestIdleGuy(self.pos, self.def.searchRadius)
-	print('InitWork', closestGuy)
-	if closestGuy then
-		self.AssignGuyToBuilding(closestGuy)
-	end
+	LookForWorkersCheck(self)
 end
 
 local function UpdateWork(self, dt)
@@ -30,12 +37,26 @@ local function NewBuilding(self, building)
 	function self.ReleaseGuyFromBuilding(guy)
 		IterableMap.Remove(self.activeWorkers, guy.index)
 		IterableMap.Remove(self.pendingWorkers, guy.index)
-		-- Do get guy check
+		LookForWorkersCheck(self)
 	end
 	
 	function self.GuyReachedBuilding(guy)
-		IterableMap.Add(self.activeWorkers, guy.index)
+		IterableMap.Add(self.activeWorkers, guy.index, guy)
 		IterableMap.Remove(self.pendingWorkers, guy.index)
+	end
+	
+	function self.WantsWorker()
+		if not self.def.needWorkers then
+			return false
+		end
+		return self.def.needWorkers > (IterableMap.Count(self.activeWorkers) + IterableMap.Count(self.pendingWorkers))
+	end
+	
+	function self.DistSqWithinWorkRange(distSq)
+		if not self.def.searchRadius then
+			return true
+		end
+		return distSq <= self.def.searchRadius * self.def.searchRadius
 	end
 	
 	function self.GetPos()
@@ -53,7 +74,7 @@ local function NewBuilding(self, building)
 		end
 	end
 	
-	if self.def.needWork then
+	if self.def.needWorkers then
 		InitWork(self)
 	end
 	

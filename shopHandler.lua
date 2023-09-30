@@ -22,7 +22,7 @@ end
 
 local function GenerateDomino()
 	local first = DeckHandler.GetNextDraw(self.deck, 1)[1]
-	local second = DeckHandler.GetNextDraw(self.deck, 1, util.ToMask(TileDefs[first].cannotPairWith))[1]
+	local second = DeckHandler.GetNextDraw(self.deck, 1, util.ToMask(TileDefs[first].cannotPairWith or {}))[1]
 	return {first, second}
 end
 
