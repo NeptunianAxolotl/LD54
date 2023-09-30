@@ -118,7 +118,7 @@ local function NewGuy(self, building)
 			return
 		end
 		if self.def.image then
-			drawQueue:push({y=2 + (self.pos[2] - self.pos[1])*0.01; f=function()
+			drawQueue:push({y=1 - (self.pos[2] - self.pos[1])*0.01; f=function()
 				local drawPos = TerrainHandler.GridToWorld(self.pos)
 				Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], 0, false, LevelHandler.TileScale())
 			end})

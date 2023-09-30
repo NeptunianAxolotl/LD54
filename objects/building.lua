@@ -150,7 +150,7 @@ local function NewBuilding(self, building)
 	function self.Draw(drawQueue)
 		local drawRot = (self.spawnTimer or 0)*0.4*math.pi
 		if self.def.image then
-			drawQueue:push({y=1 + (self.pos[2] - self.pos[1])*0.01; f=function()
+			drawQueue:push({y=1 - (self.pos[2] - self.pos[1])*0.01; f=function()
 				Resources.DrawImage(self.def.image, self.drawPos[1], self.drawPos[2], 0, false, LevelHandler.TileScale(), self.GetActive() and Global.WHITE or Global.GREY)
 			end})
 		end

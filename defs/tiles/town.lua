@@ -1,5 +1,5 @@
 local data = {
-	image = "town",
+	image = "house_single",
 	building = "town",
 	inShop = true,
 	cannotPairWith = {"town"},

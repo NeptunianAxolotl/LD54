@@ -5,6 +5,7 @@ local data = {
 	cannotPairWith = {"farm"},
 	spawnTilePositions = {{0, 0}},
 	bonusOnEdges = true,
+	drawWiggle = 0,
 	
 	globalStockResource = "food",
 	globalStockResourceFunc = function (self)
