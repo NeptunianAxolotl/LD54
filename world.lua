@@ -1,18 +1,12 @@
 
-local ModuleTest = require("moduleTest")
 EffectsHandler = require("effectsHandler")
-ComponentHandler = require("componentHandler")
 DialogueHandler = require("dialogueHandler")
 TerrainHandler = require("terrainHandler")
-ShadowHandler = require("shadowHandler")
-
-PlayerHandler = require("playerHandler")
 
 Camera = require("utilities/cameraUtilities")
 InterfaceUtil = require("utilities/interfaceUtilities")
 Delay = require("utilities/delay")
 
-local PhysicsHandler = require("physicsHandler")
 ChatHandler = require("chatHandler")
 DeckHandler = require("deckHandler")
 GameHandler = require("gameHandler") -- Handles the gamified parts of the game, such as score, progress and interface.
@@ -198,12 +192,6 @@ function api.Update(dt)
 	self.lifetime = self.lifetime + dt
 	Delay.Update(dt)
 	InterfaceUtil.Update(dt)
-	ComponentHandler.Update(dt)
-	PlayerHandler.Update(dt)
-	ModuleTest.Update(dt)
-	ShadowHandler.Update(api)
-	
-	PhysicsHandler.Update(dt)
 
 	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
@@ -216,7 +204,6 @@ function api.Draw()
 
 	-- Draw world
 	love.graphics.replaceTransform(self.cameraTransform)
-	ModuleTest.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(self.cameraTransform)
 	while true do
@@ -225,10 +212,7 @@ function api.Draw()
 		d.f()
 	end
 	
-	ShadowHandler.DrawGroundShadow(self.cameraTransform)
-	ComponentHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
-	PlayerHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(self.cameraTransform)
@@ -237,7 +221,6 @@ function api.Draw()
 		if not d then break end
 		d.f()
 	end
-	ShadowHandler.DrawVisionShadow(self.cameraTransform)
 	
 	--local windowX, windowY = love.window.getMode()
 	--if windowX/windowY > 16/9 then
@@ -269,18 +252,13 @@ function api.Initialize(cosmos, levelData)
 	InterfaceUtil.Initialize()
 	EffectsHandler.Initialize(api)
 	
-	PhysicsHandler.Initialize(api)
-	ComponentHandler.Initialize(api)
 	ChatHandler.Initialize(api)
 	DialogueHandler.Initialize(api)
 	
-	PlayerHandler.Initialize(api)
 	TerrainHandler.Initialize(api, levelData)
-	ShadowHandler.Initialize(api)
 	
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
-	ModuleTest.Initialize(api)
 	
 	-- Note that the camera pins only function for these particular second entries.
 	Camera.Initialize({
