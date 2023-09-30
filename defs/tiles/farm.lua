@@ -4,6 +4,10 @@ local data = {
 	inShop = true,
 	cannotPairWith = {"farm"},
 	bonusOnEdges = true,
+	needWork = 1,
+	workTime = 5,
+	idleTimeout = 2,
+	searchRadius = 4,
 }
 
 return data

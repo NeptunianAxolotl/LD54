@@ -84,6 +84,11 @@ function util.Unit(v)
 	end
 end
 
+function util.UnitTowards(from, to)
+	local v, mag = util.Unit(util.Subtract(to, from))
+	return v, mag
+end
+
 function util.UnitTowardsWithWrap(from, to, wrapX, wrapY)
 	local smallestDistSq = false
 	local si, sj = 0, 0
