@@ -13,11 +13,16 @@ function api.AddGuy(guyType, pos, guyData)
 	guyData.index = self.nextGuyIndex
 	nextGuyIndex = self.nextGuyIndex + 1
 	
-	return IterableMap.Add(self.guyList, NewGuy(guyData))
+	local newGuy = NewGuy(guyData)
+	IterableMap.Add(self.guyList, newGuy)
+	return newGuy
 end
 
-local function ClosestToWithDistSq(guy, maxDistSq, fromPos)
-	if not guy.IsIdle() then
+local function ClosestToWithDistSq(guy, maxDistSq, fromPos, resource)
+	if guy.def.resourceType ~= resource then
+		return false
+	end
+	if not guy.IsAvailible() then
 		return false
 	end
 	local distSq = util.DistSq(guy.homeBuilding.GetPos(), fromPos)
@@ -27,8 +32,8 @@ local function ClosestToWithDistSq(guy, maxDistSq, fromPos)
 	return distSq
 end
 
-function api.GetClosestIdleGuy(pos, maxDist)
-	local other = IterableMap.GetMinimum(self.guyList, ClosestToWithDistSq, maxDist and maxDist*maxDist, pos)
+function api.GetClosestIdleGuy(pos, maxDist, resource)
+	local other = IterableMap.GetMinimum(self.guyList, ClosestToWithDistSq, maxDist and maxDist*maxDist, pos, resource)
 	return other
 end
 

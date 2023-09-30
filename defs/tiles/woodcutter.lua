@@ -1,10 +1,15 @@
 local data = {
-	image = "farm",
-	building = "farm",
+	image = "woodcutter",
+	building = "woodcutter",
 	inShop = true,
 	--cannotPairWith = {"farm"},
-	needResource = "worker",
+	population = 2,
+	popType = "wood",
 	bonusOnEdges = true,
+	maximumStockpile = 4,
+	stockpilePerJob = 1,
+	
+	needResource = "worker",
 	needResourceCount = 1,
 	workTime = 5,
 	idleTimeout = 4,

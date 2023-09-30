@@ -4,15 +4,15 @@ local Font = require("include/font")
 local TileDefs = util.LoadDefDirectory("defs/tiles")
 
 local function LookForWorkersCheck(self)
-	while self.WantsWorker() do
-		local closestGuy = GuyHandler.GetClosestIdleGuy(self.pos, self.def.searchRadius)
+	while self.WantsWorkerOrResource(self.def.needResource) do
+		local closestGuy = GuyHandler.GetClosestIdleGuy(self.pos, self.def.searchRadius, self.def.needResource)
 		if closestGuy then
 			self.AssignGuyToBuilding(closestGuy)
 		else
 			break
 		end
 	end
-	if self.WantsWorker() then
+	if self.WantsWorkerOrResource(self.def.needResource) then
 		self.inactiveTimer = self.def.idleTimeout
 	end
 end
@@ -37,26 +37,40 @@ local function NewBuilding(self, building)
 		IterableMap.Add(self.pendingWorkers, guy.index, guy)
 	end
 	
-	function self.ReleaseGuyFromBuilding(guy)
+	function self.ReleaseGuyFromBuilding(guy, finished)
 		IterableMap.Remove(self.activeWorkers, guy.index)
 		IterableMap.Remove(self.pendingWorkers, guy.index)
 		LookForWorkersCheck(self)
+		if finished and self.def.maximumStockpile then
+			self.stockpile = math.min(self.stockpile + self.def.stockpilePerJob, self.def.maximumStockpile)
+			if self.guys then
+				for i = 1, #self.guys do
+					self.guys[i].RecheckIdleWorker()
+				end
+			end
+		end
 	end
 	
 	function self.GuyReachedBuilding(guy)
 		IterableMap.Add(self.activeWorkers, guy.index, guy)
 		IterableMap.Remove(self.pendingWorkers, guy.index)
-		if not self.WantsWorker() then
+		if not self.WantsWorkerOrResource(self.def.needResource) then
 			self.inactiveTimer = false
 			self.active = true
 		end
 	end
 	
-	function self.WantsWorker()
-		if not self.def.needWorkers then
+	function self.WantsWorkerOrResource(resource)
+		if not self.def.needResourceCount then
 			return false
 		end
-		return self.def.needWorkers > (IterableMap.Count(self.activeWorkers) + IterableMap.Count(self.pendingWorkers))
+		if self.def.needResource ~= resource then
+			return false
+		end
+		if self.def.maximumStockpile and self.stockpile >= self.def.maximumStockpile then
+			return false
+		end
+		return self.def.needResourceCount > (IterableMap.Count(self.activeWorkers) + IterableMap.Count(self.pendingWorkers))
 	end
 	
 	function self.DistSqWithinWorkRange(distSq)
@@ -67,7 +81,15 @@ local function NewBuilding(self, building)
 	end
 	
 	function self.GetActive()
-		return (not self.def.needWorkers) or self.active
+		return (not self.def.needResourceCount) or self.active
+	end
+	
+	function self.GetStockpile()
+		return self.stockpile or 0
+	end
+	
+	function self.UseStockpile(toUse)
+		self.stockpile = self.stockpile - toUse
 	end
 	
 	function self.GetPos()
@@ -77,6 +99,9 @@ local function NewBuilding(self, building)
 	-- Init
 	
 	self.drawPos = TerrainHandler.GridToWorld(util.RandomPointInRectangle(self.pos, self.def.drawWiggle or 0.1, self.def.drawWiggle or 0.1))
+	if self.def.maximumStockpile then
+		self.stockpile = 0
+	end
 	
 	if self.def.population then
 		self.guys = self.guys or {}
@@ -85,7 +110,7 @@ local function NewBuilding(self, building)
 		end
 	end
 	
-	if self.def.needWorkers then
+	if self.def.needResourceCount then
 		InitWork(self)
 	end
 	

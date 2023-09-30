@@ -4,7 +4,7 @@ local Font = require("include/font")
 local GuyDefs = util.LoadDefDirectory("defs/guys")
 
 local function BecomeIdleWorkCheck(self)
-	local building = BuildingHandler.GetClosestFreeBuilding(self.homeBuilding.pos)
+	local building = BuildingHandler.GetClosestFreeBuilding(self.homeBuilding.pos, self.def.resourceType)
 	if building then
 		building.AssignGuyToBuilding(self)
 	end
@@ -28,7 +28,7 @@ local function HandleAssignedBuilding(self, dt)
 		self.atBuildingTimer = self.atBuildingTimer - dt
 		if self.atBuildingTimer < 0 then
 			self.lastBuildingHomeTimer = self.assignedBuilding.def.homeWaitTime
-			self.assignedBuilding.ReleaseGuyFromBuilding(self)
+			self.assignedBuilding.ReleaseGuyFromBuilding(self, true)
 			self.assignedBuilding = false
 			self.goHome = true
 			self.atBuildingTimer = false
@@ -68,7 +68,10 @@ local function NewGuy(self, building)
 		return self.pos
 	end
 	
-	function self.IsIdle()
+	function self.IsAvailible()
+		if (self.def.activationUsesStockpile or 0) > self.homeBuilding.GetStockpile() then
+			return false
+		end
 		return self.idle
 	end
 	
@@ -77,14 +80,23 @@ local function NewGuy(self, building)
 		if self.assignedBuilding then
 			self.assignedBuilding.ReleaseGuyFromBuilding(self)
 		end
+		if self.def.activationUsesStockpile then
+			self.homeBuilding.UseStockpile(self.def.activationUsesStockpile)
+		end
 		self.assignedBuilding = building
 		self.atBuilding = false
+	end
+	
+	function self.RecheckIdleWorker()
+		if self.IsAvailible() then
+			BecomeIdleWorkCheck(self)
+		end
 	end
 	
 	-- Init
 	
 	self.idle = true
-	BecomeIdleWorkCheck(self)
+	self.RecheckIdleWorker()
 	
 	-- Updating
 	
@@ -99,6 +111,9 @@ local function NewGuy(self, building)
 	end
 	
 	function self.Draw(drawQueue)
+		if self.def.hideWhenInactive and not (self.IsAvailible() or self.assignedBuilding) then
+			return
+		end
 		if self.def.image then
 			drawQueue:push({y=2 + (self.pos[2] - self.pos[1])*0.01; f=function()
 				local drawPos = TerrainHandler.GridToWorld(self.pos)

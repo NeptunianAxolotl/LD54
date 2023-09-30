@@ -3,6 +3,7 @@ local level = {
 	tileDeck = {
 		town = 12,
 		farm = 8,
+		woodcutter = 8,
 	},
 	width = 12,
 	height = 12,
