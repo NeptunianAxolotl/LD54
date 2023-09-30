@@ -27,6 +27,7 @@ local function HandleAssignedBuilding(self, dt)
 	if self.atBuildingTimer then
 		self.atBuildingTimer = self.atBuildingTimer - dt
 		if self.atBuildingTimer < 0 then
+			self.lastBuildingHomeTimer = self.assignedBuilding.def.homeWaitTime
 			self.assignedBuilding.ReleaseGuyFromBuilding(self)
 			self.assignedBuilding = false
 			self.goHome = true
@@ -52,7 +53,8 @@ local function HandleGoHome(self, dt)
 	local unit, dist = util.UnitTowards(self.pos, self.homeBuilding.GetPos())
 	if dist < self.def.speed * 0.05 then
 		self.goHome = false
-		self.atHomeTimer = self.def.waitAtHomeTime
+		self.atHomeTimer = self.lastBuildingHomeTimer
+		self.lastBuildingHomeTimer = false
 		return
 	end
 	self.pos = util.Add(self.pos, util.Mult(self.def.speed * dt, unit))

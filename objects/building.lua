@@ -9,8 +9,11 @@ local function LookForWorkersCheck(self)
 		if closestGuy then
 			self.AssignGuyToBuilding(closestGuy)
 		else
-			return
+			break
 		end
+	end
+	if self.WantsWorker() then
+		self.inactiveTimer = self.def.idleTimeout
 	end
 end
 
@@ -43,6 +46,10 @@ local function NewBuilding(self, building)
 	function self.GuyReachedBuilding(guy)
 		IterableMap.Add(self.activeWorkers, guy.index, guy)
 		IterableMap.Remove(self.pendingWorkers, guy.index)
+		if not self.WantsWorker() then
+			self.inactiveTimer = false
+			self.active = true
+		end
 	end
 	
 	function self.WantsWorker()
@@ -57,6 +64,10 @@ local function NewBuilding(self, building)
 			return true
 		end
 		return distSq <= self.def.searchRadius * self.def.searchRadius
+	end
+	
+	function self.GetActive()
+		return (not self.def.needWorkers) or self.active
 	end
 	
 	function self.GetPos()
@@ -81,6 +92,13 @@ local function NewBuilding(self, building)
 	-- Updating
 	
 	function self.Update(dt)
+		if self.inactiveTimer then
+			self.inactiveTimer = self.inactiveTimer - dt
+			if self.inactiveTimer < 0 then
+				self.active = false
+				self.inactiveTimer = false
+			end
+		end
 		if self.def.updateFunc then
 			self.def.updateFunc(self, dt)
 		end
@@ -91,7 +109,7 @@ local function NewBuilding(self, building)
 		local drawRot = (self.spawnTimer or 0)*0.4*math.pi
 		if self.def.image then
 			drawQueue:push({y=1 + (self.pos[2] - self.pos[1])*0.01; f=function()
-				Resources.DrawImage(self.def.image, self.drawPos[1], self.drawPos[2], 0, false, LevelHandler.TileScale())
+				Resources.DrawImage(self.def.image, self.drawPos[1], self.drawPos[2], 0, false, LevelHandler.TileScale(), self.GetActive() and Global.WHITE or Global.GREY)
 			end})
 		end
 		if DRAW_DEBUG then
