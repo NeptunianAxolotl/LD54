@@ -20,6 +20,7 @@ function api.GetNextDraw(deck, drawCount, toAvoid)
 	drawCount = drawCount or 1
 	local toDraw = {}
 	local drawnType = toAvoid or {}
+	util.PrintTable(drawnType)
 	local tries = 200
 	while #toDraw < drawCount and tries > 0 do
 		local card = DrawCard(deck)

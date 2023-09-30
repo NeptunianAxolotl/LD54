@@ -1,9 +1,11 @@
 local level = {
 	humanName = "test level",
 	tileDeck = {
-		town = 3,
-		farm = 4,
+		town = 12,
+		farm = 8,
 	},
+	width = 10,
+	height = 10,
 }
 
 return level

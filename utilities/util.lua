@@ -668,6 +668,14 @@ function util.CopyTable(tableToCopy, deep, appendTo)
 	return copy
 end
 
+function util.ToMask(listTable)
+	local mapTable = {}
+	for i = 1, #listTable do
+		mapTable[listTable[i]] = true
+	end
+	return mapTable
+end
+
 --------------------------------------------------
 --------------------------------------------------
 -- Array Utilities

@@ -10,6 +10,18 @@ function api.GetLevelData()
 	return self.levelData
 end
 
+function api.Width()
+	return self.levelData.width
+end
+
+function api.Height()
+	return self.levelData.height
+end
+
+function api.TileSize()
+	return Global.GRID_SIZE
+end
+
 local function SetupWorld(levelData)
 
 end

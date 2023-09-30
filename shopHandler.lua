@@ -17,33 +17,21 @@ local function InitializeDeck(deckFrequency)
 			end
 		end
 	end
-	print('InitializeDeck')
-	util.PrintTable(deckFrequency)
-	print('validItems')
-	util.PrintTable(TileDefList)
 	return DeckHandler.GetDeck(validItems, true)
+end
+
+local function GenerateDomino()
+	local first = DeckHandler.GetNextDraw(self.deck, 1)[1]
+	local second = DeckHandler.GetNextDraw(self.deck, 1, util.ToMask(TileDefs[first].cannotPairWith))[1]
+	return {first, second}
 end
 
 local function UpdateItems(refreshAll)
 	self.emptySlot = false
 	local shopSlots = GameHandler.GetShopSlots()
-	local toAvoid = {}
 	for i = 1, shopSlots do
-		if self.items[i] then
-			toAvoid[self.items[i]] = true
-		end
-	end
-	if refreshAll then
-		local draws = DeckHandler.GetNextDraw(self.deck, 4, toAvoid)
-		for i = 1, shopSlots do
-			self.items[i] = draws[i]
-		end
-		return
-	end
-	
-	for i = 1, shopSlots do
-		if not self.items[i] then
-			self.items[i] = DeckHandler.GetNextDraw(self.deck, 1)[1]
+		if refreshAll or (not self.items[i]) then
+			self.items[i] = GenerateDomino()
 		end
 	end
 end
@@ -85,7 +73,6 @@ local function ClickShopButton(item)
 		end
 		self.heldTile = false
 		UpdateItems(true)
-		SoundHandler.PlaySound("switch")
 		return
 	end
 	if self.heldTile then
@@ -94,18 +81,15 @@ local function ClickShopButton(item)
 			self.heldTile = self.items[item]
 			self.emptySlot = item
 			self.items[item] = false
-			SoundHandler.PlaySound("put")
 			return true
 		end
 		if self.emptySlot == item then
 			self.items[item] = self.heldTile
 			self.heldTile = false
 			self.emptySlot = false
-			SoundHandler.PlaySound("put")
 			return true
 		end
 	end
-	SoundHandler.PlaySound("take")
 	self.heldTile = self.items[item]
 	self.items[item] = false
 	self.emptySlot = item
@@ -134,114 +118,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 	if LevelHandler.InEditMode() then
 		if key == "1" then
-			self.heldTile = "grass"
-			self.holdingDoodad = true
-			self.blockRotate = true
-			self.tileRotation = 0
-		elseif key == "2" then
-			self.heldTile = "grass_small"
-			self.holdingDoodad = true
-			self.blockRotate = true
-			self.tileRotation = 0
-		elseif key == "3" then
-			self.heldTile = "forest"
-			self.holdingDoodad = true
-			self.blockRotate = true
-			self.tileRotation = 0
-		elseif key == "4" then
-			self.heldTile = "forest2"
-			self.holdingDoodad = true
-			self.blockRotate = true
-			self.tileRotation = 0
-		elseif key == "5" then
-			self.heldTile = "forest3"
-			self.holdingDoodad = true
-			self.blockRotate = true
-			self.tileRotation = 0
-		elseif key == "6" then
-			self.heldTile = "field"
-			self.holdingDoodad = true
-			self.blockRotate = true
-			self.tileRotation = 0
-		elseif key == "7" then
-			self.heldTile = "mountain_small"
-			self.holdingDoodad = true
-			self.blockRotate = true
-			self.tileRotation = 0
-		elseif key == "8" then
-			self.heldTile = "mountain_large"
-			self.holdingDoodad = true
-			self.blockRotate = true
-			self.tileRotation = 0
 		end
-		
-		if key == "q" then
-			self.heldTile = "curve"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "w" then
-			self.heldTile = "straight"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "e" then
-			self.heldTile = "crowbar"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		end
-		-- Space for r rotation
-		if key == "t" then
-			self.heldTile = "branch_left"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "y" then
-			self.heldTile = "branch_right"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "u" then
-			self.heldTile = "split"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "i" then
-			self.heldTile = "signal"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "9" then
-			self.heldTile = "cross"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "0" then
-			self.heldTile = "double_curve"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		end
-		
-		if key == "a" then
-			self.heldTile = "block"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "s" then
-			self.heldTile = "town"
-			self.holdingDoodad = false
-			self.blockRotate = true
-			self.tileRotation = 0
-		elseif key == "d" then
-			self.heldTile = "factory"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "f" then
-			self.heldTile = "farm"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "g" then
-			self.heldTile = "sawmill"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		elseif key == "h" then
-			self.heldTile = "mine"
-			self.holdingDoodad = false
-			self.blockRotate = false
-		end
-		
 		return
 	end
 	for i = 1, Global.SHOP_SLOTS do
@@ -392,20 +269,16 @@ function api.DrawInterface()
 	local shopItemsSpacing = 240
 	for i = 1, Global.SHOP_SLOTS do
 		local y = shopItemsY + shopItemsSpacing * i
-		local def = self.items[i] and TileDefs[self.items[i]]
-		if util.PosInRectangle(mousePos, shopItemsX - Global.GRID_SIZE, y - Global.GRID_SIZE, Global.GRID_SIZE * 2, Global.GRID_SIZE * 2) then
+		if util.PosInRectangle(mousePos, shopItemsX - Global.GRID_SIZE, y, Global.GRID_SIZE * 2, Global.GRID_SIZE) then
 			self.hoveredItem = i
 		end
 		
 		love.graphics.setColor(Global.BACK_COL[1], Global.BACK_COL[2], Global.BACK_COL[3], 1)
 		love.graphics.setLineWidth(4)
-		love.graphics.rectangle("fill", shopItemsX - Global.GRID_SIZE, y - Global.GRID_SIZE, Global.GRID_SIZE * 2, Global.GRID_SIZE * 2, 8, 8, 16)
+		love.graphics.rectangle("fill", shopItemsX - Global.GRID_SIZE, y, Global.GRID_SIZE * 2, Global.GRID_SIZE, 8, 8, 16)
 		
-		if self.items[i] and def.stateImage then
-			Resources.DrawImage(def.stateImage[1], shopItemsX, y, self.tileRotation * math.pi/2, 1, 2)
-			if def.topImage then
-				Resources.DrawImage(def.topImage, shopItemsX, y, self.tileRotation * math.pi/2, 1, 2)
-			end
+		for j = 1, 2 do
+			Resources.DrawImage(TileDefs[self.items[i][j]].image, shopItemsX + (j*2 - 3)*50, y + Global.GRID_SIZE*0.5, self.tileRotation * math.pi/2, 1, 1)
 		end
 		
 		if self.hoveredItem == i then
@@ -414,7 +287,7 @@ function api.DrawInterface()
 			love.graphics.setColor(0, 0, 0, 0.8)
 		end
 		love.graphics.setLineWidth(8)
-		love.graphics.rectangle("line", shopItemsX - Global.GRID_SIZE, y - Global.GRID_SIZE, Global.GRID_SIZE * 2, Global.GRID_SIZE * 2, 8, 8, 16)
+		love.graphics.rectangle("line", shopItemsX - Global.GRID_SIZE, y, Global.GRID_SIZE * 2, Global.GRID_SIZE, 8, 8, 16)
 	end
 end
 
