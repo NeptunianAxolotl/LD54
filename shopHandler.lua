@@ -53,12 +53,6 @@ function api.SetHeldTile(newTile, newRotation)
 	end
 end
 
-function api.UpdateShopIfEmpty()
-	if self.emptySlot then
-		UpdateItems()
-	end
-end
-
 local function ClickShopButton(item)
 	if not item then
 		return false
@@ -96,15 +90,6 @@ local function ClickShopButton(item)
 end
 
 function api.Update(dt)
-	if self.shopBlockedTimer then
-		self.shopBlockedTimer = self.shopBlockedTimer - dt
-		if self.shopBlockedTimer <= 0 then
-			self.shopBlockedTimer = false
-		end
-	end
-	if not self.heldTile then
-		api.UpdateShopIfEmpty()
-	end
 	if LevelHandler.InEditMode() then
 		self.mapRules = false -- Remove hints etc
 	end
@@ -130,58 +115,24 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 end
 
+function api.MouseIsOverInterface()
+	local mousePos = self.world.GetMousePositionInterface()
+	return mousePos[1] > Global.VIEW_WIDTH - Global.SHOP_WIDTH
+end
+
 function api.MouseMoved(x, y)
 	if LevelHandler.InEditMode() then
-		if self.placeTileHeld then
-			if not (love.mouse.isDown(1) and self.heldTile) then
-				self.placeTileHeld = false
-				return
-			end
-			local mousePos = self.world.GetMousePosition()
-			mousePos = {math.floor(mousePos[1] / LevelHandler.TileSize()), math.floor(mousePos[2] / LevelHandler.TileSize())}
-			local tile = TerrainHandler.GetTileAtPos(mousePos)
-			if (not tile) or (not tile.IsInUse()) then
-				TerrainHandler.AddTile(mousePos, self.heldTile, self.tileRotation)
-			end
-			if TileDefs[self.heldTile].isCrowbar then
-				DoodadHandler.RemoveDoodads(mousePos)
-			end
-		end
 	end
 end
 
 function api.MousePressed(x, y, button)
-	if LevelHandler.InEditMode() then
-		if self.blockRotate then
-			self.tileRotation = 0
-		elseif button == 2 then
-			self.tileRotation = (self.tileRotation + 1)%4
-			--SoundHandler.PlaySound("spin")
+	if button == 1 and self.heldTile and not api.MouseIsOverInterface() then
+		local dominoPos = TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
+		if dominoPos then
+			TerrainHandler.AddDomino(self.heldTile, dominoPos)
+			UpdateItems(true)
+			self.heldTile = false
 		end
-		if button == 1 and self.heldTile then
-			local mousePos = self.world.GetMousePosition()
-			if self.holdingDoodad then
-				mousePos = util.Subtract(util.Mult(1 / LevelHandler.TileSize() , mousePos), {0.5, 0.5})
-				DoodadHandler.AddDoodad(mousePos, self.heldTile)
-				print([[{pos = {]] .. mousePos[1] .. [[, ]] .. mousePos[2] .. [[}, doodadType = "]] .. self.heldTile .. [["},]])
-			else
-				mousePos = {math.floor(mousePos[1] / LevelHandler.TileSize()), math.floor(mousePos[2] / LevelHandler.TileSize())}
-				local tile = TerrainHandler.GetTileAtPos(mousePos)
-				if (not tile) or (not tile.IsInUse()) then
-					TerrainHandler.AddTile(mousePos, self.heldTile, self.tileRotation)
-				end
-				print([[{pos = {]] .. mousePos[1] .. [[, ]] .. mousePos[2] .. [[}, rot = ]] .. self.tileRotation .. [[, tileType = "]] .. self.heldTile .. [["},]])
-				if TileDefs[self.heldTile].isCrowbar then
-					DoodadHandler.RemoveDoodads(mousePos)
-				end
-				if TileDefs[self.heldTile].editorWantGoods then
-					LevelHandler.TownWantPopup(mousePos)
-				else
-					self.placeTileHeld = true
-				end
-			end
-		end
-		return
 	end
 	if button == 2 then
 		self.tileRotation = (self.tileRotation + 1)%4
@@ -197,8 +148,7 @@ function api.Draw(drawQueue)
 	if (not self.heldTile) or self.world.GetGameOver() then
 		return
 	end
-	local mousePos = self.world.GetMousePosition()
-	local dominoPos = TerrainHandler.GetValidWorldPlacement(mousePos, self.tileRotation, self.heldTile)
+	local dominoPos = TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
 	
 	if not dominoPos then
 		return
@@ -271,7 +221,7 @@ function api.DrawInterface()
 	
 	local drawHeld = (
 		self.heldTile and (
-			mousePos[1] > Global.VIEW_WIDTH - Global.SHOP_WIDTH
+			api.MouseIsOverInterface()
 			or
 			not TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
 		)

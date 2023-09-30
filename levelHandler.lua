@@ -22,6 +22,10 @@ function api.TileSize()
 	return Global.GRID_SIZE
 end
 
+function api.TileScale()
+	return 1
+end
+
 local function SetupWorld(levelData)
 
 end
