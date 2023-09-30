@@ -6,7 +6,7 @@ local TileDefs = util.LoadDefDirectory("defs/tiles")
 local function NewTile(self, terrain)
 	self.toDestroy = false
 	
-	self.worldPos = {(self.pos[1] + 0.5) * LevelHandler.TileSize(), (self.pos[2] + 0.5) * LevelHandler.TileSize()}
+	self.worldPos = TerrainHandler.GridToWorld(self.pos)
 	
 	function self.GetPos()
 		return self.pos

@@ -262,9 +262,10 @@ function util.AngleToCardinal(angle, cardinal, start, segments)
 	return cardinalAngle - angle
 end
 
-function util.InverseBasis(a, b, c, d)
+function util.InverseBasis(basis)
+	local a, b, c, d = basis[1], basis[2], basis[3], basis[4]
 	local det = a*d - b*c
-	return d/det, -b/det, -c/det, a/det
+	return {d/det, -b/det, -c/det, a/det}
 end
 
 function util.ChangeBasis(v, a, b, c, d)

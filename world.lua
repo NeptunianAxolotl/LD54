@@ -178,7 +178,10 @@ end
 local function UpdateCamera()
 	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(dt, 
 		{
-			{pos = {Global.WORLD_WIDTH/2, Global.WORLD_HEIGHT/2}, xOff = Global.WORLD_WIDTH/2 + 80, yOff = Global.WORLD_HEIGHT/2 + 80},
+			{pos = TerrainHandler.GridToWorld({0, 0}), xOff = 50, yOff = 50},
+			{pos = TerrainHandler.GridToWorld({LevelHandler.Width(), 0}), xOff = 50, yOff = 50},
+			{pos = TerrainHandler.GridToWorld({0, LevelHandler.Height()}), xOff = 50, yOff = 50},
+			{pos = TerrainHandler.GridToWorld({LevelHandler.Width(), LevelHandler.Height()}), xOff = 50, yOff = 50},
 		}
 		, 0, 0
 	)
@@ -279,11 +282,7 @@ function api.Initialize(cosmos, levelData)
 	GameHandler.Initialize(api)
 	
 	-- Note that the camera pins only function for these particular second entries.
-	Camera.Initialize({
-		minScale = 1000,
-		initPos = {0, 0},
-		initScale = 900
-	})
+	Camera.Initialize()
 	UpdateCamera()
 end
 

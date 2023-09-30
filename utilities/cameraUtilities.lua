@@ -21,8 +21,8 @@ local function UpdateCameraToViewPoints(dt, pointList, moveSmooth, scaleSmooth)
 		for i = 2, #pointList do
 			left = math.min(left, pointList[i].pos[1] - (pointList[i].radius or pointList[i].xOff))
 			right = math.max(right, pointList[i].pos[1] + (pointList[i].radius or pointList[i].xOff))
-			top = math.min(top, pointList[i].pos[1] - (pointList[i].radius or pointList[i].yOff))
-			bottom = math.max(bottom, pointList[i].pos[1] + (pointList[i].radius or pointList[i].yOff))
+			top = math.min(top, pointList[i].pos[2] - (pointList[i].radius or pointList[i].yOff))
+			bottom = math.max(bottom, pointList[i].pos[2] + (pointList[i].radius or pointList[i].yOff))
 		end
 	else
 		left, right, top, bottom = self.oldLeft, self.oldRight, self.oldTop, self.oldBottom
@@ -92,10 +92,12 @@ local function GetCameraScale()
 end
 
 local function Initialize(data)
+	data = data or {}
 	self = {
 		cameraPos = data.initPos or {0, 0},
 		cameraVelocity = {0, 0},
 		posVelocity = {0, 0},
+		padding = {0, 0, 0, 0},
 		cameraScale = data.initScale or 1080,
 		pinX = data.pinX,
 		pinY = data.pinY,
