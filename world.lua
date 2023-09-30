@@ -209,6 +209,7 @@ function api.Update(dt)
 	Delay.Update(dt)
 	InterfaceUtil.Update(dt)
 
+	ShopHandler.Update(dt)
 	BuildingHandler.Update(dt)
 	GuyHandler.Update(dt)
 	ChatHandler.Update(dt)

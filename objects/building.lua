@@ -27,6 +27,9 @@ local function InitWork(self)
 		
 		self.resourceState[resource].pendingWorkers = IterableMap.New()
 		self.resourceState[resource].activeWorkers = IterableMap.New()
+	end
+	for i = 1, #self.def.needResourceList do
+		local resource = self.def.needResourceList[i]
 		LookForWorkersCheck(self, resource)
 	end
 end
@@ -73,6 +76,10 @@ local function NewBuilding(self, building)
 		local resState = self.resourceState[guy.def.resourceType]
 		local resDef = self.def.needResource[guy.def.resourceType]
 		
+		if resDef.jobActivationResources then
+			self.UseResources(resDef.jobActivationResources)
+		end
+		
 		IterableMap.Add(resState.activeWorkers, guy.index, guy)
 		IterableMap.Remove(resState.pendingWorkers, guy.index)
 		if not self.WantsWorkerOrResource(guy.def.resourceType) then
@@ -92,6 +99,9 @@ local function NewBuilding(self, building)
 		end
 		if resState.needDelay then
 			return
+		end
+		if resDef.jobActivationResources and not self.HasResources(resDef.jobActivationResources) then
+			return false
 		end
 		return (resDef.count or 1) > (IterableMap.Count(resState.activeWorkers) + IterableMap.Count(resState.pendingWorkers))
 	end
@@ -121,26 +131,37 @@ local function NewBuilding(self, building)
 		return 0
 	end
 	
-	function self.HasStockpileToActivateGuy()
-		if not self.def.guyActivationResources then
+	function self.HasResources(resourcesRequired)
+		if not resourcesRequired then
 			return true
 		end
 		for i = 1, #self.def.needResourceList do
 			local resource = self.def.needResourceList[i]
-			if (self.resourceState[resource].stockpile or 0) < (self.def.guyActivationResources[resource] or 0) then
+			if (self.resourceState[resource].stockpile or 0) < (resourcesRequired[resource] or 0) then
 				return false
 			end
 		end
 		return true
 	end
 	
-	function self.UseStockpileToActivateGuy()
+	function self.UseResources(resourcesToUse)
 		for i = 1, #self.def.needResourceList do
 			local resource = self.def.needResourceList[i]
-			if self.def.guyActivationResources[resource] then
-				self.resourceState[resource].stockpile = self.resourceState[resource].stockpile - self.def.guyActivationResources[resource]
+			if resourcesToUse[resource] then
+				self.resourceState[resource].stockpile = self.resourceState[resource].stockpile - resourcesToUse[resource]
 			end
 		end
+	end
+	
+	function self.HasStockpileToActivateGuy()
+		if not self.def.guyActivationResources then
+			return true
+		end
+		return self.HasResources(self.def.guyActivationResources)
+	end
+	
+	function self.UseStockpileToActivateGuy()
+		self.UseResources(self.def.guyActivationResources)
 	end
 	
 	function self.GetPos()

@@ -7,6 +7,13 @@ local function BecomeIdleWorkCheck(self)
 	local building = BuildingHandler.GetClosestFreeBuilding(self.homeBuilding.pos, self.def.resourceType)
 	if building then
 		building.AssignGuyToBuilding(self)
+	elseif self.def.toGlobalWhenIdle and self.IsAvailible() then
+		if self.homeBuilding.def.guyActivationResources then
+			self.homeBuilding.UseStockpileToActivateGuy()
+		end
+		self.idle = false
+		ShopHandler.AddResource(self.def.toGlobalWhenIdle, self.def.toGlobalResourceCount)
+		self.atHomeTimer = self.def.toGlobalIdleTime
 	end
 end
 
@@ -118,7 +125,7 @@ local function NewGuy(self, building)
 			return
 		end
 		if self.def.image then
-			drawQueue:push({y=1 - (self.pos[2] - self.pos[1])*0.01; f=function()
+			drawQueue:push({y=1.5 - (self.pos[2] - self.pos[1])*0.01; f=function()
 				local drawPos = TerrainHandler.GridToWorld(self.pos)
 				Resources.DrawImage(self.def.image, drawPos[1], drawPos[2], 0, false, LevelHandler.TileScale())
 			end})

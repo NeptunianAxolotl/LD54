@@ -25,6 +25,7 @@ local globals = {
 	VIEW_WIDTH = 1920,
 	VIEW_HEIGHT = 1080,
 	GAME_SPEED = 2,
+	REFRESH_TIMER = 0.1,
 }
 
 return globals

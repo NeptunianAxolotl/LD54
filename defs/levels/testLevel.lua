@@ -4,6 +4,7 @@ local level = {
 		town = 12,
 		farm = 8,
 		woodcutter = 8,
+		sawmill = 6,
 	},
 	width = 12,
 	height = 12,

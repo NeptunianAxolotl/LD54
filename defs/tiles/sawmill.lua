@@ -8,17 +8,32 @@ local data = {
 	spawnTilePositions = {{0, 0}},
 	
 	population = 2,
-	popType = "wood",
+	popType = "plank",
 	bonusOnEdges = false,
-	maximumStockpile = 4,
-	stockpilePerJob = 1,
+	
+	guyActivationResources = {
+		worker = 1,
+	},
 	
 	needResource = {
 		worker = {
-			workTime = 5,
+			workTime = 6,
 			idleTimeout = 4,
 			searchRadius = 4,
 			homeWaitTime = 1,
+			maximumStockpile = 4,
+			stockpilePerJob = 1,
+			jobActivationResources = {
+				wood = 1,
+			},
+		},
+		wood = {
+			workTime = 1,
+			idleTimeout = 0,
+			searchRadius = 6,
+			homeWaitTime = 1,
+			maximumStockpile = 4,
+			stockpilePerJob = 1,
 		},
 	},
 }
