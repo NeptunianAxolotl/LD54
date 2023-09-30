@@ -1,5 +1,5 @@
 
-local names = util.GetDefDirList("resources/images/tiles")
+local names = util.GetDefDirList("resources/images/tiles", "png")
 local data = {}
 
 for i = 1, #names do
@@ -10,7 +10,7 @@ for i = 1, #names do
 		xScale = Global.GRID_SIZE/200,
 		yScale = Global.GRID_SIZE/200,
 		xOffset = 0.5,
-		yOffset = 0.5,
+		yOffset = 0.75,
 	}
 end
 

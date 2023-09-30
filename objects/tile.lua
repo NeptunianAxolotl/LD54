@@ -3,10 +3,52 @@ local Font = require("include/font")
 
 local TileDefs = util.LoadDefDirectory("defs/tiles")
 
+local function CheckAddBonus(self, direction)
+	local other = TerrainHandler.GetTile(self.pos, direction)
+	if other and other.def.building == self.def.building then
+		BuildingHandler.AddBuilding({self, other}, self.def.building, util.Add(self.pos, util.Mult(0.5, direction)))
+		return true
+	end
+	return false
+end
+
+local function GenerateBonusBuildings(self)
+	local hasBonus = {}
+	for i = 0, 3 do
+		if CheckAddBonus(self, util.CardinalToVector(i)) then
+			hasBonus[i] = true
+		end
+	end
+	
+	if hasBonus[0] and hasBonus[1] then
+		CheckAddBonus(self, {1, 1})
+	end
+	if hasBonus[1] and hasBonus[2] then
+		CheckAddBonus(self, {-1, 1})
+	end
+	if hasBonus[2] and hasBonus[3] then
+		CheckAddBonus(self, {-1, -1})
+	end
+	if hasBonus[3] and hasBonus[0] then
+		CheckAddBonus(self, {1, -1})
+	end
+end
+
 local function NewTile(self, terrain)
 	self.toDestroy = false
 	
 	self.worldPos = TerrainHandler.GridToWorld(self.pos)
+	
+	self.buildings = IterableMap.New()
+	function self.AddBuilding(building)
+		IterableMap.Add(self.buildings, building)
+	end
+	
+	BuildingHandler.AddBuilding({self}, self.def.building, self.pos)
+	
+	if self.def.bonusOnEdges then
+		GenerateBonusBuildings(self)
+	end
 	
 	function self.GetPos()
 		return self.pos
@@ -26,15 +68,6 @@ local function NewTile(self, terrain)
 	end
 	
 	function self.Draw(drawQueue)
-		local drawRot = (self.spawnTimer or 0)*0.4*math.pi
-		if self.def.image then
-			drawQueue:push({y=0 + self.pos[2]*0.01; f=function()
-				Resources.DrawImage(self.def.image, self.worldPos[1], self.worldPos[2], 0, false, LevelHandler.TileScale())
-			end})
-		end
-		if DRAW_DEBUG then
-			love.graphics.circle('line',self.pos[1], self.pos[2], def.radius)
-		end
 	end
 	
 	function self.DrawInterface()

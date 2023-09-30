@@ -2,8 +2,10 @@
 EffectsHandler = require("effectsHandler")
 DialogueHandler = require("dialogueHandler")
 TerrainHandler = require("terrainHandler")
+BuildingHandler = require("buildingHandler")
 ShopHandler = require("shopHandler")
 LevelHandler = require("levelHandler")
+GuyHandler = require("guyHandler")
 
 Camera = require("utilities/cameraUtilities")
 InterfaceUtil = require("utilities/interfaceUtilities")
@@ -206,6 +208,7 @@ function api.Update(dt)
 	Delay.Update(dt)
 	InterfaceUtil.Update(dt)
 
+	GuyHandler.Update(dt)
 	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
 	UpdateCamera()
@@ -227,7 +230,9 @@ function api.Draw()
 	
 	EffectsHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
+	BuildingHandler.Draw(drawQueue)
 	ShopHandler.Draw(drawQueue)
+	GuyHandler.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(self.cameraTransform)
 	while true do
@@ -277,6 +282,8 @@ function api.Initialize(cosmos, levelData)
 	LevelHandler.Initialize(api, levelData)
 	ShopHandler.Initialize(api)
 	TerrainHandler.Initialize(api)
+	BuildingHandler.Initialize(api)
+	GuyHandler.Initialize(api)
 	
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)

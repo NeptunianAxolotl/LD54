@@ -705,12 +705,14 @@ end
 --------------------------------------------------
 --------------------------------------------------
 
-function util.GetDefDirList(dir)
+function util.GetDefDirList(dir, ext)
 	local files = love.filesystem.getDirectoryItems(dir)
 	local defList = {}
 	for i = 1, #files do
-		local name = string.sub(files[i], 0, -5)
-		defList[i] = name
+		if (not ext) or ext == string.sub(files[i], -3, -1) then
+			local name = string.sub(files[i], 0, -5)
+			defList[#defList + 1] = name
+		end
 	end
 	return defList
 end
