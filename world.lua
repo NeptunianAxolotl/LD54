@@ -224,6 +224,7 @@ function api.Draw()
 	
 	EffectsHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
+	ShopHandler.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(self.cameraTransform)
 	while true do

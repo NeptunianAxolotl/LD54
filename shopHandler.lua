@@ -27,7 +27,6 @@ local function GenerateDomino()
 end
 
 local function UpdateItems(refreshAll)
-	self.emptySlot = false
 	local shopSlots = GameHandler.GetShopSlots()
 	for i = 1, shopSlots do
 		if refreshAll or (not self.items[i]) then
@@ -194,47 +193,26 @@ function api.MousePressed(x, y, button)
 	return ClickShopButton(self.hoveredItem)
 end
 
+function api.Draw(drawQueue)
+	if (not self.heldTile) or self.world.GetGameOver() then
+		return
+	end
+	local mousePos = self.world.GetMousePosition()
+	local dominoPos = TerrainHandler.GetValidWorldPlacement(mousePos, self.tileRotation, self.heldTile)
+	
+	if not dominoPos then
+		return
+	end
+	
+	for i = 1, 2 do
+		local pos = TerrainHandler.GridToWorld(dominoPos[i])
+		Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1)
+	end
+end
+
 function api.DrawInterface()
 	local mousePos = self.world.GetMousePositionInterface()
 	self.hoveredItem = false
-	if self.heldTile and not self.world.GetGameOver() then
-		local def = TileDefs[self.heldTile]
-		local pos = TerrainHandler.GetValidPlacement(mousePos)
-		if pos then
-			--local tile = TerrainHandler.GetTileAtPos(pos)
-			--if tile then
-			--	if tile.IsInUse() then
-			--		love.graphics.setColor(0.7, 0.7, 0.7, 0.2)
-			--	elseif TileDefs[self.heldTile].isCrowbar then
-			--		love.graphics.setColor(1, 1, 1, 0.2)
-			--	elseif TileDefs[self.heldTile].overwrite and TileDefs[self.heldTile].overwrite[tile.tileType] then
-			--		local overwriteRot = TileDefs[self.heldTile].overwrite[tile.tileType].rot
-			--		local relativeRot = (self.tileRotation - tile.rotation)%4
-			--		if overwriteRot[relativeRot] then
-			--			love.graphics.setColor(1, 1, 1, 0.2)
-			--		else
-			--			love.graphics.setColor(0.7, 0.7, 0.7, 0.2)
-			--		end
-			--	else
-			--		love.graphics.setColor(0.7, 0.7, 0.7, 0.2)
-			--	end
-			--else
-			--	if (not TileDefs[self.heldTile].isCrowbar) then
-			--		love.graphics.setColor(1, 1, 1, 0.2)
-			--	else
-			--		love.graphics.setColor(0.7, 0.7, 0.7, 0.2)
-			--	end
-			--end
-			--love.graphics.setLineWidth(5)
-			--love.graphics.rectangle("line", pos[1]*LevelHandler.TileSize(), pos[2]*LevelHandler.TileSize(), LevelHandler.TileSize(), LevelHandler.TileSize(), 4, 4, 8)
-		end
-		--if def.stateImage then
-		--	Resources.DrawImage(def.stateImage[1], mousePos[1], mousePos[2], self.tileRotation * math.pi/2, 0.8, LevelHandler.TileScale())
-		--end
-		--if def.topImage then
-		--	Resources.DrawImage(def.topImage, mousePos[1], mousePos[2], self.tileRotation * math.pi/2, 0.8, LevelHandler.TileScale())
-		--end
-	end
 	
 	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
 	local shopItemsY = 160
@@ -245,7 +223,6 @@ function api.DrawInterface()
 	love.graphics.setColor(0, 0, 0, 1)
 	love.graphics.setLineWidth(12)
 	love.graphics.rectangle("line", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000, 8, 8, 16)
-	
 	
 	love.graphics.rectangle("line", 0, 0, 1920, 1080, 8, 8, 16)
 	
@@ -278,7 +255,9 @@ function api.DrawInterface()
 		love.graphics.rectangle("fill", shopItemsX - Global.GRID_SIZE, y, Global.GRID_SIZE * 2, Global.GRID_SIZE, 8, 8, 16)
 		
 		for j = 1, 2 do
-			Resources.DrawImage(TileDefs[self.items[i][j]].image, shopItemsX + (j*2 - 3)*50, y + Global.GRID_SIZE*0.5, self.tileRotation * math.pi/2, 1, 1)
+			if self.items[i] then
+				Resources.DrawImage(TileDefs[self.items[i][j]].image, shopItemsX + (j*2 - 3)*Global.GRID_SIZE/2, y + Global.GRID_SIZE*0.5, 0, 1, 1)
+			end
 		end
 		
 		if self.hoveredItem == i then
@@ -288,6 +267,20 @@ function api.DrawInterface()
 		end
 		love.graphics.setLineWidth(8)
 		love.graphics.rectangle("line", shopItemsX - Global.GRID_SIZE, y, Global.GRID_SIZE * 2, Global.GRID_SIZE, 8, 8, 16)
+	end
+	
+	local drawHeld = (
+		self.heldTile and (
+			mousePos[1] > Global.VIEW_WIDTH - Global.SHOP_WIDTH
+			or
+			not TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
+		)
+	)
+	if drawHeld then
+		for i = 1, 2 do
+			local pos = util.Add(mousePos, util.CardinalToVector(self.tileRotation, (i - 1) * Global.GRID_SIZE))
+			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1)
+		end
 	end
 end
 

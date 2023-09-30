@@ -242,6 +242,19 @@ function util.CardinalToDirection(cardinal, start, segments)
 	return cardinal * 2 * math.pi/segments + start 
 end
 
+function util.CardinalToVector(cardinal, length)
+	length = length or 1
+	if cardinal == 0 then
+		return {length, 0}
+	elseif cardinal == 1 then
+		return {0, length}
+	elseif cardinal == 2 then
+		return {-length, 0}
+	elseif cardinal == 3 then
+		return {0, -length}
+	end
+end
+
 function util.AngleToCardinal(angle, cardinal, start, segments)
 	start = start or 0
 	segments = segments or 4
