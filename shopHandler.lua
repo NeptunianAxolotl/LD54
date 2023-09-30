@@ -174,7 +174,7 @@ function api.DrawInterface()
 	love.graphics.setLineWidth(12)
 	love.graphics.rectangle("line", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000, 8, 8, 16)
 	
-	love.graphics.rectangle("line", 0, 0, 1920, 1080, 8, 8, 16)
+	--love.graphics.rectangle("line", 0, 0, 1920, 1080, 8, 8, 16)
 	
 	love.graphics.setColor(0, 0, 0, 1)
 	Font.SetSize(0)

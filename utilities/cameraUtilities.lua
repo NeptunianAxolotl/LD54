@@ -70,6 +70,10 @@ end
 
 local function UpdateTransform(cameraTransform, cameraX, cameraY, cameraScale)
 	local windowX, windowY = love.window.getMode()
+	
+	windowX = windowX * (1 - self.windowPadding.left - self.windowPadding.right)
+	windowY = windowY * (1 - self.windowPadding.top - self.windowPadding.bot)
+	
 	local boundLimit = math.min(windowX, windowY)
 	self.scaleMult = {boundLimit/windowX, boundLimit/windowY}
 	
@@ -97,8 +101,8 @@ local function Initialize(data)
 		cameraPos = data.initPos or {0, 0},
 		cameraVelocity = {0, 0},
 		posVelocity = {0, 0},
-		padding = {0, 0, 0, 0},
 		cameraScale = data.initScale or 1080,
+		windowPadding = data.windowPadding or {left = 0, right = 0, top = 0, bot = 0},
 		pinX = data.pinX,
 		pinY = data.pinY,
 		minScale = data.minScale,

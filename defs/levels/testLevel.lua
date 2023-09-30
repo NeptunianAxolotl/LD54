@@ -4,8 +4,8 @@ local level = {
 		town = 12,
 		farm = 8,
 	},
-	width = 10,
-	height = 10,
+	width = 12,
+	height = 12,
 }
 
 return level

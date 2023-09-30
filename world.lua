@@ -178,9 +178,9 @@ end
 local function UpdateCamera()
 	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(dt, 
 		{
-			{pos = TerrainHandler.GridToWorld({0, 0}), xOff = 50, yOff = 50},
-			{pos = TerrainHandler.GridToWorld({LevelHandler.Width(), 0}), xOff = 50, yOff = 50},
-			{pos = TerrainHandler.GridToWorld({0, LevelHandler.Height()}), xOff = 50, yOff = 50},
+			{pos = TerrainHandler.GridToWorld({1, 1}), xOff = 50, yOff = 50},
+			{pos = TerrainHandler.GridToWorld({LevelHandler.Width(), 1}), xOff = 50, yOff = 50},
+			{pos = TerrainHandler.GridToWorld({1, LevelHandler.Height()}), xOff = 50, yOff = 50},
 			{pos = TerrainHandler.GridToWorld({LevelHandler.Width(), LevelHandler.Height()}), xOff = 50, yOff = 50},
 		}
 		, 0, 0
@@ -282,7 +282,9 @@ function api.Initialize(cosmos, levelData)
 	GameHandler.Initialize(api)
 	
 	-- Note that the camera pins only function for these particular second entries.
-	Camera.Initialize()
+	Camera.Initialize({
+		windowPadding = {left = 0, right = Global.SHOP_WIDTH/Global.VIEW_WIDTH, top = 0, bot = 0},
+	})
 	UpdateCamera()
 end
 

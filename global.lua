@@ -18,7 +18,7 @@ local globals = {
 	INIT_LEVEL = "testLevel",
 	SHOP_SLOTS = 3,
 	
-	SHOP_WIDTH = 450,
+	SHOP_WIDTH = 350,
 	VIEW_WIDTH = 1920,
 	VIEW_HEIGHT = 1080,
 }
