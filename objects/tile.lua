@@ -44,7 +44,9 @@ local function NewTile(self, terrain)
 		IterableMap.Add(self.buildings, building)
 	end
 	
-	BuildingHandler.AddBuilding({self}, self.def.building, self.pos)
+	for i = 1, #self.def.spawnTilePositions do
+		BuildingHandler.AddBuilding({self}, self.def.building, util.Add(self.pos, self.def.spawnTilePositions[i]))
+	end
 	
 	if self.def.bonusOnEdges then
 		GenerateBonusBuildings(self)

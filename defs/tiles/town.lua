@@ -3,6 +3,7 @@ local data = {
 	building = "town",
 	inShop = true,
 	cannotPairWith = {"town"},
+	spawnTilePositions = {{0.15, -0.15}, {-0.15, 0.15}},
 	population = 1,
 	popType = "worker",
 	bonusOnEdges = true,

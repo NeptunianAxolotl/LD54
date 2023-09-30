@@ -3,6 +3,7 @@ local data = {
 	building = "farm",
 	inShop = true,
 	cannotPairWith = {"farm"},
+	spawnTilePositions = {{0, 0}},
 	bonusOnEdges = true,
 	
 	globalStockResource = "food",

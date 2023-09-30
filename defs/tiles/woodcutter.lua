@@ -3,6 +3,7 @@ local data = {
 	building = "woodcutter",
 	inShop = true,
 	cannotPairWith = {"woodcutter"},
+	spawnTilePositions = {{0, 0}},
 	population = 2,
 	popType = "wood",
 	bonusOnEdges = false,
