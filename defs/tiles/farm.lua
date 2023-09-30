@@ -1,3 +1,5 @@
+local TileUtils = require("utilities/tileUtils")
+
 local data = {
 	image = "farm",
 	building = "farm",
@@ -12,13 +14,14 @@ local data = {
 		return self.GetActive() and 2 or 0
 	end,
 	
-	needResource = "worker",
-	needResourceCount = 1,
-	workTime = 4,
-	idleTimeout = 7,
-	searchRadius = 4,
-	homeWaitTime = 1,
-	
+	needResource = {
+		worker = {
+			workTime = 4,
+			idleTimeout = 7,
+			searchRadius = 4,
+			homeWaitTime = 1,
+		},
+	},
 }
 
-return data
+return TileUtils.InitTileData(data)

@@ -16,7 +16,7 @@ local api = {}
 		return false
 	end
 	local distSq = util.DistSq(building.GetPos(), fromPos)
-	if not building.DistSqWithinWorkRange(distSq) then
+	if not building.DistSqWithinWorkRange(distSq, resource) then
 		return false
 	end
 	return distSq

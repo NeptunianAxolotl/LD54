@@ -12,7 +12,7 @@ local function InitializeDeck(deckFrequency)
 	for i = 1, #TileDefList do
 		local def = TileDefs[TileDefList[i]]
 		if def.inShop then
-			for j = 1, Global.DECK_SIZE_MULT * deckFrequency[TileDefList[i]] do
+			for j = 1, Global.DECK_SIZE_MULT * (deckFrequency[TileDefList[i]] or 0) do
 				validItems[#validItems + 1] = TileDefList[i]
 			end
 		end

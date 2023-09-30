@@ -1,3 +1,5 @@
+local TileUtils = require("utilities/tileUtils")
+
 local data = {
 	image = "house_single",
 	building = "town",
@@ -9,12 +11,14 @@ local data = {
 	bonusOnEdges = true,
 	drawWiggle = 0.25,
 	
-	needResource = "wood",
-	needResourceCount = 1,
-	workTime = 1,
-	idleTimeout = 0,
-	searchRadius = 6,
-	homeWaitTime = 1,
+	needResource = {
+		wood = {
+			workTime = 1,
+			idleTimeout = 0,
+			searchRadius = 6,
+			homeWaitTime = 1,
+		},
+	},
 	needDelayFunction = function (self, guy)
 		return guy.def.resourceAmount
 	end,
@@ -26,4 +30,4 @@ local data = {
 	end
 }
 
-return data
+return TileUtils.InitTileData(data)

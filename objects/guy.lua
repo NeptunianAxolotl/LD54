@@ -17,7 +17,7 @@ local function HandleAssignedBuilding(self, dt)
 	if not self.atBuilding then
 		local unit, dist = util.UnitTowards(self.pos, self.assignedBuilding.GetPos())
 		if dist < self.def.speed * dt then
-			self.atBuildingTimer = self.assignedBuilding.def.workTime
+			self.atBuildingTimer = self.assignedBuilding.def.needResource[self.def.resourceType].workTime
 			self.atBuilding = true
 			self.assignedBuilding.GuyReachedBuilding(self)
 		end
@@ -27,7 +27,7 @@ local function HandleAssignedBuilding(self, dt)
 	if self.atBuildingTimer then
 		self.atBuildingTimer = self.atBuildingTimer - dt
 		if self.atBuildingTimer < 0 then
-			self.lastBuildingHomeTimer = self.assignedBuilding.def.homeWaitTime
+			self.lastBuildingHomeTimer = self.assignedBuilding.def.needResource[self.def.resourceType].homeWaitTime
 			self.assignedBuilding.ReleaseGuyFromBuilding(self, true)
 			self.assignedBuilding = false
 			self.goHome = true
@@ -69,7 +69,7 @@ local function NewGuy(self, building)
 	end
 	
 	function self.IsAvailible()
-		if (self.def.activationUsesStockpile or 0) > self.homeBuilding.GetStockpile() then
+		if not self.homeBuilding.HasStockpileToActivateGuy(self.def.resourceType) then
 			return false
 		end
 		return self.idle
@@ -80,8 +80,8 @@ local function NewGuy(self, building)
 		if self.assignedBuilding then
 			self.assignedBuilding.ReleaseGuyFromBuilding(self)
 		end
-		if self.def.activationUsesStockpile then
-			self.homeBuilding.UseStockpile(self.def.activationUsesStockpile)
+		if self.homeBuilding.def.guyActivationResources then
+			self.homeBuilding.UseStockpileToActivateGuy()
 		end
 		self.assignedBuilding = building
 		self.atBuilding = false

@@ -3,24 +3,32 @@ local Font = require("include/font")
 
 local TileDefs = util.LoadDefDirectory("defs/tiles")
 
-local function LookForWorkersCheck(self)
-	while self.WantsWorkerOrResource(self.def.needResource) do
-		local closestGuy = GuyHandler.GetClosestIdleGuy(self.pos, self.def.searchRadius, self.def.needResource)
+local function LookForWorkersCheck(self, resource)
+	local resDef = self.def.needResource[resource]
+	while self.WantsWorkerOrResource(resource) do
+		local closestGuy = GuyHandler.GetClosestIdleGuy(self.pos, resDef.searchRadius, resource)
 		if closestGuy then
 			self.AssignGuyToBuilding(closestGuy)
 		else
 			break
 		end
 	end
-	if self.WantsWorkerOrResource(self.def.needResource) then
-		self.inactiveTimer = self.def.idleTimeout
+	if self.WantsWorkerOrResource(resource)  then
+		self.resourceState[resource].inactiveTimer = self.def.idleTimeout
 	end
 end
 
 local function InitWork(self)
-	self.pendingWorkers = IterableMap.New()
-	self.activeWorkers = IterableMap.New()
-	LookForWorkersCheck(self)
+	self.resourceState = {}
+	for i = 1, #self.def.needResourceList do
+		local resource = self.def.needResourceList[i]
+		self.resourceState[resource] = {}
+		self.resourceState[resource].stockpile = 0
+		
+		self.resourceState[resource].pendingWorkers = IterableMap.New()
+		self.resourceState[resource].activeWorkers = IterableMap.New()
+		LookForWorkersCheck(self, resource)
+	end
 end
 
 local function UpdateWork(self, dt)
@@ -34,14 +42,17 @@ local function NewBuilding(self, building)
 	
 	function self.AssignGuyToBuilding(guy)
 		guy.AssignToBuilding(self)
-		IterableMap.Add(self.pendingWorkers, guy.index, guy)
+		IterableMap.Add(self.resourceState[guy.def.resourceType].pendingWorkers, guy.index, guy)
 	end
 	
 	function self.ReleaseGuyFromBuilding(guy, finished)
-		IterableMap.Remove(self.activeWorkers, guy.index)
-		IterableMap.Remove(self.pendingWorkers, guy.index)
-		if finished and self.def.maximumStockpile then
-			self.stockpile = math.min(self.stockpile + self.def.stockpilePerJob, self.def.maximumStockpile)
+		local resState = self.resourceState[guy.def.resourceType]
+		local resDef = self.def.needResource[guy.def.resourceType]
+		
+		IterableMap.Remove(resState.activeWorkers, guy.index)
+		IterableMap.Remove(resState.pendingWorkers, guy.index)
+		if finished and resDef.maximumStockpile then
+			resState.stockpile = math.min((resState.stockpile or 0) + resDef.stockpilePerJob, resDef.maximumStockpile)
 			if self.guys then
 				for i = 1, #self.guys do
 					self.guys[i].RecheckIdleWorker()
@@ -50,56 +61,86 @@ local function NewBuilding(self, building)
 		end
 		
 		if self.def.needDelayFunction then
-			self.needDelay = self.def.needDelayFunction(self, guy)
+			resState.needDelay = self.def.needDelayFunction(self, guy)
 		end
-		if self.needDelay then
+		if resState.needDelay then
 			return
 		end
-		LookForWorkersCheck(self)
+		LookForWorkersCheck(self, guy.def.resourceType)
 	end
 	
 	function self.GuyReachedBuilding(guy)
-		IterableMap.Add(self.activeWorkers, guy.index, guy)
-		IterableMap.Remove(self.pendingWorkers, guy.index)
-		if not self.WantsWorkerOrResource(self.def.needResource) then
-			self.inactiveTimer = false
-			self.active = true
+		local resState = self.resourceState[guy.def.resourceType]
+		local resDef = self.def.needResource[guy.def.resourceType]
+		
+		IterableMap.Add(resState.activeWorkers, guy.index, guy)
+		IterableMap.Remove(resState.pendingWorkers, guy.index)
+		if not self.WantsWorkerOrResource(guy.def.resourceType) then
+			resState.inactiveTimer = false
+			resState.active = true
 		end
 	end
 	
 	function self.WantsWorkerOrResource(resource)
-		if not self.def.needResourceCount then
+		if not (self.def.needResource and self.def.needResource[resource]) then
 			return false
 		end
-		if self.def.needResource ~= resource then
+		local resState = self.resourceState[resource]
+		local resDef = self.def.needResource[resource]
+		if resDef.maximumStockpile and (resState.stockpile or 0) >= resDef.maximumStockpile then
 			return false
 		end
-		if self.def.maximumStockpile and self.stockpile >= self.def.maximumStockpile then
-			return false
-		end
-		if self.needDelay then
+		if resState.needDelay then
 			return
 		end
-		return self.def.needResourceCount > (IterableMap.Count(self.activeWorkers) + IterableMap.Count(self.pendingWorkers))
+		return (resDef.count or 1) > (IterableMap.Count(resState.activeWorkers) + IterableMap.Count(resState.pendingWorkers))
 	end
 	
-	function self.DistSqWithinWorkRange(distSq)
-		if not self.def.searchRadius then
+	function self.DistSqWithinWorkRange(distSq, resource)
+		local radius = self.def.needResource[resource].searchRadius
+		if not radius then
 			return true
 		end
-		return distSq <= self.def.searchRadius * self.def.searchRadius
+		return distSq <= radius * radius
 	end
 	
 	function self.GetActive()
-		return (not self.def.needResourceCount) or self.active
+		for i = 1, #self.def.needResourceList do
+			local resource = self.def.needResourceList[i]
+			if not self.resourceState[resource].active then
+				return false
+			end
+		end
+		return true
 	end
 	
-	function self.GetStockpile()
-		return self.stockpile or 0
+	function self.GetStockpile(resource)
+		if self.resourceState and self.resourceState[resource] then
+			return self.resourceState[resource].stockpile or 0
+		end
+		return 0
 	end
 	
-	function self.UseStockpile(toUse)
-		self.stockpile = self.stockpile - toUse
+	function self.HasStockpileToActivateGuy()
+		if not self.def.guyActivationResources then
+			return true
+		end
+		for i = 1, #self.def.needResourceList do
+			local resource = self.def.needResourceList[i]
+			if (self.resourceState[resource].stockpile or 0) < (self.def.guyActivationResources[resource] or 0) then
+				return false
+			end
+		end
+		return true
+	end
+	
+	function self.UseStockpileToActivateGuy()
+		for i = 1, #self.def.needResourceList do
+			local resource = self.def.needResourceList[i]
+			if self.def.guyActivationResources[resource] then
+				self.resourceState[resource].stockpile = self.resourceState[resource].stockpile - self.def.guyActivationResources[resource]
+			end
+		end
 	end
 	
 	function self.GetPos()
@@ -109,8 +150,9 @@ local function NewBuilding(self, building)
 	-- Init
 	
 	self.drawPos = TerrainHandler.GridToWorld(util.RandomPointInRectangle(self.pos, self.def.drawWiggle or 0.1, self.def.drawWiggle or 0.1))
-	if self.def.maximumStockpile then
-		self.stockpile = 0
+	
+	if self.def.needResource then
+		InitWork(self)
 	end
 	
 	if self.def.population then
@@ -120,25 +162,26 @@ local function NewBuilding(self, building)
 		end
 	end
 	
-	if self.def.needResourceCount then
-		InitWork(self)
-	end
 	
 	-- Updating
 	
 	function self.Update(dt)
-		if self.inactiveTimer then
-			self.inactiveTimer = self.inactiveTimer - dt
-			if self.inactiveTimer < 0 then
-				self.active = false
-				self.inactiveTimer = false
+		for i = 1, #self.def.needResourceList do
+			local resource = self.def.needResourceList[i]
+			local resState = self.resourceState[resource]
+			if resState.inactiveTimer then
+				resState.inactiveTimer = resState.inactiveTimer - dt
+				if resState.inactiveTimer < 0 then
+					resState.active = false
+					resState.inactiveTimer = false
+				end
 			end
-		end
-		if self.needDelay then
-			self.needDelay = self.needDelay - dt
-			if self.needDelay < 0 then
-				LookForWorkersCheck(self)
-				self.needDelay = false
+			if resState.needDelay then
+				resState.needDelay = resState.needDelay - dt
+				if resState.needDelay < 0 then
+					LookForWorkersCheck(self, resource)
+					resState.needDelay = false
+				end
 			end
 		end
 		if self.def.updateFunc then
