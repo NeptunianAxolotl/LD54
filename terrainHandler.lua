@@ -32,7 +32,6 @@ function api.CheckOutRangedTilesForDestruction(destroyType)
 	GuyHandler.DeleteAllFlaggedBuildings()
 	BuildingHandler.DeleteAllFlaggedBuildings()
 end
-
 function api.AddDomino(domino, pos)	for i = 1, 2 do		api.AddTile(domino[i], pos[i])	endend
 
 function api.SetTerrainType(terrain, pos)

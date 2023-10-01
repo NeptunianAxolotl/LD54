@@ -5,7 +5,7 @@ local data = {
 	upgradeImage = "farm_adv",
 	building = "farm",
 	inShop = true,
-	cannotPairWith = {"farm"},
+	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	canBuildOn = {"grass"},
 	

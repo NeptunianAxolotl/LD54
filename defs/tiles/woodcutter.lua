@@ -4,7 +4,7 @@ local data = {
 	image = "woodcutter",
 	building = "woodcutter",
 	inShop = true,
-	cannotPairWith = {"sawmill", "woodcutter"},
+	cannotPairWith = {"sawmill"},
 	spawnTilePositions = {{0, 0}},
 	
 	canBuildOn = {"grass", "desert"},
@@ -20,12 +20,12 @@ local data = {
 	
 	needResource = {
 		worker = {
-			workTime = 4,
-			idleTimeout = 2,
-			searchRadius = 4,
+			workTime = 6,
+			idleTimeout = 1,
+			searchRadius = 5,
 			homeWaitTime = 1,
 			maximumStockpile = 4,
-			stockpilePerJob = 1,
+			stockpilePerJob = 2,
 		},
 	},
 }

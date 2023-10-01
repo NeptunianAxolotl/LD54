@@ -233,7 +233,7 @@ function api.DrawInterface()
 			self.hoveredItem = i
 		end
 		
-		love.graphics.setColor(Global.BACK_COL[1], Global.BACK_COL[2], Global.BACK_COL[3], 1)
+		love.graphics.setColor(Global.TILE_COL[1], Global.TILE_COL[2], Global.TILE_COL[3], 1)
 		love.graphics.setLineWidth(4)
 		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
 		

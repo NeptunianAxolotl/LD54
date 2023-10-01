@@ -4,7 +4,7 @@ local data = {
 	image = "house_single",
 	building = "town",
 	inShop = true,
-	cannotPairWith = {"town"},
+	cannotPairWith = {},
 	spawnTilePositions = {{0.15, -0.15}, {-0.15, 0.15}},
 	
 	canBuildOn = {"grass", "desert"},
@@ -25,7 +25,7 @@ local data = {
 	},
 	residentSpeedFunc = function (self, guy)
 		if self.GetActive() then
-			return 1.5
+			return 1.666
 		end
 		return 1
 	end
