@@ -4,6 +4,9 @@ local self = {}
 
 local function DrawCard(deck)
 	if not deck.cards[deck.drawIndex] then
+		if deck.ModifyDeckOnShuffleFunc then
+			deck.cards = deck.ModifyDeckOnShuffleFunc(deck.cards)
+		end
 		util.Permute(deck.cards)
 		deck.drawIndex = 1
 	end
@@ -32,10 +35,11 @@ function api.GetNextDraw(deck, drawCount, toAvoid)
 	return toDraw
 end
 
-function api.GetDeck(newCards, shuffled)
+function api.GetDeck(newCards, shuffled, ModifyDeckOnShuffleFunc)
 	local newDeck = {
 		cards = util.CopyTable(newCards),
 		drawIndex = 1,
+		ModifyDeckOnShuffleFunc = ModifyDeckOnShuffleFunc,
 	}
 	if shuffled then
 		util.Permute(newDeck.cards)

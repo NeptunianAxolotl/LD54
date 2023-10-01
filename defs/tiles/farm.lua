@@ -9,8 +9,8 @@ local data = {
 	bonusOnEdges = true,
 	drawWiggle = 0,
 	
-	globalStockResource = "food",
-	globalStockResourceFunc = function (self)
+	globalResourceType = "food",
+	globalResourceTypeFunc = function (self)
 		return self.GetActive() and 2 or 0
 	end,
 	

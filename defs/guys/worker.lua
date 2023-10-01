@@ -3,8 +3,8 @@ local data = {
 	speed = 0.8,
 	resourceType = "worker",
 	
-	globalStockResource = "hunger",
-	globalStockResourceFunc = function (self)
+	globalResourceType = "hunger",
+	globalResourceTypeFunc = function (self)
 		return 1
 	end,
 }

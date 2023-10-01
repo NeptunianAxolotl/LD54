@@ -23,10 +23,10 @@ local api = {}
 end
 
 local function CountResourceType(self, resource)
-	if self.def.globalStockResource ~= resource then
+	if self.def.globalResourceType ~= resource then
 		return false
 	end
-	return self.def.globalStockResourceFunc(self)
+	return self.def.globalResourceTypeFunc(self)
 end
 
 function api.CountResourceType(resource)

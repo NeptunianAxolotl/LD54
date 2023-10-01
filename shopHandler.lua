@@ -7,6 +7,10 @@ local api = {}
 local self = {}
 
 local function InitializeDeck(deckFrequency)
+	local function ModifyDeckOnShuffleFunc(deckCards)
+		return util.CopyTable(deckFrequency)
+	end
+	
 	local deck = {}
 	local validItems = {}
 	for i = 1, #TileDefList do
@@ -17,12 +21,12 @@ local function InitializeDeck(deckFrequency)
 			end
 		end
 	end
-	return DeckHandler.GetDeck(validItems, true)
+	return DeckHandler.GetDeck(validItems, true, ModifyDeckOnShuffleFunc)
 end
 
 local function GenerateDomino()
-	local first = DeckHandler.GetNextDraw(self.deck, 1)[1]
-	local second = DeckHandler.GetNextDraw(self.deck, 1, util.ToMask(TileDefs[first].cannotPairWith or {}))[1]
+	local first = DeckHandler.GetNextDraw(self.decks[1], 1)[1]
+	local second = DeckHandler.GetNextDraw(self.decks[2], 1)[1]
 	return {first, second}
 end
 
@@ -197,28 +201,27 @@ function api.DrawInterface()
 	if LevelHandler.InEditMode() then
 		return
 	end
-	love.graphics.printf("Shop", shopItemsX - 200, shopItemsY + 30, 400, "center")
 	
 	local food = BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger")
 	Font.SetSize(1)
 	love.graphics.printf("Food " .. food, 20, 20, 400, "left")
 	love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
 	
+	love.graphics.printf("Shop", shopItemsX - 200, shopItemsY, 400, "center")
 	
-	local shopItemsSpacing = 240
 	for i = 1, Global.SHOP_SLOTS do
-		local y = shopItemsY + shopItemsSpacing * i
-		if util.PosInRectangle(mousePos, shopItemsX - Global.GRID_SIZE, y, Global.GRID_SIZE * 2, Global.GRID_SIZE) then
+		local y = shopItemsY + Global.SHOP_SPACING * i
+		if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE) then
 			self.hoveredItem = i
 		end
 		
 		love.graphics.setColor(Global.BACK_COL[1], Global.BACK_COL[2], Global.BACK_COL[3], 1)
 		love.graphics.setLineWidth(4)
-		love.graphics.rectangle("fill", shopItemsX - Global.GRID_SIZE, y, Global.GRID_SIZE * 2, Global.GRID_SIZE, 8, 8, 16)
+		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
 		
 		for j = 1, 2 do
 			if self.items[i] then
-				Resources.DrawImage(TileDefs[self.items[i][j]].image, shopItemsX + (j*2 - 3)*Global.GRID_SIZE/2, y + Global.GRID_SIZE*0.5, 0, 1, 1)
+				Resources.DrawImage(TileDefs[self.items[i][j]].image, shopItemsX + (j*2 - 3)*Global.SHOP_SIZE/2, y + Global.SHOP_SIZE*0.5, 0, 1, Global.SHOP_IMAGE_SCALE)
 			end
 		end
 		
@@ -228,12 +231,12 @@ function api.DrawInterface()
 			love.graphics.setColor(0, 0, 0, 0.8)
 		end
 		love.graphics.setLineWidth(8)
-		love.graphics.rectangle("line", shopItemsX - Global.GRID_SIZE, y, Global.GRID_SIZE * 2, Global.GRID_SIZE, 8, 8, 16)
+		love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
 	end
 	
 	
-	local y = shopItemsY + shopItemsSpacing * (Global.SHOP_SLOTS + 1.1)
-	if util.PosInRectangle(mousePos, shopItemsX - Global.GRID_SIZE - buttonExtra, y - Global.GRID_SIZE, Global.GRID_SIZE * 2 + buttonExtra*2, Global.GRID_SIZE) then
+	local y = shopItemsY + Global.VIEW_HEIGHT - Global.SHOP_SPACING - Global.SHOP_SIZE
+	if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE) then
 		self.hoveredItem = Global.SHOP_SLOTS + 1
 	end
 	if self.shopBlockedTimer then
@@ -242,12 +245,12 @@ function api.DrawInterface()
 		love.graphics.setColor(0.5, 0.7, 0.8, 1)
 	end
 	love.graphics.setLineWidth(4)
-	love.graphics.rectangle("fill", shopItemsX - Global.GRID_SIZE - buttonExtra, y - Global.GRID_SIZE, Global.GRID_SIZE * 2 + buttonExtra*2, Global.GRID_SIZE, 8, 8, 16)
+	love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 16)
 	
 	if self.shopBlockedTimer then
 		local prop = self.shopBlockedTimer / Global.REFRESH_TIMER
 		love.graphics.setColor(0.5, 0.5, 0.5, 1)
-		love.graphics.rectangle("fill", shopItemsX - Global.GRID_SIZE - buttonExtra, y - Global.GRID_SIZE, prop * (Global.GRID_SIZE * 2 + buttonExtra*2), Global.GRID_SIZE, 8, 8, 16)
+		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, prop * (Global.SHOP_SIZE * 2 + buttonExtra*2), Global.SHOP_SIZE, 8, 8, 16)
 	end
 	
 	if self.hoveredItem == Global.SHOP_SLOTS + 1 and not self.shopBlockedTimer then
@@ -256,11 +259,11 @@ function api.DrawInterface()
 		love.graphics.setColor(0, 0, 0, 0.8)
 	end
 	love.graphics.setLineWidth(8)
-	love.graphics.rectangle("line", shopItemsX - Global.GRID_SIZE - buttonExtra, y - Global.GRID_SIZE, Global.GRID_SIZE * 2 + buttonExtra*2, Global.GRID_SIZE, 8, 8, 16)
+	love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 16)
 		
 	Font.SetSize(1)
 	love.graphics.setColor(0, 0, 0, 0.8)
-	love.graphics.printf("Refresh", shopItemsX - Global.GRID_SIZE - 20, y - Global.GRID_SIZE + 14, Global.GRID_SIZE * 2 + 35, "center")
+	love.graphics.printf("Refresh", shopItemsX - Global.SHOP_SIZE - 20, y - Global.SHOP_SIZE + 14, Global.SHOP_SIZE * 2 + 35, "center")
 	
 	local drawHeld = (
 		self.heldTile and (
@@ -281,7 +284,10 @@ function api.Initialize(world)
 	self = {
 		world = world,
 		items = {},
-		deck = InitializeDeck(LevelHandler.GetLevelData().tileDeck),
+		decks = {
+			InitializeDeck(LevelHandler.GetLevelData().tileDeck[1]),
+			InitializeDeck(LevelHandler.GetLevelData().tileDeck[2]),
+		},
 		resources = {
 			plank = 0,
 		},
