@@ -198,7 +198,7 @@ function api.DrawInterface()
 	--love.graphics.rectangle("line", 0, 0, 1920, 1080, 8, 8, 16)
 	
 	love.graphics.setColor(0, 0, 0, 1)
-	Font.SetSize(0)
+	Font.SetSize(1)
 	love.graphics.printf(LevelHandler.GetLevelData().humanName, shopItemsX - Global.SHOP_WIDTH*0.45, shopItemsY - 140, Global.SHOP_WIDTH*0.9, "center")
 	
 	--if LevelHandler.GetOrderMult() > 1 then
@@ -225,7 +225,7 @@ function api.DrawInterface()
 	
 	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
 	
-	love.graphics.printf("Shop", shopItemsX - 200, shopItemsY, 400, "center")
+	--love.graphics.printf("Selection", shopItemsX - 200, shopItemsY + 20, 400, "center")
 	
 	for i = 1, Global.SHOP_SLOTS do
 		local y = shopItemsY + Global.SHOP_SPACING * i
@@ -250,6 +250,20 @@ function api.DrawInterface()
 		end
 		love.graphics.setLineWidth(8)
 		love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
+	end
+	
+	local drawHeld = (
+		self.heldTile and (
+			api.MouseIsOverInterface()
+			or
+			not TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
+		)
+	)
+	if drawHeld then
+		for i = 1, 2 do
+			local pos = util.Add(mousePos, TerrainHandler.ToIsometricBasis(util.CardinalToVector(self.tileRotation, (i - 1) * Global.GRID_SIZE*0.4)))
+			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 0.5)
+		end
 	end
 	
 	if not Global.CAN_REFRESH then
@@ -286,19 +300,6 @@ function api.DrawInterface()
 	love.graphics.setColor(0, 0, 0, 0.8)
 	love.graphics.printf("Refresh", shopItemsX - Global.SHOP_SIZE - 20, y - Global.SHOP_SIZE + 14, Global.SHOP_SIZE * 2 + 35, "center")
 	
-	local drawHeld = (
-		self.heldTile and (
-			api.MouseIsOverInterface()
-			or
-			not TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
-		)
-	)
-	if drawHeld then
-		for i = 1, 2 do
-			local pos = util.Add(mousePos, TerrainHandler.ToIsometricBasis(util.CardinalToVector(self.tileRotation, (i - 1) * Global.GRID_SIZE*0.4)))
-			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 0.5)
-		end
-	end
 end
 
 function api.Initialize(world)

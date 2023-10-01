@@ -1,6 +1,7 @@
 
 local globals = {
-	BACK_COL = {130/255, 162/255, 58/255},
+	BACK_COL = {10/255, 84/255, 156/255},
+	BACK_COL_EDITOR = {1.2*10/255, 1.2*84/255, 1.2*156/255},
 	PANEL_COL = {0.53, 0.53, 0.55},
 	
 	GREY = {0.5, 0.5, 0.5},
@@ -26,12 +27,12 @@ local globals = {
 	WAVE_PERIOD = 0.5,
 	
 	STARVE_GROW_RATE = 0.12,
-	STARVE_SHRINK_RATE = 0.08,
+	STARVE_SHRINK_RATE = 0.18,
 	
 	INVASION_RANGE = 7,
 	
 	DECK_SIZE_MULT = 1,
-	INIT_LEVEL = "testLevel",
+	INIT_LEVEL = "playableLevel",
 	SHOP_SLOTS = 4,
 	CAN_REFRESH = false,
 	

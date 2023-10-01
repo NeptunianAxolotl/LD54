@@ -22,10 +22,11 @@ local data = {
 	
 	needResource = {
 		worker = {
-			workTime = 4,
-			idleTimeout = 7,
+			workTime = 8,
+			idleTimeout = 6,
 			searchRadius = 4,
 			homeWaitTime = 1,
+			needDelay = 1,
 		},
 	},
 }

@@ -25,13 +25,14 @@ local data = {
 			searchRadius = 4,
 			homeWaitTime = 1,
 			dependOnActivation = "plank",
+			needDelay = 2,
 		},
 		plank = {
 			workTime = 1,
 			idleTimeout = 0,
 			searchRadius = 6,
 			homeWaitTime = 1,
-			needDelay = 35,
+			needDelay = 40,
 		},
 	},
 }

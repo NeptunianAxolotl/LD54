@@ -180,18 +180,18 @@ local function DoInvasionWave(dt)
 end
 function api.Update(dt)	IterableMap.ApplySelf(self.tileList, "Update", dt)
 	HoverOverTile()
-	DoInvasionWave(dt)endfunction api.GetValidGridPlacement(gridPos, rotation, domino)	local secondPos = util.Add(gridPos, util.CardinalToVector(rotation))	if not (api.IsTileEmpty(gridPos) and api.IsTileEmpty(secondPos)) then		return false	end
+	DoInvasionWave(dt)endfunction api.GetValidGridPlacement(gridPos, rotation, domino)	local secondPos = util.Add(gridPos, util.CardinalToVector(rotation))
 	local defFirst = TileDefs[domino[1]]
 	local defSecond = TileDefs[domino[2]]	return {
 		{
 			pos = gridPos,
-			valid = api.TerrainMatches(
+			valid = api.IsTileEmpty(gridPos) and api.TerrainMatches(
 				gridPos, defFirst.canBuildOn_map, defFirst.mustBuildNear_map,
 				defFirst.needBuildingNearby),
 		},
 		{
 			pos = secondPos,
-			valid = api.TerrainMatches(
+			valid = api.IsTileEmpty(secondPos) and api.TerrainMatches(
 				secondPos, defSecond.canBuildOn_map, defSecond.mustBuildNear_map,
 				defSecond.needBuildingNearby),
 		}
@@ -219,22 +219,26 @@ function api.InitializeActive()
 end
 local function SetupLevel()
 	local level = LevelHandler.GetLevelData()
-	for x = 1, LevelHandler.Width() do
-		for y = LevelHandler.Height(), 1, -1 do
-			if level.terrain[x] and level.terrain[x][y] then
-				api.SetTerrainType(level.terrain[x][y], {x, y})
+	if level.terrain then
+		for x = 1, LevelHandler.Width() do
+			for y = LevelHandler.Height(), 1, -1 do
+				if level.terrain[x] and level.terrain[x][y] then
+					api.SetTerrainType(level.terrain[x][y], {x, y})
+				end
 			end
 		end
 	end
 	
-	self.invasionMask = util.CopyTable(level.invasionMask, true)
+	self.invasionMask = util.CopyTable(level.invasionMask or {}, true)
 	
-	self.initTilesActive = true
-	for i = 1, #level.tiles do
-		local tile = level.tiles[i]
-		api.AddTile(tile.def, tile.pos, tile.extraData)
+	if level.tiles then
+		self.initTilesActive = true
+		for i = 1, #level.tiles do
+			local tile = level.tiles[i]
+			api.AddTile(tile.def, tile.pos, tile.extraData)
+		end
+		self.initTilesActive = false
 	end
-	self.initTilesActive = false
 end
 
 function api.GetSaveData()
@@ -277,19 +281,21 @@ end
 		end
 	end})
 	
-	--drawQueue:push({y=-70; f=function()
-	--	for x = 1, LevelHandler.Width() do
-	--		for y = LevelHandler.Height(), 1, -1 do
-	--			love.graphics.setColor(0, 0, 0, 0.2)
-	--			love.graphics.setLineWidth(2)
-	--			local corner   = api.GridToWorld({x, y}, true)
-	--			local right    = api.GridToWorld({x + 1, y}, true)
-	--			local rightBot = api.GridToWorld({x + 1, y + 1}, true)
-	--			local bot      = api.GridToWorld({x, y + 1}, true)
-	--			love.graphics.line(corner[1], corner[2], right[1], right[2], rightBot[1], rightBot[2], bot[1], bot[2], corner[1], corner[2])
-	--		end
-	--	end
-	--end})end
+	if MapEditor.InEditMode() then
+		drawQueue:push({y=-70; f=function()
+			for x = 1, LevelHandler.Width() do
+				for y = LevelHandler.Height(), 1, -1 do
+					love.graphics.setColor(0, 0, 0, 0.2)
+					love.graphics.setLineWidth(2)
+					local corner   = api.GridToWorld({x, y}, true)
+					local right    = api.GridToWorld({x + 1, y}, true)
+					local rightBot = api.GridToWorld({x + 1, y + 1}, true)
+					local bot      = api.GridToWorld({x, y + 1}, true)
+					love.graphics.line(corner[1], corner[2], right[1], right[2], rightBot[1], rightBot[2], bot[1], bot[2], corner[1], corner[2])
+				end
+			end
+		end})
+	endend
 
 function api.Initialize(world)
 	self = {		tileList = IterableMap.New(),		tilePos = {},

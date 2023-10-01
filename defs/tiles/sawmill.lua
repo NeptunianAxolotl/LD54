@@ -20,8 +20,8 @@ local data = {
 	
 	needResource = {
 		worker = {
-			workTime = 6,
-			idleTimeout = 4,
+			workTime = 4,
+			idleTimeout = 2,
 			searchRadius = 4,
 			homeWaitTime = 1,
 			maximumStockpile = 3,

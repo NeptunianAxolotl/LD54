@@ -9,6 +9,12 @@ end
 function api.KeyPressed(key, scancode, isRepeat)
 	if key == "e" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		self.editorMode = not self.editorMode
+		
+		if self.editorMode then
+			love.graphics.setBackgroundColor(Global.BACK_COL_EDITOR[1], Global.BACK_COL_EDITOR[2], Global.BACK_COL_EDITOR[3], 1)
+		else
+			love.graphics.setBackgroundColor(Global.BACK_COL[1], Global.BACK_COL[2], Global.BACK_COL[3], 1)
+		end
 		return true
 	end
 	if key == "s" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
@@ -39,34 +45,53 @@ function api.KeyPressed(key, scancode, isRepeat)
 	elseif key == "q" then
 		self.brushMode = "coast1"
 		self.brushType = "doodad"
-	elseif key == "w" then
+	elseif key == "e" then
 		self.brushMode = "coast2"
 		self.brushType = "doodad"
-	elseif key == "a" then
-		self.brushMode = "town"
-		self.brushType = "tile"
-	elseif key == "s" then
+	elseif key == "z" then
 		self.brushMode = "farm"
 		self.brushType = "tile"
-	elseif key == "d" then
-		self.brushMode = "mill"
+	elseif key == "x" then
+		self.brushMode = "town"
 		self.brushType = "tile"
 	elseif key == "f" then
 		self.brushMode = "invasion"
 		self.brushType = "tile"
-		self.brushData = {armySize = 6, invasionIndex = 1}
+		self.brushData = {armySize = 3, invasionIndex = 1}
 	elseif key == "g" then
 		self.brushMode = "invasion"
 		self.brushType = "tile"
-		self.brushData = {armySize = 15, invasionIndex = 2}
+		self.brushData = {armySize = 10, invasionIndex = 2}
 	elseif key == "v" then
 		self.brushMode = 1
-		self.brushType = "invasion"
+		self.brushType = "invadeArea"
 	elseif key == "b" then
 		self.brushMode = 2
-		self.brushType = "invasion"
+		self.brushType = "invadeArea"
 	end
 	return true
+end
+
+local function DoDragClick(button)
+	if button == 1 then
+		if self.brushMode and self.brushType == "terrain" then
+			TerrainHandler.SetTerrainType(self.brushMode, TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
+		elseif self.brushMode and self.brushType == "invadeArea" then
+			TerrainHandler.AddInvasion(self.brushMode, TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
+		end
+		if self.attachedDooddad then
+			self.attachedDooddad.UpdateWorldPos(TerrainHandler.WorldToContinuousGrid(self.world.GetMousePosition()))
+		end
+	elseif button == 2 then
+		self.attachedDooddad = false
+		if self.brushType == "doodad" then
+			DoodadHandler.RemoveDoodads(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
+		elseif self.brushType == "tile" then
+			TerrainHandler.RemoveTile(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
+		elseif self.brushType == "invadeArea" then
+			TerrainHandler.RemoveInvasion(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
+		end
+	end
 end
 
 function api.MousePressed(x, y, button)
@@ -88,10 +113,11 @@ function api.MousePressed(x, y, button)
 			DoodadHandler.RemoveDoodads(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
 		elseif self.brushType == "tile" then
 			TerrainHandler.RemoveTile(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
-		elseif self.brushType == "invasion" then
+		elseif self.brushType == "invadeArea" then
 			TerrainHandler.RemoveInvasion(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
 		end
 	end
+	DoDragClick(button)
 	return true
 end
 
@@ -107,24 +133,10 @@ function api.MouseMoved(x, y, dx, dy)
 		return false
 	end
 	if love.mouse.isDown(1) then
-		if self.brushMode and self.brushType == "terrain" then
-			TerrainHandler.SetTerrainType(self.brushMode, TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
-		elseif self.brushMode and self.brushType == "invasion" then
-			TerrainHandler.AddInvasion(self.brushMode, TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
-		end
-		if self.attachedDooddad then
-			self.attachedDooddad.UpdateWorldPos(TerrainHandler.WorldToContinuousGrid(self.world.GetMousePosition()))
-		end
+		DoDragClick(1)
 	end
 	if love.mouse.isDown(2) then
-		self.attachedDooddad = false
-		if self.brushType == "doodad" then
-			DoodadHandler.RemoveDoodads(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
-		elseif self.brushType == "tile" then
-			TerrainHandler.RemoveTile(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
-		elseif self.brushType == "invasion" then
-			TerrainHandler.RemoveInvasion(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
-		end
+		DoDragClick(2)
 	end
 end
 
@@ -140,6 +152,11 @@ function api.DrawInterface()
 	love.graphics.printf([[
 - Numbers 1-5:
      Place terrain
+
+- Ctrl+S: Save
+- ER: Doodads
+- FV/GB: Invasions
+- ZX: Buildings
 
 ]], shopItemsX - Global.SHOP_WIDTH*0.42, shopItemsY, Global.SHOP_WIDTH*1.22, "left")
 end
