@@ -6,6 +6,9 @@ local data = {
 	inShop = true,
 	cannotPairWith = {"town"},
 	spawnTilePositions = {{0.15, -0.15}, {-0.15, 0.15}},
+	
+	canBuildOn = {"grass", "desert"},
+	
 	population = 1,
 	popType = "worker",
 	bonusOnEdges = true,

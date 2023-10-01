@@ -22,7 +22,7 @@ end
 function api.GetNextDraw(deck, drawCount, toAvoid)
 	drawCount = drawCount or 1
 	local toDraw = {}
-	local drawnType = toAvoid or {}
+	local drawnType = (toAvoid and util.CopyTable(toAvoid)) or {}
 	local tries = 200
 	while #toDraw < drawCount and tries > 0 do
 		local card = DrawCard(deck)

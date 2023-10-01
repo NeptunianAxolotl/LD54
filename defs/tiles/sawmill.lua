@@ -7,6 +7,8 @@ local data = {
 	cannotPairWith = {"sawmill", "woodcutter"},
 	spawnTilePositions = {{0, 0}},
 	
+	canBuildOn = {"grass", "desert"},
+	
 	population = 2,
 	popType = "plank",
 	bonusOnEdges = false,

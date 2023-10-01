@@ -6,6 +6,8 @@ local data = {
 	inShop = true,
 	cannotPairWith = {"farm"},
 	spawnTilePositions = {{0, 0}},
+	canBuildOn = {"grass"},
+	
 	bonusOnEdges = true,
 	drawWiggle = 0,
 	

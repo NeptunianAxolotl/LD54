@@ -7,13 +7,14 @@ local function BecomeIdleWorkCheck(self)
 	local building = BuildingHandler.GetClosestFreeBuilding(self.homeBuilding.pos, self.def.resourceType)
 	if building then
 		building.AssignGuyToBuilding(self)
-	elseif self.def.globalStockWhenIdle and self.IsAvailible() then
-		if self.homeBuilding.def.guyActivationResources then
-			self.homeBuilding.UseStockpileToActivateGuy()
-		end
-		self.idle = false
-		ShopHandler.AddResource(self.def.globalStockWhenIdle, self.def.globalStockResourceCount)
-		self.atHomeTimer = self.def.globalStockIdleTime
+	--elseif self.def.globalStockWhenIdle and self.IsAvailible() then
+	--	-- Global stock seems like a bad idea?
+	--	if self.homeBuilding.def.guyActivationResources then
+	--		self.homeBuilding.UseStockpileToActivateGuy()
+	--	end
+	--	self.idle = false
+	--	ShopHandler.AddResource(self.def.globalStockWhenIdle, self.def.globalStockResourceCount)
+	--	self.atHomeTimer = self.def.globalStockIdleTime
 	end
 end
 

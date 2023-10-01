@@ -5,9 +5,9 @@ local data = {
 	hideWhenInactive = true,
 	resourceAmount = 28,
 	
-	globalStockWhenIdle = "plank",
-	globalStockResourceCount = 1,
-	globalStockIdleTime = 2,
+	--globalStockWhenIdle = "plank",
+	--globalStockResourceCount = 1,
+	--globalStockIdleTime = 2,
 }
 
 return data

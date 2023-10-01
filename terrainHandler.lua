@@ -1,6 +1,7 @@
 
 local Font = require("include/font")
-local TileDefs = util.LoadDefDirectory("defs/tiles")local NewTile = require("objects/tile")
+local TileDefs = util.LoadDefDirectory("defs/tiles")
+local TerrainDefs = util.LoadDefDirectory("defs/terrain")local NewTile = require("objects/tile")
 local self = {}
 local api = {}
 function api.AddTile(tileName, pos)	local x, y = pos[1], pos[2]	local tileData = {		def = TileDefs[tileName],		pos = pos,	}	self.tilePos[x] = self.tilePos[x] or {}	self.tilePos[x][y] = IterableMap.Add(self.tileList, NewTile(tileData, api))endfunction api.AddDomino(domino, pos)	for i = 1, 2 do		api.AddTile(domino[i], pos[i])	endendfunction api.IsTileEmpty(gridPos)	if gridPos[1] < 1 or gridPos[2] < 1 then		return false	end	if gridPos[1] > LevelHandler.Width() or gridPos[2] > LevelHandler.Height() then		return false	end	return not (self.tilePos[gridPos[1]] and self.tilePos[gridPos[1]][gridPos[2]])end

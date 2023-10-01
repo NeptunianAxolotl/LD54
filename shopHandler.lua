@@ -7,9 +7,6 @@ local api = {}
 local self = {}
 
 local function InitializeDeck(deckFrequency)
-	local function ModifyDeckOnShuffleFunc(deckCards)
-		return util.CopyTable(deckFrequency)
-	end
 	
 	local deck = {}
 	local validItems = {}
@@ -21,12 +18,15 @@ local function InitializeDeck(deckFrequency)
 			end
 		end
 	end
+	local function ModifyDeckOnShuffleFunc(deckCards)
+		return util.CopyTable(validItems)
+	end
 	return DeckHandler.GetDeck(validItems, true, ModifyDeckOnShuffleFunc)
 end
 
 local function GenerateDomino()
 	local first = DeckHandler.GetNextDraw(self.decks[1], 1)[1]
-	local second = DeckHandler.GetNextDraw(self.decks[2], 1)[1]
+	local second = DeckHandler.GetNextDraw(self.decks[2], 1, TileDefs[first].cannotPairWith_map)[1]
 	return {first, second}
 end
 
@@ -205,7 +205,7 @@ function api.DrawInterface()
 	local food = BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger")
 	Font.SetSize(1)
 	love.graphics.printf("Food " .. food, 20, 20, 400, "left")
-	love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
+	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
 	
 	love.graphics.printf("Shop", shopItemsX - 200, shopItemsY, 400, "center")
 	
