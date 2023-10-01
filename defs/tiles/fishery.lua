@@ -17,13 +17,13 @@ local data = {
 	
 	collectableResourceType = "food",
 	collectableResourceTypeFunc = function (self)
-		return (self.GetActive() and 3) or 0
+		return (self.GetActive() and 4) or 0
 	end,
 	
 	needResource = {
 		worker = {
-			workTime = 2,
-			idleTimeout = 2,
+			workTime = 3,
+			idleTimeout = 5,
 			searchRadius = 4,
 			homeWaitTime = 1,
 			needDelay = 5,

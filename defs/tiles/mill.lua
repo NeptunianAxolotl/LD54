@@ -17,10 +17,10 @@ local data = {
 	needResource = {
 		plank = {
 			workTime = 1,
-			idleTimeout = 0,
+			idleTimeout = 10,
 			searchRadius = 6,
 			homeWaitTime = 1,
-			needDelay = 25,
+			needDelay = 20,
 		},
 	},
 }

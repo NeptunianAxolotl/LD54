@@ -25,7 +25,7 @@ local data = {
 			searchRadius = 4,
 			homeWaitTime = 1,
 			maximumStockpile = 3,
-			stockpilePerJob = 1,
+			stockpilePerJob = 2,
 			jobActivationResources = {
 				wood = 1,
 			},

@@ -25,7 +25,7 @@ local data = {
 			searchRadius = 5,
 			homeWaitTime = 1,
 			maximumStockpile = 4,
-			stockpilePerJob = 2,
+			stockpilePerJob = 1,
 		},
 	},
 }

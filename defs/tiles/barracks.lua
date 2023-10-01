@@ -20,7 +20,7 @@ local data = {
 	
 	needResource = {
 		worker = {
-			workTime = 12,
+			workTime = 10,
 			idleTimeout = 4,
 			searchRadius = 4,
 			homeWaitTime = 1,
@@ -32,7 +32,7 @@ local data = {
 			idleTimeout = 0,
 			searchRadius = 6,
 			homeWaitTime = 1,
-			needDelay = 40,
+			needDelay = 30,
 		},
 	},
 }
