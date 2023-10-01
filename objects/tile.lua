@@ -15,7 +15,7 @@ local function CheckAddBonus(self, direction, extraParents)
 				end
 			end
 		end
-		BuildingHandler.AddBuilding(parents, self.def.building, util.Add(self.pos, util.Mult(0.5, direction)))
+		BuildingHandler.AddBuilding(parents, self.def.bonusBuilding or self.def.building, util.Add(self.pos, util.Mult(0.5, direction)))
 		return true
 	end
 	return false

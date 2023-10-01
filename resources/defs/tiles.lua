@@ -5,6 +5,7 @@ local data = {}
 local altScale = {
 	fishery = 0.5,
 	woodcutter = 0.5,
+	woodblock = 0.38,
 }
 
 for i = 1, #names do

@@ -93,6 +93,14 @@ local function ClosestType(building, fromPos, buildingType)
 	return distSq
 end
 
+function api.GetNearestBuilding(pos, buildingType)
+	local closest, minDistSq = IterableMap.GetMinimum(self.buildingList, ClosestType, pos, buildingType)
+	if not closest then
+		return false
+	end
+	return closest, math.sqrt(minDistSq)
+end
+
 function api.IsBuildingNear(pos, buildingType, nearDist)
 	local x, y = pos[1], pos[2]
 	self.buildingDistanceCache[buildingType] = self.buildingDistanceCache[buildingType] or {}

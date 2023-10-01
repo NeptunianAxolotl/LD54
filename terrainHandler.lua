@@ -85,37 +85,6 @@ end
 
 function api.GetTerrainAt(x, y)
 	return (self.terrainType[x] and self.terrainType[x][y])
-end
-function api.TerrainMatches(pos, buildOn, buildNear, needBuildingNearby)
-	local x, y = pos[1], pos[2]
-	if not api.GetTerrainAt(x, y) then
-		return false
-	end
-	if not buildOn[api.GetTerrainAt(x, y)] then
-		return false
-	end
-	
-	if needBuildingNearby then
-		for i = 1, #needBuildingNearby do
-			local near = needBuildingNearby[i]
-			if not BuildingHandler.IsBuildingNear(pos, near[1], near[2]) then
-				return false
-			end
-		end
-	end
-	
-	if not buildNear then
-		return true
-	end
-	
-	for i = x - 1, x + 1 do
-		for j = y - 1, y + 1 do
-			if api.GetTerrainAt(i, j) and buildNear[api.GetTerrainAt(i, j)] then
-				return true
-			end
-		end
-	end
-	return false
 end
 function api.IsTileEmpty(gridPos)	if gridPos[1] < 1 or gridPos[2] < 1 then		return false	end	if gridPos[1] > LevelHandler.Width() or gridPos[2] > LevelHandler.Height() then		return false	end
 	if api.GetInvasionAt(gridPos) then
@@ -192,7 +161,68 @@ local function DoInvasionWave(dt)
 end
 function api.Update(dt)	IterableMap.ApplySelf(self.tileList, "Update", dt)
 	HoverOverTile()
-	DoInvasionWave(dt)endfunction api.GetValidGridPlacement(gridPos, rotation, domino)	local secondPos = util.Add(gridPos, util.CardinalToVector(rotation))
+	DoInvasionWave(dt)end
+
+function api.DescribeNearBuildings(gridPos, needBuildingNearby)
+	local nearInfo = {}
+	if needBuildingNearby then
+		for i = 1, #needBuildingNearby do
+			local near = needBuildingNearby[i]
+			local nearby, dist = BuildingHandler.GetNearestBuilding(gridPos, near[1])
+			if nearby then
+				nearInfo[#nearInfo + 1] = {
+					pos = api.GridToWorld(nearby.GetPos()),
+					valid = (dist <= near[2])
+				}
+			end
+		end
+	end
+	
+	return nearInfo
+end
+function api.DescribeNearDomino(gridPos, rotation, domino)
+	local secondPos = util.Add(gridPos, util.CardinalToVector(rotation))
+	local defFirst = TileDefs[domino[1]]
+	local defSecond = TileDefs[domino[2]]
+	
+	return {
+		api.DescribeNearBuildings(gridPos, defFirst.needBuildingNearby),
+		api.DescribeNearBuildings(secondPos, defSecond.needBuildingNearby),
+	}
+end
+
+function api.TerrainMatches(pos, buildOn, buildNear, needBuildingNearby)
+	local x, y = pos[1], pos[2]
+	if not api.GetTerrainAt(x, y) then
+		return false
+	end
+	if not buildOn[api.GetTerrainAt(x, y)] then
+		return false
+	end
+	
+	if needBuildingNearby then
+		for i = 1, #needBuildingNearby do
+			local near = needBuildingNearby[i]
+			if not BuildingHandler.IsBuildingNear(pos, near[1], near[2]) then
+				return false
+			end
+		end
+	end
+	
+	if not buildNear then
+		return true
+	end
+	
+	for i = x - 1, x + 1 do
+		for j = y - 1, y + 1 do
+			if api.GetTerrainAt(i, j) and buildNear[api.GetTerrainAt(i, j)] then
+				return true
+			end
+		end
+	end
+	return false
+end
+function api.GetValidGridPlacement(gridPos, rotation, domino)	local secondPos = util.Add(gridPos, util.CardinalToVector(rotation))
 	local defFirst = TileDefs[domino[1]]
 	local defSecond = TileDefs[domino[2]]	return {
 		{

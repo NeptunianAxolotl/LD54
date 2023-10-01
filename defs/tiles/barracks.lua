@@ -21,7 +21,7 @@ local data = {
 	needResource = {
 		worker = {
 			workTime = 10,
-			idleTimeout = 4,
+			idleTimeout = 5,
 			searchRadius = 4,
 			homeWaitTime = 1,
 			dependOnActivation = "plank",
@@ -29,7 +29,7 @@ local data = {
 		},
 		plank = {
 			workTime = 1,
-			idleTimeout = 0,
+			idleTimeout = 10,
 			searchRadius = 6,
 			homeWaitTime = 1,
 			needDelay = 30,

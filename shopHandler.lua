@@ -172,11 +172,24 @@ function api.Draw(drawQueue)
 		return
 	end
 	
+	local nearbyInfo = TerrainHandler.DescribeNearDomino(dominoPos[1].pos, self.tileRotation, self.heldTile)
+	
 	drawQueue:push({y=1000; f=function()
 		for i = 1, 2 do
 			local pos = TerrainHandler.GridToWorld(dominoPos[i].pos)
 			local validPlacement = dominoPos[i].valid
 			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1, validPlacement and Global.WHITE or Global.RED)
+			
+			for j = 1, #nearbyInfo[i] do
+				local info = nearbyInfo[i][j]
+				love.graphics.setLineWidth(6)
+				if info.valid then
+					--love.graphics.setColor(0.6, 0.6, 0.6, 0.2)
+				else
+					love.graphics.setColor(1, 0.1, 0.1, 0.2)
+					love.graphics.line(pos[1], pos[2], info.pos[1], info.pos[2])
+				end
+			end
 		end
 	end})
 end
