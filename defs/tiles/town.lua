@@ -12,7 +12,7 @@ local data = {
 	population = 1,
 	popType = "worker",
 	bonusOnEdges = true,
-	drawWiggle = 0.25,
+	drawWiggle = 0.18,
 	
 	needResource = {
 		wood = {

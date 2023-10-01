@@ -174,6 +174,7 @@ local function NewBuilding(self, building)
 	-- Init
 	
 	self.drawPos = TerrainHandler.GridToWorld(util.RandomPointInRectangle(self.pos, self.def.drawWiggle or 0.1, self.def.drawWiggle or 0.1))
+	self.drawScale = {((math.random() > 0.5 and 1) or -1)*LevelHandler.TileScale(), LevelHandler.TileScale()}
 	
 	if self.def.needResource then
 		InitWork(self)
@@ -218,7 +219,7 @@ local function NewBuilding(self, building)
 		local drawRot = (self.spawnTimer or 0)*0.4*math.pi
 		if self.def.image then
 			drawQueue:push({y=1 - (self.pos[2] - self.pos[1])*0.01; f=function()
-				Resources.DrawImage(self.def.image, self.drawPos[1], self.drawPos[2], 0, false, LevelHandler.TileScale(), self.GetActive() and Global.WHITE or Global.GREY)
+				Resources.DrawImage(self.def.image, self.drawPos[1], self.drawPos[2], 0, false, self.drawScale, self.GetActive() and Global.WHITE or Global.GREY)
 			end})
 		end
 		if DRAW_DEBUG then
