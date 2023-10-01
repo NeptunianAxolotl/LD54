@@ -11,7 +11,7 @@ local data = {
 	needBuildingNearby = {{"sawmill", 6}, {"invasion", Global.INVASION_RANGE}},
 	destroyIfNotNearby = "invasion",
 	
-	bonusOnEdges = true,
+	bonusOnEdges = false,
 	drawWiggle = 0.05,
 	collectableResourceType = "army",
 	collectableResourceTypeFunc = function (self)
