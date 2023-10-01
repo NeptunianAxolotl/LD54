@@ -6,6 +6,7 @@ BuildingHandler = require("buildingHandler")
 ShopHandler = require("shopHandler")
 LevelHandler = require("levelHandler")
 GuyHandler = require("guyHandler")
+MapEditor = require("mapEditor")
 
 Camera = require("utilities/cameraUtilities")
 InterfaceUtil = require("utilities/interfaceUtilities")
@@ -49,7 +50,7 @@ function api.GetCosmos()
 end
 
 function api.SetGameOver(hasWon, overType)
-	if self.gameWon or self.gameLost or TerrainHandler.InEditMode() then
+	if self.gameWon or self.gameLost or MapEditor.InEditMode() then
 		return
 	end
 	
@@ -66,6 +67,9 @@ end
 --------------------------------------------------
 
 function api.KeyPressed(key, scancode, isRepeat)
+	if MapEditor.KeyPressed and MapEditor.KeyPressed(key, scancode, isRepeat) then
+		return
+	end
 	if ShopHandler.KeyPressed and ShopHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
@@ -87,6 +91,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 end
 
 function api.MousePressed(x, y, button)
+	if MapEditor.MousePressed and MapEditor.MousePressed(x, y, button) then
+		return
+	end
 	if ShopHandler.MousePressed and ShopHandler.MousePressed(x, y, button) then
 		return
 	end
@@ -122,6 +129,9 @@ function api.MouseReleased(x, y, button)
 end
 
 function api.MouseMoved(x, y, dx, dy)
+	if MapEditor.MouseMoved and MapEditor.MouseMoved(x, y, dx, dy) then
+		return
+	end
 	if ShopHandler.MouseMoved and ShopHandler.MouseMoved(x, y, dx, dy) then
 		return
 	end
@@ -231,8 +241,8 @@ function api.Draw()
 		d.f()
 	end
 	
-	EffectsHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
+	EffectsHandler.Draw(drawQueue)
 	BuildingHandler.Draw(drawQueue)
 	ShopHandler.Draw(drawQueue)
 	GuyHandler.Draw(drawQueue)
@@ -258,6 +268,7 @@ function api.Draw()
 	
 	-- Draw right interface
 	ShopHandler.DrawInterface()
+	MapEditor.DrawInterface()
 	GameHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
 	DialogueHandler.DrawInterface()
@@ -282,14 +293,15 @@ function api.Initialize(cosmos, levelData)
 	ChatHandler.Initialize(api)
 	DialogueHandler.Initialize(api)
 	
-	LevelHandler.Initialize(api, levelData)
-	ShopHandler.Initialize(api)
-	TerrainHandler.Initialize(api)
-	BuildingHandler.Initialize(api)
-	GuyHandler.Initialize(api)
-	
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
+	
+	MapEditor.Initialize(api)
+	BuildingHandler.Initialize(api)
+	GuyHandler.Initialize(api)
+	LevelHandler.Initialize(api, levelData)
+	TerrainHandler.Initialize(api)
+	ShopHandler.Initialize(api)
 	
 	-- Note that the camera pins only function for these particular second entries.
 	Camera.Initialize({

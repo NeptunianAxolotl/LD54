@@ -695,6 +695,13 @@ function util.ToMask(listTable)
 	return mapTable
 end
 
+function util.AddKeyNameToMaps(mapOfMaps, keyName)
+	for k, v in pairs(mapOfMaps) do
+		v[keyName] = k
+	end
+	return mapOfMaps
+end
+
 --------------------------------------------------
 --------------------------------------------------
 -- Array Utilities

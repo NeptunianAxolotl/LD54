@@ -95,7 +95,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 		api.ToggleMusic()
 		return true
 	end
-	if key == "s" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+	if key == "c" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		api.TakeScreenshot()
 		return true
 	end

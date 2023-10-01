@@ -92,7 +92,7 @@ local function ClickShopButton(item)
 end
 
 function api.Update(dt)
-	if LevelHandler.InEditMode() then
+	if MapEditor.InEditMode() then
 		self.mapRules = false -- Remove hints etc
 	end
 	if self.shopBlockedTimer then
@@ -112,11 +112,6 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.tileRotation = (self.tileRotation + 1)%4
 		--SoundHandler.PlaySound("spin")
 	end
-	if LevelHandler.InEditMode() then
-		if key == "1" then
-		end
-		return
-	end
 	for i = 1, Global.SHOP_SLOTS do
 		if key == tostring(i) then
 			ClickShopButton(i)
@@ -133,8 +128,6 @@ function api.MouseIsOverInterface()
 end
 
 function api.MouseMoved(x, y)
-	if LevelHandler.InEditMode() then
-	end
 end
 
 function api.MousePressed(x, y, button)
@@ -166,10 +159,12 @@ function api.Draw(drawQueue)
 		return
 	end
 	
-	for i = 1, 2 do
-		local pos = TerrainHandler.GridToWorld(dominoPos[i])
-		Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1)
-	end
+	drawQueue:push({y=1000; f=function()
+		for i = 1, 2 do
+			local pos = TerrainHandler.GridToWorld(dominoPos[i])
+			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1)
+		end
+	end})
 end
 
 function api.DrawInterface()
@@ -198,7 +193,7 @@ function api.DrawInterface()
 	--	love.graphics.printf("But " .. mult .. "% Harder", shopItemsX - Global.SHOP_WIDTH*0.45, shopItemsY - 68, Global.SHOP_WIDTH*0.9, "center")
 	--end
 	
-	if LevelHandler.InEditMode() then
+	if MapEditor.InEditMode() then
 		return
 	end
 	

@@ -6,7 +6,7 @@ local NewEffect = require("objects/effect")
 local self = {}
 local api = {}
 
-function api.SpawnEffect(name, pos, data)
+function api.SpawnEffect(name, pos, data)print('SpawnEffect')
 	local def = EffectDefs[name]
 	data = data or {}
 	data.pos = pos

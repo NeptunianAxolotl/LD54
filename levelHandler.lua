@@ -26,15 +26,49 @@ function api.TileScale()
 	return 1
 end
 
-local function SetupWorld(levelData)
-
+function api.LoadLevel(name)
+	print("load level")
+	local contents = love.filesystem.read("levels/" .. name)
+	if not contents then
+		EffectsHandler.SpawnEffect("error_popup", {480, 15}, {text = "Level file not found.", velocity = {0, 4}})
+		return
+	end
+	local levelFunc = loadstring("return "..contents)
+	if not levelFunc then
+		EffectsHandler.SpawnEffect("error_popup", {480, 15}, {text = "Error loading level.", velocity = {0, 4}})
+		return
+	end
+	local success, levelData = pcall(levelFunc)
+	if not success then
+		EffectsHandler.SpawnEffect("error_popup", {480, 15}, {text = "Level format error.", velocity = {0, 4}})
+		return
+	end
+	
+	self.world.LoadLevelByTable(levelData)
+	return true
 end
 
-function api.InEditMode()
-	return false
+function api.SaveLevel(name)
+	love.filesystem.createDirectory("levels")
+	self.humanName = name
+	
+	local save = util.CopyTable(self.levelData)
+	save.terrain, save.tiles = TerrainHandler.GetSaveData()
+	
+	local saveTable = util.TableToString(save)
+	saveTable = "local data = " .. saveTable .. [[
+
+return data
+]]
+	local success, message = love.filesystem.write("levels/" .. name .. ".lua", saveTable)
+	if success then
+		EffectsHandler.SpawnEffect("error_popup", {2500, 15}, {text = "Level saved to " .. (love.filesystem.getSaveDirectory() or "DIR_ERROR") .. "/" .. name .. ".", velocity = {0, 4}})
+	else
+		EffectsHandler.SpawnEffect("error_popup", {2500, 15}, {text = "Save error: " .. (message or "NO MESSAGE"), velocity = {0, 4}})
+	end
+	return success
 end
 
--- Load and save level go here eventually
 
 function api.Initialize(world, levelData)
 	self = {
