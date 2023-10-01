@@ -1,0 +1,38 @@
+Notes for me to implement a class to handle this:
+
+Ten tracks total, duplicated into two banks (A and B).  Samples are not cut to loop - they are to execute once simultaneously, while the next set are cued on the opposite bank.  Bank cutover is at exactly 28.8 seconds (12 bars * 3 beats per bar * 0.8 seconds per beat at 75 BPM).  Per-track volumes between banks A and B are always identical.
+
+At bank cutover, all ten tracks on the new bank are to start simultaneously.  The samples are all slightly longer so that reverb tails blend together seamlessly.
+
+Track list:
+1. High woodwinds (oboe & cor anglais)
+2. Bassoons
+3. Guitar (Harp)
+4. Descant Recorder
+5. Alto Recorder
+6. Tenor & Bass Recorder
+7. Snare Drum
+8. Tambourine
+9. French Horn
+10. Trumpet
+
+The following instruments have SOLOs (they can perform an alternate melody during SOLO phase):
+1. High woodwinds (oboe & cor anglais)
+4/5. Descant and Alto recorder jointly
+9/10. French Horn and Trumpet jointly
+
+Another quasi-solo phase exists called HYMNAL, however ALL instruments play alternate samples during this phase.
+
+Song phase is:
+1. RIPIENO (chorus)
+2. Either a SOLO (of an instrument whose volume is nonzero) or HYMNAL (if any recorder's volume is nonzero), selected by weighted chance
+
+This loops (so ripieno is played between everything else).
+
+All tracks have an "all-others" track, and possibly a RIPIENO track, a SOLO track and a HYMNAL track.
+
+Priority rules are as follows:
+1. During HYMNAL, if the instrument has a HYMNAL track, that plays, otherwise the track does not play.
+2. During RIPIENO, if the instrument has a RIPIENO track, that plays, otherwise it plays that instrument's "all-others" track.
+3. During SOLO, if it is THIS instrument's solo and this instrument has a SOLO track, that plays, otherwise it plays  that instrument's "all-others" track.
+4. During SOLO, if it is NOT this instrument's solo, play that instrument's "all-others" track.
