@@ -4,6 +4,9 @@ local Font = require("include/font")
 local GuyDefs = util.LoadDefDirectory("defs/guys")
 
 local function BecomeIdleWorkCheck(self)
+	if not self.IsAvailible() then
+		return
+	end
 	local building = BuildingHandler.GetClosestFreeBuilding(self.homeBuilding.pos, self.def.resourceType)
 	if building then
 		building.AssignGuyToBuilding(self)

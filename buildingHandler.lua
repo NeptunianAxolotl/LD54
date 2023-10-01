@@ -3,6 +3,10 @@ local Font = require("include/font")
 local TileDefs = util.LoadDefDirectory("defs/tiles", "defName")local NewBuilding = require("objects/building")
 local self = {}
 local api = {}
+
+function api.RecheckUpgradedBuildings(upgradeType)
+	IterableMap.ApplySelf(self.buildingList, "CheckUpgrade", upgradeType)
+end
 function api.AddBuilding(parentTiles, buildingName, pos, buildingData)	buildingData = buildingData or {}	buildingData.def = TileDefs[buildingName]
 	buildingData.parents = parentTiles	buildingData.pos = pos
 	
@@ -12,7 +16,13 @@ local api = {}
 	for i = 1, #parentTiles do
 		parentTiles[i].AddBuilding(buildingData, building)
 	end
-	IterableMap.Add(self.buildingList, building)end
+	IterableMap.Add(self.buildingList, building)
+	
+	if buildingData.def.doesUpgrade then
+		api.RecheckUpgradedBuildings(buildingData.def.doesUpgrade)
+	elseif buildingData.def.upgradeBuilding then
+		building.CheckUpgrade(buildingData.def.upgradeBuilding)
+	endend
 
 function api.DeleteAllFlaggedBuildings()
 	IterableMap.ApplySelf(self.buildingList, "DeleteIfFlagged")
@@ -42,6 +52,25 @@ end
 function api.GetClosestFreeBuilding(pos, resource)
 	local other = IterableMap.GetMinimum(self.buildingList, ClosestToWithDistSq, pos, resource)
 	return other
+end
+
+local function ClosestTypeAndActive(building, fromPos, buildingType, nearDistSq)
+	if buildingType ~= building.def.defName then
+		return false
+	end
+	if not building.GetActive() then
+		return false
+	end
+	local distSq = util.DistSq(building.GetPos(), fromPos)
+	if nearDistSq < distSq then
+		return false
+	end
+	return distSq
+end
+
+function api.HasNearbyActiveBuilding(pos, buildingType, nearDist)
+	local closest = IterableMap.GetMinimum(self.buildingList, ClosestTypeAndActive, pos, buildingType, nearDist*nearDist)
+	return closest and true or false
 end
 
 local function ClosestType(building, fromPos, buildingType)

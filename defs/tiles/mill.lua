@@ -4,8 +4,10 @@ local data = {
 	image = "mill",
 	building = "mill",
 	inShop = true,
-	cannotPairWith = {"mill"},
+	cannotPairWith = {"mill", "sawmill"},
 	spawnTilePositions = {{0, 0}},
+	
+	doesUpgrade = "mill",
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = "sawmill",
@@ -19,7 +21,7 @@ local data = {
 			idleTimeout = 0,
 			searchRadius = 6,
 			homeWaitTime = 1,
-			needDelay = 30,
+			needDelay = 20,
 		},
 	},
 }

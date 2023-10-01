@@ -46,6 +46,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 	elseif key == "s" then
 		self.brushMode = "farm"
 		self.brushType = "tile"
+	elseif key == "d" then
+		self.brushMode = "mill"
+		self.brushType = "tile"
 	end
 	return true
 end

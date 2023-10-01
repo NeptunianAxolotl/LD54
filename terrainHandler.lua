@@ -16,9 +16,14 @@ function api.RemoveTile(pos)
 	end
 	local pos = tile.GetPos()
 	local x, y = pos[1], pos[2]
+	local tileDef = tile.def
+	
 	IterableMap.Remove(self.tileList, self.tilePos[x][y])
 	self.tilePos[x][y] = nil
 	tile.DeleteTile()
+	if tileDef.doesUpgrade then
+		BuildingHandler.RecheckUpgradedBuildings(tileDef.doesUpgrade)
+	end
 end
 
 function api.DeleteAllFlaggedBuildings()

@@ -23,7 +23,7 @@ local globals = {
 	
 	DECK_SIZE_MULT = 1,
 	INIT_LEVEL = "testLevel",
-	SHOP_SLOTS = 3,
+	SHOP_SLOTS = 4,
 	
 	SHOP_WIDTH = 350,
 	VIEW_WIDTH = 1920,

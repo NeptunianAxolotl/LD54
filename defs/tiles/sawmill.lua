@@ -4,14 +4,14 @@ local data = {
 	image = "sawmill",
 	building = "sawmill",
 	inShop = true,
-	cannotPairWith = {"sawmill", "woodcutter"},
+	cannotPairWith = {"mill", "sawmill", "woodcutter"},
 	spawnTilePositions = {{0, 0}},
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = "woodcutter",
 	needNearbyDist = 6,
 	
-	population = 2,
+	population = 1,
 	popType = "plank",
 	bonusOnEdges = false,
 	
@@ -38,6 +38,7 @@ local data = {
 			homeWaitTime = 1,
 			maximumStockpile = 3,
 			stockpilePerJob = 1,
+			ignoreForActivation = true,
 		},
 	},
 }

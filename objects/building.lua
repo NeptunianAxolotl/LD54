@@ -13,8 +13,8 @@ local function LookForWorkersCheck(self, resource)
 			break
 		end
 	end
-	if self.WantsWorkerOrResource(resource)  then
-		self.resourceState[resource].inactiveTimer = self.def.idleTimeout
+	if self.WantsWorkerOrResource(resource) then
+		self.resourceState[resource].inactiveTimer = self.def.needResource[resource].idleTimeout
 	end
 end
 
@@ -31,6 +31,12 @@ local function InitWork(self)
 	for i = 1, #self.def.needResourceList do
 		local resource = self.def.needResourceList[i]
 		LookForWorkersCheck(self, resource)
+	end
+end
+
+local function CheckUpgrade(self, oldUpgradeState)
+	if self.def.doesUpgrade and self.GetActive() ~= oldUpgradeState then
+		BuildingHandler.RecheckUpgradedBuildings(self.def.doesUpgrade)
 	end
 end
 
@@ -66,9 +72,9 @@ local function NewBuilding(self, building)
 		end
 		
 		if resDef.needDelay then
-			resState.needDelay = resDef.needDelay
+			resState.needTimer = resDef.needDelay
 		end
-		if resState.needDelay then
+		if resState.needTimer then
 			return
 		end
 		for i = 1, #self.def.needResourceList do
@@ -88,25 +94,42 @@ local function NewBuilding(self, building)
 		IterableMap.Add(resState.activeWorkers, guy.index, guy)
 		IterableMap.Remove(resState.pendingWorkers, guy.index)
 		if not self.WantsWorkerOrResource(guy.def.resourceType) then
+			local oldUpgradeState = self.def.doesUpgrade and self.GetActive()
 			resState.inactiveTimer = false
 			resState.active = true
+			CheckUpgrade(self, oldUpgradeState)
 		end
 	end
 	
 	function self.WantsWorkerOrResource(resource)
+		if self.def.defName == "mill" then
+			print("resource", resource, 1)
+		end
 		if not (self.def.needResource and self.def.needResource[resource]) then
 			return false
+		end
+		if self.def.defName == "mill" then
+			print("resource", resource, 2)
 		end
 		local resState = self.resourceState[resource]
 		local resDef = self.def.needResource[resource]
 		if resDef.maximumStockpile and (resState.stockpile or 0) >= resDef.maximumStockpile then
 			return false
 		end
-		if resState.needDelay then
-			return
+		if self.def.defName == "mill" then
+			print("resource", resource, 3)
+		end
+		if resState.needTimer then
+			return false
+		end
+		if self.def.defName == "mill" then
+			print("resource", resource, 4)
 		end
 		if resDef.jobActivationResources and not self.HasResources(resDef.jobActivationResources) then
 			return false
+		end
+		if self.def.defName == "mill" then
+			print("resource", resource, 5)
 		end
 		return (resDef.count or 1) > (IterableMap.Count(resState.activeWorkers) + IterableMap.Count(resState.pendingWorkers))
 	end
@@ -122,7 +145,7 @@ local function NewBuilding(self, building)
 	function self.GetActive()
 		for i = 1, #self.def.needResourceList do
 			local resource = self.def.needResourceList[i]
-			if not self.resourceState[resource].active then
+			if (not self.def.needResource[resource].ignoreForActivation) and (not self.resourceState[resource].active) then
 				return false
 			end
 		end
@@ -169,6 +192,18 @@ local function NewBuilding(self, building)
 		self.UseResources(self.def.guyActivationResources)
 	end
 	
+	function self.CheckUpgrade(upgradeSource)
+		if self.def.upgradeBuilding ~= upgradeSource then
+			return
+		end
+		local newUpgrade = BuildingHandler.HasNearbyActiveBuilding(self.pos, upgradeSource, self.def.upgradeDistance)
+		if newUpgrade and not self.hasUpgrade then
+			self.hasUpgrade = true
+		elseif not newUpgrade and self.hasUpgrade then
+			self.hasUpgrade = false
+		end
+	end
+	
 	function self.GetPos()
 		return self.pos
 	end
@@ -204,18 +239,23 @@ local function NewBuilding(self, building)
 		for i = 1, #self.def.needResourceList do
 			local resource = self.def.needResourceList[i]
 			local resState = self.resourceState[resource]
+			if self.def.defName == "mill" then
+				print(resState.needTimer, resState.inactiveTimer)
+			end
 			if resState.inactiveTimer then
 				resState.inactiveTimer = resState.inactiveTimer - dt
 				if resState.inactiveTimer < 0 then
+					local oldUpgradeState = self.def.doesUpgrade and self.GetActive()
 					resState.active = false
 					resState.inactiveTimer = false
+					CheckUpgrade(self, oldUpgradeState)
 				end
 			end
-			if resState.needDelay then
-				resState.needDelay = resState.needDelay - dt
-				if resState.needDelay < 0 then
+			if resState.needTimer then
+				resState.needTimer = resState.needTimer - dt
+				if resState.needTimer < 0 then
+					resState.needTimer = false
 					LookForWorkersCheck(self, resource)
-					resState.needDelay = false
 				end
 			end
 		end
@@ -227,8 +267,12 @@ local function NewBuilding(self, building)
 	function self.Draw(drawQueue)
 		local drawRot = (self.spawnTimer or 0)*0.4*math.pi
 		if self.def.image then
+			local image = self.def.image
+			if self.def.upgradeImage and self.hasUpgrade then
+				image = self.def.upgradeImage
+			end
 			drawQueue:push({y=1 - (self.pos[2] - self.pos[1])*0.01; f=function()
-				Resources.DrawImage(self.def.image, self.drawPos[1], self.drawPos[2], 0, false, self.drawScale, self.GetActive() and Global.WHITE or Global.GREY)
+				Resources.DrawImage(image, self.drawPos[1], self.drawPos[2], 0, false, self.drawScale, self.GetActive() and Global.WHITE or Global.GREY)
 			end})
 		end
 		if DRAW_DEBUG then
