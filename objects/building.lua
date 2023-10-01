@@ -39,8 +39,6 @@ local function UpdateWork(self, dt)
 end
 
 local function NewBuilding(self, building)
-	self.toDestroy = false
-	
 	-- API
 	
 	function self.AssignGuyToBuilding(guy)
@@ -54,6 +52,10 @@ local function NewBuilding(self, building)
 		
 		IterableMap.Remove(resState.activeWorkers, guy.index)
 		IterableMap.Remove(resState.pendingWorkers, guy.index)
+		if self.toDestroy then
+			return
+		end
+		
 		if finished and resDef.maximumStockpile then
 			resState.stockpile = math.min((resState.stockpile or 0) + resDef.stockpilePerJob, resDef.maximumStockpile)
 			if self.guys then
@@ -63,8 +65,8 @@ local function NewBuilding(self, building)
 			end
 		end
 		
-		if self.def.needDelayFunction then
-			resState.needDelay = self.def.needDelayFunction(self, guy)
+		if resDef.needDelay then
+			resState.needDelay = resDef.needDelay
 		end
 		if resState.needDelay then
 			return
@@ -171,6 +173,14 @@ local function NewBuilding(self, building)
 		return self.pos
 	end
 	
+	function self.FlagForDeletion()
+		self.toDestroy = true
+	end
+	
+	function self.DeleteIfFlagged()
+		return self.toDestroy
+	end
+	
 	-- Init
 	
 	self.drawPos = TerrainHandler.GridToWorld(util.RandomPointInRectangle(self.pos, self.def.drawWiggle or 0.1, self.def.drawWiggle or 0.1))
@@ -212,7 +222,6 @@ local function NewBuilding(self, building)
 		if self.def.updateFunc then
 			self.def.updateFunc(self, dt)
 		end
-		return self.toDestroy
 	end
 	
 	function self.Draw(drawQueue)

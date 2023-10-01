@@ -18,6 +18,10 @@ function api.AddGuy(guyType, pos, guyData)
 	return newGuy
 end
 
+function api.DeleteAllFlaggedBuildings()
+	IterableMap.ApplySelf(self.guyList, "DeleteFlaggedBuildings")
+end
+
 local function ClosestToWithDistSq(guy, maxDistSq, fromPos, resource)
 	if guy.def.resourceType ~= resource then
 		return false

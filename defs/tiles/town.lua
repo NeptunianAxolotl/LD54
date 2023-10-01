@@ -20,11 +20,9 @@ local data = {
 			idleTimeout = 0,
 			searchRadius = 6,
 			homeWaitTime = 1,
+			needDelay = 30,
 		},
 	},
-	needDelayFunction = function (self, guy)
-		return guy.def.resourceAmount
-	end,
 	residentSpeedFunc = function (self, guy)
 		if self.GetActive() then
 			return 1.5

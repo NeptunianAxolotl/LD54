@@ -4,7 +4,26 @@ local Font = require("include/font")
 local TerrainDefs = util.LoadDefDirectory("defs/terrain")local NewTile = require("objects/tile")
 local self = {}
 local api = {}
-function api.AddTile(tileName, pos)	local x, y = pos[1], pos[2]	local tileData = {		def = TileDefs[tileName],		pos = pos,	}	self.tilePos[x] = self.tilePos[x] or {}	self.tilePos[x][y] = IterableMap.Add(self.tileList, NewTile(tileData, api))endfunction api.AddDomino(domino, pos)	for i = 1, 2 do		api.AddTile(domino[i], pos[i])	endend
+function api.AddTile(tileName, pos)
+	if api.GetTile(pos) then
+		return
+	end	local x, y = pos[1], pos[2]	local tileData = {		def = TileDefs[tileName],		pos = pos,	}	self.tilePos[x] = self.tilePos[x] or {}	self.tilePos[x][y] = IterableMap.Add(self.tileList, NewTile(tileData, api))end
+
+function api.RemoveTile(pos)
+	local tile = api.GetTile(pos)
+	if not tile then
+		return
+	end
+	local pos = tile.GetPos()
+	local x, y = pos[1], pos[2]
+	IterableMap.Remove(self.tileList, self.tilePos[x][y])
+	self.tilePos[x][y] = nil
+	tile.DeleteTile()
+end
+
+function api.DeleteAllFlaggedBuildings()
+	IterableMap.ApplySelf(self.tileList, "DeleteFlaggedBuildings")
+endfunction api.AddDomino(domino, pos)	for i = 1, 2 do		api.AddTile(domino[i], pos[i])	endend
 
 function api.SetTerrainType(terrain, pos)
 	local x, y = pos[1], pos[2]

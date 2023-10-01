@@ -68,6 +68,13 @@ local function HandleGoHome(self, dt)
 	self.pos = util.Add(self.pos, util.Mult(self.def.speed * dt, unit))
 end
 
+local function RemoveFromAssignedBuilding(self)
+	self.assignedBuilding.ReleaseGuyFromBuilding(self)
+	self.assignedBuilding = false
+	self.goHome = true
+	self.atBuildingTimer = false
+end
+
 local function NewGuy(self, building)
 
 	-- API
@@ -99,6 +106,20 @@ local function NewGuy(self, building)
 		if self.IsAvailible() then
 			BecomeIdleWorkCheck(self)
 		end
+	end
+	
+	function self.DeleteFlaggedBuildings()
+		if self.homeBuilding and self.homeBuilding.DeleteIfFlagged() then
+			if self.assignedBuilding then
+				RemoveFromAssignedBuilding(self)
+			end
+			self.homeBuilding = false
+			self.toDestroy = true
+		end
+		if self.assignedBuilding and self.assignedBuilding.DeleteIfFlagged() then
+			RemoveFromAssignedBuilding(self)
+		end
+		return self.toDestroy
 	end
 	
 	-- Init

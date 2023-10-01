@@ -13,6 +13,10 @@ local api = {}
 		parentTiles[i].AddBuilding(buildingData, building)
 	end
 	IterableMap.Add(self.buildingList, building)end
+
+function api.DeleteAllFlaggedBuildings()
+	IterableMap.ApplySelf(self.buildingList, "DeleteIfFlagged")
+end
 local function ClosestToWithDistSq(building, fromPos, resource)
 	if not building.WantsWorkerOrResource(resource) then
 		return false
