@@ -7,6 +7,7 @@ local data = {
 			town = 12,
 			sawmill = 6,
 			mill = 6,
+			fishery = 8,
 		},
 		[2] = {
 			woodcutter = 8,

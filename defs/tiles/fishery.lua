@@ -1,24 +1,23 @@
 local TileUtils = require("utilities/tileUtils")
 
 local data = {
-	image = "farm",
-	upgradeImage = "farm_adv",
-	building = "farm",
+	image = "fishery",
+	building = "fishery",
 	inShop = true,
-	cannotPairWith = {"farm"},
+	cannotPairWith = {"fishery"},
 	spawnTilePositions = {{0, 0}},
-	canBuildOn = {"grass"},
+	canBuildOn = {"grass", "desert"},
+	mustBuildNear = {"water"},
 	
 	upgradeBuilding = "mill",
 	upgradeDistance = 1.49,
 	
 	bonusOnEdges = true,
 	drawWiggle = 0,
-	depthNudge = -0.1,
 	
 	globalResourceType = "food",
 	globalResourceTypeFunc = function (self)
-		return (self.GetActive() and (self.HasUpgrade() and 3 or 2)) or 0
+		return (self.GetActive() and 3) or 0
 	end,
 	
 	needResource = {

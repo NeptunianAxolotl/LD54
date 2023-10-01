@@ -102,34 +102,19 @@ local function NewBuilding(self, building)
 	end
 	
 	function self.WantsWorkerOrResource(resource)
-		if self.def.defName == "mill" then
-			print("resource", resource, 1)
-		end
 		if not (self.def.needResource and self.def.needResource[resource]) then
 			return false
-		end
-		if self.def.defName == "mill" then
-			print("resource", resource, 2)
 		end
 		local resState = self.resourceState[resource]
 		local resDef = self.def.needResource[resource]
 		if resDef.maximumStockpile and (resState.stockpile or 0) >= resDef.maximumStockpile then
 			return false
 		end
-		if self.def.defName == "mill" then
-			print("resource", resource, 3)
-		end
 		if resState.needTimer then
 			return false
 		end
-		if self.def.defName == "mill" then
-			print("resource", resource, 4)
-		end
 		if resDef.jobActivationResources and not self.HasResources(resDef.jobActivationResources) then
 			return false
-		end
-		if self.def.defName == "mill" then
-			print("resource", resource, 5)
 		end
 		return (resDef.count or 1) > (IterableMap.Count(resState.activeWorkers) + IterableMap.Count(resState.pendingWorkers))
 	end
@@ -197,11 +182,15 @@ local function NewBuilding(self, building)
 			return
 		end
 		local newUpgrade = BuildingHandler.HasNearbyActiveBuilding(self.pos, upgradeSource, self.def.upgradeDistance)
-		if newUpgrade and not self.hasUpgrade then
-			self.hasUpgrade = true
-		elseif not newUpgrade and self.hasUpgrade then
-			self.hasUpgrade = false
+		if newUpgrade and not self.upgradeState then
+			self.upgradeState = true
+		elseif not newUpgrade and self.upgradeState then
+			self.upgradeState = false
 		end
+	end
+	
+	function self.HasUpgrade()
+		return self.upgradeState
 	end
 	
 	function self.GetPos()
@@ -239,9 +228,6 @@ local function NewBuilding(self, building)
 		for i = 1, #self.def.needResourceList do
 			local resource = self.def.needResourceList[i]
 			local resState = self.resourceState[resource]
-			if self.def.defName == "mill" then
-				print(resState.needTimer, resState.inactiveTimer)
-			end
 			if resState.inactiveTimer then
 				resState.inactiveTimer = resState.inactiveTimer - dt
 				if resState.inactiveTimer < 0 then
@@ -268,10 +254,10 @@ local function NewBuilding(self, building)
 		local drawRot = (self.spawnTimer or 0)*0.4*math.pi
 		if self.def.image then
 			local image = self.def.image
-			if self.def.upgradeImage and self.hasUpgrade then
+			if self.def.upgradeImage and self.upgradeState then
 				image = self.def.upgradeImage
 			end
-			drawQueue:push({y=1 - (self.pos[2] - self.pos[1])*0.01; f=function()
+			drawQueue:push({y=1 +(self.def.depthNudge or 0) - (self.pos[2] - self.pos[1])*0.01; f=function()
 				Resources.DrawImage(image, self.drawPos[1], self.drawPos[2], 0, false, self.drawScale, self.GetActive() and Global.WHITE or Global.GREY)
 			end})
 		end
