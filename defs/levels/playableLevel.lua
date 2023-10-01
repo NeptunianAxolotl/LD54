@@ -51,7 +51,7 @@ local data = {
 		[7] = {
 			extraData = {
 				invasionIndex = 1,
-				armySize = 6,
+				armySize = 3,
 			},
 			def = "invasion",
 			pos = {
@@ -62,7 +62,7 @@ local data = {
 		[8] = {
 			extraData = {
 				invasionIndex = 2,
-				armySize = 15,
+				armySize = 12,
 			},
 			def = "invasion",
 			pos = {

@@ -159,14 +159,14 @@ local function DoInvasionWave(dt)
 		return
 	end
 	self.waveTimer = Global.WAVE_PERIOD
-	for index, waveData in pairs(self.invasionWaves) do
+	for invasionIndex, waveData in pairs(self.invasionWaves) do
 		local nextPoints = {}
 		for i = 1, #waveData.points do
 			local pos = waveData.points[i]
 			api.RemoveInvasion(pos)
 			for rotation = 0, 3 do
 				local hasInvasion, newPos = api.GetInvasionAt(pos, rotation)
-				if hasInvasion then
+				if hasInvasion == invasionIndex then
 					nextPoints[#nextPoints + 1] = newPos
 				end
 			end
@@ -174,7 +174,7 @@ local function DoInvasionWave(dt)
 		if #nextPoints > 0 then
 			waveData.points = nextPoints
 		else
-			self.invasionWaves[index] = nil
+			self.invasionWaves[invasionIndex] = nil
 		end
 	end
 end

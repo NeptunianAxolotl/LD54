@@ -20,7 +20,7 @@ local data = {
 			idleTimeout = 0,
 			searchRadius = 6,
 			homeWaitTime = 1,
-			needDelay = 30,
+			needDelay = 40,
 		},
 	},
 	residentSpeedFunc = function (self, guy)
