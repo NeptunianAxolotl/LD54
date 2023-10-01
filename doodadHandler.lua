@@ -6,7 +6,6 @@ local api = {}
 
 function api.AddDoodad(doodadType, pos)
 	local doodadData = {}
-print('AddDoodad', pos[1], pos[2])
 	doodadData.pos = pos
 	doodadData.doodadType = doodadType
 	local newDoodad = NewDoodad(doodadData)

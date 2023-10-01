@@ -54,6 +54,7 @@ function api.SaveLevel(name)
 	
 	local save = util.CopyTable(self.levelData)
 	save.terrain, save.tiles = TerrainHandler.GetSaveData()
+	save.doodads = DoodadHandler.ExportObjects()
 	
 	local saveTable = util.TableToString(save)
 	saveTable = "local data = " .. saveTable .. [[

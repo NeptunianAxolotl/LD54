@@ -1,14 +1,79 @@
 local data = {
 	tiles = {
 	},
-	terrain = {
-		[0] = {
-			[5] = "water",
-			[6] = "water",
-			[7] = "water",
-			[8] = "water",
-			[12] = "water",
+	tileDeck = {
+		[1] = {
+			woodcutter = 8,
+			sawmill = 6,
+			town = 12,
+			farm = 8,
 		},
+		[2] = {
+			woodcutter = 8,
+			sawmill = 6,
+			town = 12,
+			farm = 8,
+		},
+	},
+	doodads = {
+		[1] = {
+			pos = {
+				[1] = 10.58100382487,
+				[2] = 6.9805399576823,
+			},
+			doodadType = "coast1",
+		},
+		[2] = {
+			pos = {
+				[1] = 10.645553588867,
+				[2] = 5.5532646179199,
+			},
+			doodadType = "coast1",
+		},
+		[3] = {
+			pos = {
+				[1] = 10.659898122152,
+				[2] = 4.219228108724,
+			},
+			doodadType = "coast1",
+		},
+		[4] = {
+			pos = {
+				[1] = 11.54925664266,
+				[2] = 9.1824175516764,
+			},
+			doodadType = "coast1",
+		},
+		[5] = {
+			pos = {
+				[1] = 8.7162208557129,
+				[2] = 1.4148826599121,
+			},
+			doodadType = "coast2",
+		},
+		[6] = {
+			pos = {
+				[1] = 7.331979115804,
+				[2] = 1.465087890625,
+			},
+			doodadType = "coast2",
+		},
+		[7] = {
+			pos = {
+				[1] = 6.0122871398926,
+				[2] = 1.493776957194,
+			},
+			doodadType = "coast2",
+		},
+		[8] = {
+			pos = {
+				[1] = 5.0870685577393,
+				[2] = 1.4292265574137,
+			},
+			doodadType = "coast2",
+		},
+	},
+	terrain = {
 		[1] = {
 			[1] = "water",
 			[2] = "water",
@@ -24,7 +89,6 @@ local data = {
 			[12] = "water",
 		},
 		[2] = {
-			[0] = "water",
 			[1] = "water",
 			[2] = "water",
 			[3] = "grass",
@@ -79,7 +143,6 @@ local data = {
 			[10] = "forest",
 			[11] = "mountain",
 			[12] = "water",
-			[13] = "water",
 		},
 		[6] = {
 			[1] = "water",
@@ -94,10 +157,8 @@ local data = {
 			[10] = "forest",
 			[11] = "mountain",
 			[12] = "water",
-			[13] = "water",
 		},
 		[7] = {
-			[0] = "water",
 			[1] = "water",
 			[2] = "desert",
 			[3] = "grass",
@@ -110,10 +171,8 @@ local data = {
 			[10] = "forest",
 			[11] = "mountain",
 			[12] = "water",
-			[13] = "water",
 		},
 		[8] = {
-			[0] = "water",
 			[1] = "water",
 			[2] = "grass",
 			[3] = "grass",
@@ -126,10 +185,8 @@ local data = {
 			[10] = "grass",
 			[11] = "mountain",
 			[12] = "water",
-			[13] = "water",
 		},
 		[9] = {
-			[0] = "water",
 			[1] = "water",
 			[2] = "grass",
 			[3] = "grass",
@@ -156,10 +213,8 @@ local data = {
 			[10] = "grass",
 			[11] = "mountain",
 			[12] = "water",
-			[-1] = "water",
 		},
 		[11] = {
-			[0] = "water",
 			[1] = "water",
 			[2] = "water",
 			[3] = "water",
@@ -172,7 +227,6 @@ local data = {
 			[10] = "grass",
 			[11] = "mountain",
 			[12] = "water",
-			[-1] = "water",
 		},
 		[12] = {
 			[1] = "water",
@@ -188,39 +242,10 @@ local data = {
 			[11] = "water",
 			[12] = "water",
 		},
-		[13] = {
-			[2] = "water",
-			[3] = "water",
-			[4] = "water",
-			[5] = "water",
-			[6] = "water",
-			[7] = "water",
-			[9] = "water",
-			[10] = "water",
-		},
-		[14] = {
-			[7] = "water",
-			[8] = "water",
-			[9] = "water",
-		},
 	},
-	tileDeck = {
-		[2] = {
-			woodcutter = 8,
-			sawmill = 6,
-			farm = 8,
-			town = 12,
-		},
-		[1] = {
-			woodcutter = 8,
-			sawmill = 6,
-			farm = 8,
-			town = 12,
-		},
-	},
-	humanName = "test level",
 	width = 12,
 	height = 12,
+	humanName = "test level",
 }
 
 return data
