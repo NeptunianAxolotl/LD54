@@ -1,7 +1,7 @@
 
 local Font = require("include/font")
 
-local TileDefs = util.LoadDefDirectory("defs/tiles")
+local TileDefs = util.LoadDefDirectory("defs/tiles", "defName")
 
 local function LookForWorkersCheck(self, resource)
 	local resDef = self.def.needResource[resource]
@@ -69,7 +69,10 @@ local function NewBuilding(self, building)
 		if resState.needDelay then
 			return
 		end
-		LookForWorkersCheck(self, guy.def.resourceType)
+		for i = 1, #self.def.needResourceList do
+			local resource = self.def.needResourceList[i]
+			LookForWorkersCheck(self, resource)
+		end
 	end
 	
 	function self.GuyReachedBuilding(guy)

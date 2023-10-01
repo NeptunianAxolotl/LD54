@@ -729,7 +729,7 @@ function util.GetDefDirList(dir, ext)
 	return defList
 end
 
-function util.LoadDefDirectory(dir)
+function util.LoadDefDirectory(dir, nameByKey)
 	local files = love.filesystem.getDirectoryItems(dir)
 	local defTable = {}
 	local nameList = {}
@@ -751,6 +751,9 @@ function util.LoadDefDirectory(dir)
 				done = false
 			end
 		end
+	end
+	if nameByKey then
+		defTable = util.AddKeyNameToMaps(defTable, nameByKey)
 	end
 	return defTable, nameList
 end

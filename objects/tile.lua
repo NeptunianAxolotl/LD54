@@ -1,7 +1,7 @@
 
 local Font = require("include/font")
 
-local TileDefs = util.LoadDefDirectory("defs/tiles")
+local TileDefs = util.LoadDefDirectory("defs/tiles", "defName")
 
 local function CheckAddBonus(self, direction)
 	local other = TerrainHandler.GetTile(self.pos, direction)

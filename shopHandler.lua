@@ -1,7 +1,7 @@
 
 local Font = require("include/font")
 
-local TileDefs, TileDefList = util.LoadDefDirectory("defs/tiles")
+local TileDefs, TileDefList = util.LoadDefDirectory("defs/tiles", "defName")
 
 local api = {}
 local self = {}
@@ -159,7 +159,6 @@ function api.Draw(drawQueue)
 		return
 	end
 	
-	util.PrintTable(dominoPos)
 	drawQueue:push({y=1000; f=function()
 		for i = 1, 2 do
 			local pos = TerrainHandler.GridToWorld(dominoPos[i].pos)

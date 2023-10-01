@@ -17,13 +17,19 @@ end
 function api.GetTerrainAt(x, y)
 	return (self.terrainType[x] and self.terrainType[x][y])
 end
-function api.TerrainMatches(pos, buildOn, buildNear)
+function api.TerrainMatches(pos, buildOn, buildNear, needBuildingNearby, needNearbyDist)
 	local x, y = pos[1], pos[2]
 	if not api.GetTerrainAt(x, y) then
 		return false
 	end
 	if not buildOn[api.GetTerrainAt(x, y)] then
 		return false
+	end
+	
+	if needBuildingNearby then
+		if not BuildingHandler.IsBuildingNear(pos, needBuildingNearby, needNearbyDist) then
+			return false
+		end
 	end
 	
 	if not buildNear then
@@ -49,14 +55,20 @@ function api.GetTile(gridPos, direction)
 		return false
 	end
 	return IterableMap.Get(self.tileList, (self.tilePos[gridPos[1]] and self.tilePos[gridPos[1]][gridPos[2]]))
-endfunction api.FromIsometricBasis(pos)	return util.ChangeBasis(pos, self.fromIso[1], self.fromIso[2], self.fromIso[3], self.fromIso[4])endfunction api.ToIsometricBasis(pos)	return util.ChangeBasis(pos, self.toIso[1], self.toIso[2], self.toIso[3], self.toIso[4])endfunction api.WorldToGrid(pos)	pos = api.FromIsometricBasis(pos)	local tileSize = LevelHandler.TileSize()	local gx = math.floor(pos[1]/tileSize)	local gy = math.floor(pos[2]/tileSize)	return {gx, gy}endfunction api.GridToWorld(pos, corner)	local tileSize = LevelHandler.TileSize()	local worldPos	if corner then		worldPos = {pos[1]*tileSize, pos[2]*tileSize}	else		worldPos = {(pos[1]+0.5)*tileSize, (pos[2]+0.5)*tileSize}	end	return api.ToIsometricBasis(worldPos)endfunction api.Update(dt)	IterableMap.ApplySelf(self.tileList, "Update", dt)endfunction api.GetValidGridPlacement(gridPos, rotation, domino)	local secondPos = util.Add(gridPos, util.CardinalToVector(rotation))	if not (api.IsTileEmpty(gridPos) and api.IsTileEmpty(secondPos)) then		return false	end	return {
+endfunction api.FromIsometricBasis(pos)	return util.ChangeBasis(pos, self.fromIso[1], self.fromIso[2], self.fromIso[3], self.fromIso[4])endfunction api.ToIsometricBasis(pos)	return util.ChangeBasis(pos, self.toIso[1], self.toIso[2], self.toIso[3], self.toIso[4])endfunction api.WorldToGrid(pos)	pos = api.FromIsometricBasis(pos)	local tileSize = LevelHandler.TileSize()	local gx = math.floor(pos[1]/tileSize)	local gy = math.floor(pos[2]/tileSize)	return {gx, gy}endfunction api.GridToWorld(pos, corner)	local tileSize = LevelHandler.TileSize()	local worldPos	if corner then		worldPos = {pos[1]*tileSize, pos[2]*tileSize}	else		worldPos = {(pos[1]+0.5)*tileSize, (pos[2]+0.5)*tileSize}	end	return api.ToIsometricBasis(worldPos)endfunction api.Update(dt)	IterableMap.ApplySelf(self.tileList, "Update", dt)endfunction api.GetValidGridPlacement(gridPos, rotation, domino)	local secondPos = util.Add(gridPos, util.CardinalToVector(rotation))	if not (api.IsTileEmpty(gridPos) and api.IsTileEmpty(secondPos)) then		return false	end
+	local defFirst = TileDefs[domino[1]]
+	local defSecond = TileDefs[domino[2]]	return {
 		{
 			pos = gridPos,
-			valid = api.TerrainMatches(gridPos, TileDefs[domino[1]].canBuildOn_map, TileDefs[domino[1]].mustBuildNear_map),
+			valid = api.TerrainMatches(
+				gridPos, defFirst.canBuildOn_map, defFirst.mustBuildNear_map,
+				defFirst.needBuildingNearby, defFirst.needNearbyDist),
 		},
 		{
 			pos = secondPos,
-			valid = api.TerrainMatches(secondPos, TileDefs[domino[2]].canBuildOn_map, TileDefs[domino[2]].mustBuildNear_map),
+			valid = api.TerrainMatches(
+				secondPos, defSecond.canBuildOn_map, defSecond.mustBuildNear_map,
+				defSecond.needBuildingNearby, defSecond.needNearbyDist),
 		}
 	}endfunction api.GetValidWorldPlacement(worldPos, rotation, domino)	return api.GetValidGridPlacement(api.WorldToGrid(worldPos), rotation, domino)end
 local function SetupLevel()
@@ -98,7 +110,7 @@ function api.Initialize(world)
 	self = {		tileList = IterableMap.New(),		tilePos = {},
 		terrainType = {},
 		terrainDraw = {},
-		world = world,		toIso = {2, 2, 1, -1}
+		world = world,		toIso = {2, 2, 1, -1},
 	}	self.fromIso = util.InverseBasis(self.toIso)
 	
 	SetupLevel()

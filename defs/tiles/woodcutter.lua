@@ -12,7 +12,7 @@ local data = {
 	
 	population = 2,
 	popType = "wood",
-	bonusOnEdges = false,
+	bonusOnEdges = true,
 	
 	guyActivationResources = {
 		worker = 1,
