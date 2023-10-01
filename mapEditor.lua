@@ -21,14 +21,25 @@ function api.KeyPressed(key, scancode, isRepeat)
 	
 	if key == "1" then
 		self.brushMode = "grass"
+		self.brushType = "terrain"
 	elseif key == "2" then
 		self.brushMode = "desert"
+		self.brushType = "terrain"
 	elseif key == "3" then
 		self.brushMode = "forest"
+		self.brushType = "terrain"
 	elseif key == "4" then
 		self.brushMode = "mountain"
+		self.brushType = "terrain"
 	elseif key == "5" then
 		self.brushMode = "water"
+		self.brushType = "terrain"
+	elseif key == "q" then
+		self.brushMode = "coast1"
+		self.brushType = "doodad"
+	elseif key == "w" then
+		self.brushMode = "coast2"
+		self.brushType = "doodad"
 	end
 	return true
 end
@@ -38,8 +49,24 @@ function api.MousePressed(x, y, button)
 		return false
 	end
 	
+	if self.brushMode and self.brushType == "doodad" then
+		if button == 1 then
+			self.attachedDooddad = DoodadHandler.AddDoodad(self.brushMode, TerrainHandler.WorldToContinuousGrid(self.world.GetMousePosition()))
+		end
+	end
 	
+	if button == 2 then
+		self.attachedDooddad = false
+		DoodadHandler.RemoveDoodads(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
+	end
 	return true
+end
+
+function api.MouseReleased(x, y, button)
+	if not self.editorMode then
+		return false
+	end
+	self.attachedDooddad = false
 end
 
 function api.MouseMoved(x, y, dx, dy)
@@ -47,9 +74,16 @@ function api.MouseMoved(x, y, dx, dy)
 		return false
 	end
 	if love.mouse.isDown(1) then
-		if self.brushMode then
+		if self.brushMode and self.brushType == "terrain" then
 			TerrainHandler.SetTerrainType(self.brushMode, TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
 		end
+		if self.attachedDooddad then
+			self.attachedDooddad.UpdateWorldPos(TerrainHandler.WorldToContinuousGrid(self.world.GetMousePosition()))
+		end
+	end
+	if love.mouse.isDown(2) then
+		self.attachedDooddad = false
+		DoodadHandler.RemoveDoodads(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
 	end
 end
 

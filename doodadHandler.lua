@@ -1,19 +1,17 @@
 
-local IterableMap = require("include/IterableMap")
-local util = require("include/util")
-
-local DoodadDefs = util.LoadDefDirectory("defs/doodads")
 local NewDoodad = require("objects/doodad")
 
 local self = {}
 local api = {}
 
-function api.AddDoodad(pos, doodadType)
-	local def = DoodadDefs[trackType]
+function api.AddDoodad(doodadType, pos)
 	local doodadData = {}
+print('AddDoodad', pos[1], pos[2])
 	doodadData.pos = pos
 	doodadData.doodadType = doodadType
-	IterableMap.Add(self.doodadList, NewDoodad(doodadData, api))
+	local newDoodad = NewDoodad(doodadData)
+	IterableMap.Add(self.doodadList, newDoodad)
+	return newDoodad
 end
 
 function api.RemoveDoodads(pos)
@@ -21,12 +19,12 @@ function api.RemoveDoodads(pos)
 end
 
 local function SetupWorld()
-	local map = LevelHandler.GetMapData()
+	local levelData = LevelHandler.GetLevelData()
 	
-	if map.doodads then
-		for i = 1, #map.doodads do
-			local doodad = map.doodads[i]
-			api.AddDoodad(doodad.pos, doodad.doodadType)
+	if levelData.doodads then
+		for i = 1, #levelData.doodads do
+			local doodad = levelData.doodads[i]
+			api.AddDoodad(doodad.doodadType, doodad.pos)
 		end
 	end
 end

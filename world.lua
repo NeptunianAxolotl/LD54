@@ -2,6 +2,7 @@
 EffectsHandler = require("effectsHandler")
 DialogueHandler = require("dialogueHandler")
 TerrainHandler = require("terrainHandler")
+DoodadHandler = require("doodadHandler")
 BuildingHandler = require("buildingHandler")
 ShopHandler = require("shopHandler")
 LevelHandler = require("levelHandler")
@@ -126,6 +127,9 @@ end
 function api.MouseReleased(x, y, button)
 	x, y = self.cameraTransform:inverse():transformPoint(x, y)
 	-- Send event to game components
+	if MapEditor.MouseReleased and MapEditor.MouseReleased(x, y, button) then
+		return
+	end
 end
 
 function api.MouseMoved(x, y, dx, dy)
@@ -242,6 +246,7 @@ function api.Draw()
 	end
 	
 	TerrainHandler.Draw(drawQueue)
+	DoodadHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	BuildingHandler.Draw(drawQueue)
 	ShopHandler.Draw(drawQueue)
@@ -301,6 +306,7 @@ function api.Initialize(cosmos, levelData)
 	GuyHandler.Initialize(api)
 	LevelHandler.Initialize(api, levelData)
 	TerrainHandler.Initialize(api)
+	DoodadHandler.Initialize(api)
 	ShopHandler.Initialize(api)
 	
 	-- Note that the camera pins only function for these particular second entries.
