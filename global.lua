@@ -21,6 +21,8 @@ local globals = {
 	SHOP_SPACING = 140,
 	SHOP_IMAGE_SCALE = 0.4,
 	
+	DOMINO_GENERATION_TRIES = 30,
+	
 	DECK_SIZE_MULT = 1,
 	INIT_LEVEL = "testLevel",
 	SHOP_SLOTS = 4,

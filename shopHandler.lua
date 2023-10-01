@@ -7,7 +7,6 @@ local api = {}
 local self = {}
 
 local function InitializeDeck(deckFrequency)
-	
 	local deck = {}
 	local validItems = {}
 	for i = 1, #TileDefList do
@@ -34,7 +33,17 @@ local function UpdateItems(refreshAll)
 	local shopSlots = GameHandler.GetShopSlots()
 	for i = 1, shopSlots do
 		if refreshAll or (not self.items[i]) then
-			self.items[i] = GenerateDomino()
+			local domino = GenerateDomino()
+			local tries = 0
+			while not TerrainHandler.DominoCanBePlacedAtAll(domino) do
+				domino = GenerateDomino()
+				tries = tries + 1
+				if tries > Global.DOMINO_GENERATION_TRIES then
+					self.world.SetGameOver(false, "Ran out of space")
+					break
+				end
+			end
+			self.items[i] = domino
 		end
 	end
 end
@@ -201,6 +210,13 @@ function api.DrawInterface()
 	local food = BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger")
 	Font.SetSize(1)
 	love.graphics.printf("Food " .. food, 20, 20, 400, "left")
+	
+	if self.world.GetGameOver() then
+		love.graphics.printf("Game Over", 20, 80, 400, "left")
+		local _, _, _, lossType = self.world.GetGameOver()
+		love.graphics.printf(lossType, 20, 140, 400, "left")
+	end
+	
 	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
 	
 	love.graphics.printf("Shop", shopItemsX - 200, shopItemsY, 400, "center")

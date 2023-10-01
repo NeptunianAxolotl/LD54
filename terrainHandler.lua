@@ -102,7 +102,24 @@ end
 				secondPos, defSecond.canBuildOn_map, defSecond.mustBuildNear_map,
 				defSecond.needBuildingNearby, defSecond.needNearbyDist),
 		}
-	}endfunction api.GetValidWorldPlacement(worldPos, rotation, domino)	return api.GetValidGridPlacement(api.WorldToGrid(worldPos), rotation, domino)end
+	}endfunction api.GetValidWorldPlacement(worldPos, rotation, domino)	return api.GetValidGridPlacement(api.WorldToGrid(worldPos), rotation, domino)end
+
+function api.DominoCanBePlacedAtAll(domino)
+	for x = 1, LevelHandler.Width() do
+		for y = LevelHandler.Height(), 1, -1 do
+			local gridPos = {x, y}
+			if api.IsTileEmpty(gridPos) then
+				for rotation = 0, 3 do
+					local canPlace = api.GetValidGridPlacement(gridPos, rotation, domino)
+					if canPlace and canPlace[1].valid and canPlace[2].valid then
+						return true
+					end
+				end
+			end
+		end
+	end
+	return false
+end
 local function SetupLevel()
 	local level = LevelHandler.GetLevelData()
 	for x = 1, LevelHandler.Width() do
