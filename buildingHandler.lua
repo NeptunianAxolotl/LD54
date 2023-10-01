@@ -10,7 +10,7 @@ end
 function api.AddBuilding(parentTiles, buildingName, pos, buildingData)	buildingData = (buildingData and util.CopyTable(buildingData)) or {}	buildingData.def = TileDefs[buildingName]
 	buildingData.parents = parentTiles	buildingData.pos = pos
 	
-	self.buildingDistanceCache[buildingName] = false -- Clear cache on all creation and destructions
+	self.buildingDistanceCache[buildingName] = false
 	
 	local building = NewBuilding(buildingData, api)
 	for i = 1, #parentTiles do
@@ -23,6 +23,10 @@ end
 	elseif buildingData.def.upgradeBuilding then
 		building.CheckUpgrade(buildingData.def.upgradeBuilding)
 	endend
+
+function api.ResetBuildingDistCache(buildingName)
+	self.buildingDistanceCache[buildingName] = false
+end
 
 function api.DeleteAllFlaggedBuildings()
 	IterableMap.ApplySelf(self.buildingList, "DeleteIfFlagged")

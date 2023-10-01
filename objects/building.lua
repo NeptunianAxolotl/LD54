@@ -211,6 +211,7 @@ local function NewBuilding(self, building)
 	end
 	
 	function self.DeleteIfFlagged()
+		BuildingHandler.ResetBuildingDistCache(self.def.defName)
 		return self.toDestroy
 	end
 	

@@ -5,7 +5,7 @@ local data = {
 	
 	collectableResourceType = "hunger",
 	collectableResourceTypeFunc = function (self)
-		return 1
+		return 2
 	end,
 }
 

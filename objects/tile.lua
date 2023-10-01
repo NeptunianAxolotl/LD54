@@ -67,36 +67,23 @@ local function NewTile(self, terrain, buildingData)
 		return self.toDestroy
 	end
 	
-	function self.DeleteIfNotNearRequirement(destroyType)
+	function self.NearDestroyRequirement(destroyType)
 		if destroyType ~= self.def.destroyIfNotNearby then
-			return false
+			return true
 		end
 		for i = 1, #self.def.needBuildingNearby do
 			local near = self.def.needBuildingNearby[i]
 			if near[1] == destroyType then
-				if not BuildingHandler.IsBuildingNear(self.pos, near[1], near[2]) then
-					return false
+				if BuildingHandler.IsBuildingNear(self.pos, near[1], near[2]) then
+					return true
 				end
 			end
 		end
-		
-		IterableMap.ApplySelf(self.buildings, "FlagForDeletion")
-		self.toDestroy = true
-		if self.def.doesUpgrade then
-			BuildingHandler.RecheckUpgradedBuildings(self.def.doesUpgrade)
-		end
-		return true
+		return false
 	end
 	
 	function self.DeleteTile()
-		IterableMap.ApplySelf(self.buildings, "FlagForDeletion")
-		TerrainHandler.DeleteAllFlaggedBuildings()
-		GuyHandler.DeleteAllFlaggedBuildings()
-		BuildingHandler.DeleteAllFlaggedBuildings()
 		self.toDestroy = true
-		if self.def.doesUpgrade then
-			BuildingHandler.RecheckUpgradedBuildings(self.def.doesUpgrade)
-		end
 	end
 	
 	function self.DeleteFlaggedBuildings()

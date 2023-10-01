@@ -18,19 +18,32 @@ function api.RemoveTile(pos)
 	local x, y = pos[1], pos[2]
 	local tileDef = tile.def
 	
+	IterableMap.ApplySelf(tile.buildings, "FlagForDeletion")
+	TerrainHandler.DeleteAllFlaggedBuildings()
+	GuyHandler.DeleteAllFlaggedBuildings()
+	BuildingHandler.DeleteAllFlaggedBuildings()
+	
+	tile.DeleteTile()
 	IterableMap.Remove(self.tileList, self.tilePos[x][y])
 	self.tilePos[x][y] = nil
-	tile.DeleteTile()
+	if tileDef.doesUpgrade then
+		BuildingHandler.RecheckUpgradedBuildings(tileDef.doesUpgrade)
+	end
 end
 
 function api.DeleteAllFlaggedBuildings()
 	IterableMap.ApplySelf(self.tileList, "DeleteFlaggedBuildings")
 end
 function api.CheckOutRangedTilesForDestruction(destroyType)
-	IterableMap.ApplySelf(self.tileList, "DeleteIfNotNearRequirement", destroyType)
-	TerrainHandler.DeleteAllFlaggedBuildings()
-	GuyHandler.DeleteAllFlaggedBuildings()
-	BuildingHandler.DeleteAllFlaggedBuildings()
+	local destroyList = {}
+	for key, data in IterableMap.Iterator(self.tileList) do
+		if not data.NearDestroyRequirement(destroyType) then
+			destroyList[#destroyList + 1] = data.GetPos()
+		end
+	end
+	for i = 1, #destroyList do
+		api.RemoveTile(destroyList[i])
+	end
 end
 function api.AddDomino(domino, pos)	for i = 1, 2 do		api.AddTile(domino[i], pos[i])	endend
 
