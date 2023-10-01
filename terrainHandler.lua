@@ -12,7 +12,34 @@ function api.SetTerrainType(terrain, pos)
 	self.terrainType[x][y] = terrain
 	self.terrainDraw[x] = self.terrainDraw[x] or {}
 	self.terrainDraw[x][y] = TerrainDefs[terrain].image
-endfunction api.IsTileEmpty(gridPos)	if gridPos[1] < 1 or gridPos[2] < 1 then		return false	end	if gridPos[1] > LevelHandler.Width() or gridPos[2] > LevelHandler.Height() then		return false	end	return not (self.tilePos[gridPos[1]] and self.tilePos[gridPos[1]][gridPos[2]])end
+end
+
+function api.GetTerrainAt(x, y)
+	return (self.terrainType[x] and self.terrainType[x][y])
+end
+function api.TerrainMatches(pos, buildOn, buildNear)
+	local x, y = pos[1], pos[2]
+	if not api.GetTerrainAt(x, y) then
+		return false
+	end
+	if not buildOn[api.GetTerrainAt(x, y)] then
+		return false
+	end
+	
+	if not buildNear then
+		return true
+	end
+	
+	for i = x - 1, x + 1 do
+		for j = y - 1, y + 1 do
+			if api.GetTerrainAt(i, j) and buildNear[api.GetTerrainAt(i, j)] then
+				return true
+			end
+		end
+	end
+	return false
+end
+function api.IsTileEmpty(gridPos)	if gridPos[1] < 1 or gridPos[2] < 1 then		return false	end	if gridPos[1] > LevelHandler.Width() or gridPos[2] > LevelHandler.Height() then		return false	end	return not (self.tilePos[gridPos[1]] and self.tilePos[gridPos[1]][gridPos[2]])end
 
 function api.GetTile(gridPos, direction)
 	if direction then
@@ -22,7 +49,16 @@ function api.GetTile(gridPos, direction)
 		return false
 	end
 	return IterableMap.Get(self.tileList, (self.tilePos[gridPos[1]] and self.tilePos[gridPos[1]][gridPos[2]]))
-endfunction api.FromIsometricBasis(pos)	return util.ChangeBasis(pos, self.fromIso[1], self.fromIso[2], self.fromIso[3], self.fromIso[4])endfunction api.ToIsometricBasis(pos)	return util.ChangeBasis(pos, self.toIso[1], self.toIso[2], self.toIso[3], self.toIso[4])endfunction api.WorldToGrid(pos)	pos = api.FromIsometricBasis(pos)	local tileSize = LevelHandler.TileSize()	local gx = math.floor(pos[1]/tileSize)	local gy = math.floor(pos[2]/tileSize)	return {gx, gy}endfunction api.GridToWorld(pos, corner)	local tileSize = LevelHandler.TileSize()	local worldPos	if corner then		worldPos = {pos[1]*tileSize, pos[2]*tileSize}	else		worldPos = {(pos[1]+0.5)*tileSize, (pos[2]+0.5)*tileSize}	end	return api.ToIsometricBasis(worldPos)endfunction api.Update(dt)	IterableMap.ApplySelf(self.tileList, "Update", dt)endfunction api.GetValidGridPlacement(gridPos, rotation, domino)	local secondPos = util.Add(gridPos, util.CardinalToVector(rotation))	if not (api.IsTileEmpty(gridPos) and api.IsTileEmpty(secondPos)) then		return false	end	return {gridPos, secondPos}endfunction api.GetValidWorldPlacement(worldPos, rotation, domino)	return api.GetValidGridPlacement(api.WorldToGrid(worldPos), rotation, domino)end
+endfunction api.FromIsometricBasis(pos)	return util.ChangeBasis(pos, self.fromIso[1], self.fromIso[2], self.fromIso[3], self.fromIso[4])endfunction api.ToIsometricBasis(pos)	return util.ChangeBasis(pos, self.toIso[1], self.toIso[2], self.toIso[3], self.toIso[4])endfunction api.WorldToGrid(pos)	pos = api.FromIsometricBasis(pos)	local tileSize = LevelHandler.TileSize()	local gx = math.floor(pos[1]/tileSize)	local gy = math.floor(pos[2]/tileSize)	return {gx, gy}endfunction api.GridToWorld(pos, corner)	local tileSize = LevelHandler.TileSize()	local worldPos	if corner then		worldPos = {pos[1]*tileSize, pos[2]*tileSize}	else		worldPos = {(pos[1]+0.5)*tileSize, (pos[2]+0.5)*tileSize}	end	return api.ToIsometricBasis(worldPos)endfunction api.Update(dt)	IterableMap.ApplySelf(self.tileList, "Update", dt)endfunction api.GetValidGridPlacement(gridPos, rotation, domino)	local secondPos = util.Add(gridPos, util.CardinalToVector(rotation))	if not (api.IsTileEmpty(gridPos) and api.IsTileEmpty(secondPos)) then		return false	end	return {
+		{
+			pos = gridPos,
+			valid = api.TerrainMatches(gridPos, TileDefs[domino[1]].canBuildOn_map, TileDefs[domino[1]].mustBuildNear_map),
+		},
+		{
+			pos = secondPos,
+			valid = api.TerrainMatches(secondPos, TileDefs[domino[2]].canBuildOn_map, TileDefs[domino[2]].mustBuildNear_map),
+		}
+	}endfunction api.GetValidWorldPlacement(worldPos, rotation, domino)	return api.GetValidGridPlacement(api.WorldToGrid(worldPos), rotation, domino)end
 local function SetupLevel()
 	local level = LevelHandler.GetLevelData()
 	for x = 1, LevelHandler.Width() do

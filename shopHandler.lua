@@ -133,8 +133,8 @@ end
 function api.MousePressed(x, y, button)
 	if button == 1 and self.heldTile and not api.MouseIsOverInterface() then
 		local dominoPos = TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
-		if dominoPos then
-			TerrainHandler.AddDomino(self.heldTile, dominoPos)
+		if dominoPos and dominoPos[1].valid and dominoPos[2].valid then
+			TerrainHandler.AddDomino(self.heldTile, {dominoPos[1].pos, dominoPos[2].pos})
 			UpdateItems(true)
 			self.heldTile = false
 		end
@@ -159,10 +159,12 @@ function api.Draw(drawQueue)
 		return
 	end
 	
+	util.PrintTable(dominoPos)
 	drawQueue:push({y=1000; f=function()
 		for i = 1, 2 do
-			local pos = TerrainHandler.GridToWorld(dominoPos[i])
-			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1)
+			local pos = TerrainHandler.GridToWorld(dominoPos[i].pos)
+			local validPlacement = dominoPos[i].valid
+			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1, validPlacement and Global.WHITE or Global.RED)
 		end
 	end})
 end

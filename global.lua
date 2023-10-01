@@ -5,6 +5,7 @@ local globals = {
 	
 	GREY = {0.5, 0.5, 0.5},
 	WHITE = {1, 1, 1},
+	RED = {1, 0.3, 0.3},
 	
 	MASTER_VOLUME = 0.75,
 	MUSIC_VOLUME = 0.01,
