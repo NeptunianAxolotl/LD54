@@ -1,5 +1,5 @@
 return {
-	name = "coast1",
+	name = "coast2",
 	file = "resources/images/doodads/coast1.png",
 	form = "image",
 	xScale = -1,
