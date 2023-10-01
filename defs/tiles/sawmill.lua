@@ -8,8 +8,7 @@ local data = {
 	spawnTilePositions = {{0, 0}},
 	
 	canBuildOn = {"grass", "desert"},
-	needBuildingNearby = "woodcutter",
-	needNearbyDist = 6,
+	needBuildingNearby = {{"woodcutter", 6}},
 	
 	population = 1,
 	popType = "plank",

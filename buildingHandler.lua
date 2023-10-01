@@ -7,7 +7,7 @@ local api = {}
 function api.RecheckUpgradedBuildings(upgradeType)
 	IterableMap.ApplySelf(self.buildingList, "CheckUpgrade", upgradeType)
 end
-function api.AddBuilding(parentTiles, buildingName, pos, buildingData)	buildingData = buildingData or {}	buildingData.def = TileDefs[buildingName]
+function api.AddBuilding(parentTiles, buildingName, pos, buildingData)	buildingData = (buildingData and util.CopyTable(buildingData)) or {}	buildingData.def = TileDefs[buildingName]
 	buildingData.parents = parentTiles	buildingData.pos = pos
 	
 	self.buildingDistanceCache[buildingName] = false -- Clear cache on all creation and destructions

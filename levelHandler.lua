@@ -53,7 +53,7 @@ function api.SaveLevel(name)
 	self.humanName = name
 	
 	local save = util.CopyTable(self.levelData)
-	save.terrain, save.tiles = TerrainHandler.GetSaveData()
+	save.terrain, save.tiles, save.invasionMask = TerrainHandler.GetSaveData()
 	save.doodads = DoodadHandler.ExportObjects()
 	
 	local saveTable = util.TableToString(save)

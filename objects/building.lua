@@ -266,6 +266,9 @@ local function NewBuilding(self, building)
 			end
 			drawQueue:push({y=1 +(self.def.depthNudge or 0) - (self.pos[2] - self.pos[1])*0.01; f=function()
 				Resources.DrawImage(image, self.drawPos[1], self.drawPos[2], 0, false, self.drawScale, self.GetActive() and Global.WHITE or Global.GREY)
+				if self.def.drawFunc then
+					self.def.drawFunc(self, self.drawPos)
+				end
 			end})
 		end
 		if DRAW_DEBUG then

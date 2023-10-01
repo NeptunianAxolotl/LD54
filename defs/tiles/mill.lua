@@ -10,8 +10,7 @@ local data = {
 	doesUpgrade = "mill",
 	
 	canBuildOn = {"grass", "desert"},
-	needBuildingNearby = "sawmill",
-	needNearbyDist = 6,
+	needBuildingNearby = {{"sawmill", 6}},
 	
 	bonusOnEdges = false,
 	

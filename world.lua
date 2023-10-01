@@ -72,6 +72,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if MapEditor.KeyPressed and MapEditor.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
+	if api.GetGameOver() then
+		return -- No doing actions
+	end
 	if ShopHandler.KeyPressed and ShopHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
@@ -84,9 +87,6 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if key == "p" then
 		api.ToggleMenu()
 	end
-	if api.GetGameOver() then
-		return -- No doing actions
-	end
 	if GameHandler.KeyPressed and GameHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
@@ -96,10 +96,16 @@ function api.MousePressed(x, y, button)
 	if MapEditor.MousePressed and MapEditor.MousePressed(x, y, button) then
 		return
 	end
+	if api.GetGameOver() then
+		return -- No doing actions
+	end
 	if ShopHandler.MousePressed and ShopHandler.MousePressed(x, y, button) then
 		return
 	end
 	if GameHandler.MousePressed(x, y, button) then
+		return
+	end
+	if TerrainHandler.MousePressed(x, y, button) then
 		return
 	end
 	if api.GetPaused() then
@@ -107,9 +113,6 @@ function api.MousePressed(x, y, button)
 	end
 	local uiX, uiY = self.rightInterfaceTransform:inverse():transformPoint(x, y)
 	
-	if api.GetGameOver() then
-		return -- No doing actions
-	end
 	if DialogueHandler.MousePressedInterface(uiX, uiY, button) then
 		return
 	end
@@ -212,6 +215,7 @@ function api.Update(dt)
 	InterfaceUtil.Update(dt)
 
 	ShopHandler.Update(dt)
+	TerrainHandler.Update(dt)
 	BuildingHandler.Update(dt)
 	GuyHandler.Update(dt)
 	ChatHandler.Update(dt)

@@ -8,11 +8,13 @@ local data = {
 	spawnTilePositions = {{0, 0}},
 	
 	canBuildOn = {"grass", "desert"},
-	needBuildingNearby = "sawmill",
-	needNearbyDist = 6,
+	needBuildingNearby = {{"sawmill", 6}, {"invasion", Global.INVASION_RANGE}},
 	
 	bonusOnEdges = true,
 	drawWiggle = 0.05,
+	proximityResourceTypeFunc = function (self)
+		return (self.GetActive() and (self.HasUpgrade() and 2 or 1)) or 0
+	end,
 	
 	needResource = {
 		worker = {

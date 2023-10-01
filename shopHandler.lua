@@ -136,6 +136,10 @@ function api.MouseIsOverInterface()
 	return mousePos[1] > Global.VIEW_WIDTH - Global.SHOP_WIDTH
 end
 
+function api.PlacingTile()
+	return self.heldTile
+end
+
 function api.MouseMoved(x, y)
 end
 
@@ -209,7 +213,9 @@ function api.DrawInterface()
 	
 	local food = BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger")
 	Font.SetSize(1)
-	love.graphics.printf("Food " .. food, 20, 20, 400, "left")
+	
+	local starvation = GameHandler.GetStarvation()
+	love.graphics.printf("Food " .. food, 20 + math.random()*starvation*500, 20 + math.random()*starvation*350, 400, "left")
 	
 	if self.world.GetGameOver() then
 		love.graphics.printf("Game Over", 20, 80, 400, "left")
@@ -246,6 +252,9 @@ function api.DrawInterface()
 		love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
 	end
 	
+	if not Global.CAN_REFRESH then
+		return
+	end
 	
 	local y = shopItemsY + Global.VIEW_HEIGHT - Global.SHOP_SPACING - Global.SHOP_SIZE
 	if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE) then

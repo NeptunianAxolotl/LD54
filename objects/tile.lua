@@ -43,7 +43,7 @@ local function GenerateBonusBuildings(self)
 	end
 end
 
-local function NewTile(self, terrain)
+local function NewTile(self, terrain, buildingData)
 	self.worldPos = TerrainHandler.GridToWorld(self.pos)
 	
 	self.buildings = IterableMap.New()
@@ -52,7 +52,7 @@ local function NewTile(self, terrain)
 	end
 	
 	for i = 1, #self.def.spawnTilePositions do
-		BuildingHandler.AddBuilding({self}, self.def.building, util.Add(self.pos, self.def.spawnTilePositions[i]))
+		BuildingHandler.AddBuilding({self}, self.def.building, util.Add(self.pos, self.def.spawnTilePositions[i]), buildingData)
 	end
 	
 	if self.def.bonusOnEdges then
@@ -63,11 +63,16 @@ local function NewTile(self, terrain)
 		return self.pos
 	end
 	
+	function self.IsDestroyed()
+		return self.toDestroy
+	end
+	
 	function self.DeleteTile()
 		IterableMap.ApplySelf(self.buildings, "FlagForDeletion")
 		TerrainHandler.DeleteAllFlaggedBuildings()
 		GuyHandler.DeleteAllFlaggedBuildings()
 		BuildingHandler.DeleteAllFlaggedBuildings()
+		self.toDestroy = true
 	end
 	
 	function self.DeleteFlaggedBuildings()
