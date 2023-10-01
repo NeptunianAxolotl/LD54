@@ -32,7 +32,7 @@ local globals = {
 	
 	DECK_SIZE_MULT = 1,
 	INIT_LEVEL = "testLevel",
-	SHOP_SLOTS = 3,
+	SHOP_SLOTS = 4,
 	CAN_REFRESH = false,
 	
 	SHOP_WIDTH = 350,

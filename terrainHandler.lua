@@ -21,14 +21,19 @@ function api.RemoveTile(pos)
 	IterableMap.Remove(self.tileList, self.tilePos[x][y])
 	self.tilePos[x][y] = nil
 	tile.DeleteTile()
-	if tileDef.doesUpgrade then
-		BuildingHandler.RecheckUpgradedBuildings(tileDef.doesUpgrade)
-	end
 end
 
 function api.DeleteAllFlaggedBuildings()
 	IterableMap.ApplySelf(self.tileList, "DeleteFlaggedBuildings")
-endfunction api.AddDomino(domino, pos)	for i = 1, 2 do		api.AddTile(domino[i], pos[i])	endend
+end
+function api.CheckOutRangedTilesForDestruction(destroyType)
+	IterableMap.ApplySelf(self.tileList, "DeleteIfNotNearRequirement", destroyType)
+	TerrainHandler.DeleteAllFlaggedBuildings()
+	GuyHandler.DeleteAllFlaggedBuildings()
+	BuildingHandler.DeleteAllFlaggedBuildings()
+end
+
+function api.AddDomino(domino, pos)	for i = 1, 2 do		api.AddTile(domino[i], pos[i])	endend
 
 function api.SetTerrainType(terrain, pos)
 	local x, y = pos[1], pos[2]
@@ -121,7 +126,8 @@ function api.WorldToContinuousGrid(pos)
 	local gy = pos[2]/tileSize - 0.5
 	return {gx, gy}
 end
-function api.GridToWorld(pos, corner)	local tileSize = LevelHandler.TileSize()	local worldPos	if corner then		worldPos = {pos[1]*tileSize, pos[2]*tileSize}	else		worldPos = {(pos[1]+0.5)*tileSize, (pos[2]+0.5)*tileSize}	end	return api.ToIsometricBasis(worldPos)end
+function api.GridToWorld(pos, corner)	local tileSize = LevelHandler.TileSize()	local worldPos	if corner then		worldPos = {pos[1]*tileSize, pos[2]*tileSize}	else		worldPos = {(pos[1]+0.5)*tileSize, (pos[2]+0.5)*tileSize}	end	return api.ToIsometricBasis(worldPos)end
+
 local function HoverOverTile()
 	self.hoveredTile = false
 	if ShopHandler.MouseIsOverInterface() or ShopHandler.PlacingTile() then

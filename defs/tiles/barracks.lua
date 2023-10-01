@@ -9,6 +9,7 @@ local data = {
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"sawmill", 6}, {"invasion", Global.INVASION_RANGE}},
+	destroyIfNotNearby = "invasion",
 	
 	bonusOnEdges = true,
 	drawWiggle = 0.05,

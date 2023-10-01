@@ -13,6 +13,7 @@ local data = {
 		end
 		TerrainHandler.SpawnInvasionRemoveWave(self.pos, self.invasionIndex)
 		TerrainHandler.RemoveTile(self.pos)
+		TerrainHandler.CheckOutRangedTilesForDestruction("invasion")
 	end,
 	drawFunc = function (self, pos)
 		Font.SetSize(-1)
