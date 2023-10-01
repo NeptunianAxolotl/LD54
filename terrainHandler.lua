@@ -119,6 +119,10 @@ function api.DominoCanBePlacedAtAll(domino)
 		end
 	end
 	return false
+end
+
+function api.InitializeActive()
+	return self.initTilesActive
 end
 local function SetupLevel()
 	local level = LevelHandler.GetLevelData()
@@ -130,10 +134,12 @@ local function SetupLevel()
 		end
 	end
 	
+	self.initTilesActive = true
 	for i = 1, #level.tiles do
 		local tile = level.tiles[i]
 		api.AddTile(tile.def, tile.pos)
 	end
+	self.initTilesActive = false
 end
 
 function api.GetSaveData()

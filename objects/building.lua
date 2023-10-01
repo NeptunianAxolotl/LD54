@@ -3,6 +3,12 @@ local Font = require("include/font")
 
 local TileDefs = util.LoadDefDirectory("defs/tiles", "defName")
 
+local function CheckUpgrade(self, oldUpgradeState)
+	if self.def.doesUpgrade and self.GetActive() ~= oldUpgradeState then
+		BuildingHandler.RecheckUpgradedBuildings(self.def.doesUpgrade)
+	end
+end
+
 local function LookForWorkersCheck(self, resource)
 	local resDef = self.def.needResource[resource]
 	while self.WantsWorkerOrResource(resource) do
@@ -15,6 +21,12 @@ local function LookForWorkersCheck(self, resource)
 	end
 	if self.WantsWorkerOrResource(resource) then
 		self.resourceState[resource].inactiveTimer = self.def.needResource[resource].idleTimeout
+	end
+	
+	if TerrainHandler.InitializeActive() then
+		self.resourceState[resource].inactiveTimer = math.random()*self.def.needResource[resource].idleTimeout
+		self.resourceState[resource].active = true
+		CheckUpgrade(self, oldUpgradeState)
 	end
 end
 
@@ -31,12 +43,6 @@ local function InitWork(self)
 	for i = 1, #self.def.needResourceList do
 		local resource = self.def.needResourceList[i]
 		LookForWorkersCheck(self, resource)
-	end
-end
-
-local function CheckUpgrade(self, oldUpgradeState)
-	if self.def.doesUpgrade and self.GetActive() ~= oldUpgradeState then
-		BuildingHandler.RecheckUpgradedBuildings(self.def.doesUpgrade)
 	end
 end
 
