@@ -37,10 +37,10 @@ local function ClosestToWithDistSq(guy, maxDistSq, fromPos, resource)
 end
 
 local function CountResourceType(self, resource)
-	if self.def.globalResourceType ~= resource then
+	if self.def.collectableResourceType ~= resource then
 		return false
 	end
-	return self.def.globalResourceTypeFunc(self)
+	return self.def.collectableResourceTypeFunc(self)
 end
 
 function api.CountResourceType(resource)

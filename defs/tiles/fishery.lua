@@ -15,8 +15,8 @@ local data = {
 	bonusOnEdges = true,
 	drawWiggle = 0,
 	
-	globalResourceType = "food",
-	globalResourceTypeFunc = function (self)
+	collectableResourceType = "food",
+	collectableResourceTypeFunc = function (self)
 		return (self.GetActive() and 3) or 0
 	end,
 	

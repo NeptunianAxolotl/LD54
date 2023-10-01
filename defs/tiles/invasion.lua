@@ -7,6 +7,10 @@ local data = {
 	drawWiggle = 0,
 	
 	onClick = function (self)
+		local nearbyArmy = BuildingHandler.CountResourceType("army", self.pos, Global.INVASION_RANGE)
+		if nearbyArmy < self.armySize then
+			return
+		end
 		TerrainHandler.SpawnInvasionRemoveWave(self.pos, self.invasionIndex)
 		TerrainHandler.RemoveTile(self.pos)
 	end,
@@ -14,8 +18,8 @@ local data = {
 		Font.SetSize(-1)
 		pos = util.Add(pos, {-450, -160})
 		love.graphics.setColor(0, 0, 0, 1)
-		local nearbyArmy = 
-		love.graphics.printf(32 .. "/" .. self.armySize, pos[1], pos[2], 900, "center")
+		local nearbyArmy = BuildingHandler.CountResourceType("army", self.pos, Global.INVASION_RANGE)
+		love.graphics.printf(nearbyArmy .. "/" .. self.armySize, pos[1], pos[2], 900, "center")
 	end,
 }
 

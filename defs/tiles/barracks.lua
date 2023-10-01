@@ -12,7 +12,8 @@ local data = {
 	
 	bonusOnEdges = true,
 	drawWiggle = 0.05,
-	proximityResourceTypeFunc = function (self)
+	collectableResourceType = "army",
+	collectableResourceTypeFunc = function (self)
 		return (self.GetActive() and (self.HasUpgrade() and 2 or 1)) or 0
 	end,
 	

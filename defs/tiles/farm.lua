@@ -16,8 +16,8 @@ local data = {
 	drawWiggle = 0,
 	depthNudge = -0.1,
 	
-	globalResourceType = "food",
-	globalResourceTypeFunc = function (self)
+	collectableResourceType = "food",
+	collectableResourceTypeFunc = function (self)
 		return (self.GetActive() and (self.HasUpgrade() and 3 or 2)) or 0
 	end,
 	

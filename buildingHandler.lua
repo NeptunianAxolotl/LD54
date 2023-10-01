@@ -38,15 +38,23 @@ end
 	return distSq
 end
 
-local function CountResourceType(self, resource)
-	if self.def.globalResourceType ~= resource then
+local function CountNearbyOrGlobalResourceType(self, resource, fromPos, nearDist)
+	if self.def.collectableResourceType ~= resource then
 		return false
 	end
-	return self.def.globalResourceTypeFunc(self)
+	if not fromPos then
+		return self.def.collectableResourceTypeFunc(self)
+	end
+	
+	local distSq = util.DistSq(self.GetPos(), fromPos)
+	if distSq > nearDist*nearDist then
+		return false
+	end
+	return self.def.collectableResourceTypeFunc(self)
 end
 
-function api.CountResourceType(resource)
-	return IterableMap.FilterCount(self.buildingList, CountResourceType, resource)
+function api.CountResourceType(resource, pos, nearDist)
+	return IterableMap.FilterCount(self.buildingList, CountNearbyOrGlobalResourceType, resource, pos, nearDist)
 end
 
 function api.GetClosestFreeBuilding(pos, resource)
