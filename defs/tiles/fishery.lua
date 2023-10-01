@@ -26,7 +26,7 @@ local data = {
 			idleTimeout = 9,
 			searchRadius = 4,
 			homeWaitTime = 1,
-			needDelay = 5,
+			needDelay = 8,
 		},
 	},
 }
