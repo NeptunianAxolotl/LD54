@@ -52,7 +52,7 @@ local function UpdateCameraToViewPoints(dt, pointList, moveSmooth, scaleSmooth)
 	local wantedScale = math.max((right - left)*self.scaleMult[1], (bottom - top)*self.scaleMult[2])
 	local wantedPos = {(left + right)/2, (top + bottom)/2}
 	
-	if moveSmooth == 0 and scaleSmooth == 0 then
+	if (not dt) or moveSmooth == 0 and scaleSmooth == 0 then
 		self.cameraPos = wantedPos
 		self.cameraScale = wantedScale
 		return self.cameraPos[1], self.cameraPos[2], self.cameraScale
@@ -95,6 +95,10 @@ local function GetCameraScale()
 	return self.cameraScale
 end
 
+local function GetCameraPos()
+	return self.cameraPos
+end
+
 local function Initialize(data)
 	data = data or {}
 	self = {
@@ -119,4 +123,5 @@ return {
 	UpdateTransform = UpdateTransform,
 	Initialize = Initialize,
 	GetCameraScale = GetCameraScale,
+	GetCameraPos = GetCameraPos,
 }

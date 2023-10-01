@@ -8,6 +8,7 @@ ShopHandler = require("shopHandler")
 LevelHandler = require("levelHandler")
 GuyHandler = require("guyHandler")
 MapEditor = require("mapEditor")
+CameraHandler = require("cameraHandler")
 
 Camera = require("utilities/cameraUtilities")
 InterfaceUtil = require("utilities/interfaceUtilities")
@@ -112,7 +113,7 @@ function api.MousePressed(x, y, button)
 	if DialogueHandler.MousePressedInterface(uiX, uiY, button) then
 		return
 	end
-	x, y = self.cameraTransform:inverse():transformPoint(x, y)
+	x, y = CameraHandler.GetCameraTransform():inverse():transformPoint(x, y)
 	
 	-- Send event to game components
 	if Global.DEBUG_PRINT_CLICK_POS and button == 2 then
@@ -125,7 +126,7 @@ function api.MousePressed(x, y, button)
 end
 
 function api.MouseReleased(x, y, button)
-	x, y = self.cameraTransform:inverse():transformPoint(x, y)
+	x, y = CameraHandler.GetCameraTransform():inverse():transformPoint(x, y)
 	-- Send event to game components
 	if MapEditor.MouseReleased and MapEditor.MouseReleased(x, y, button) then
 		return
@@ -146,12 +147,12 @@ end
 --------------------------------------------------
 
 function api.WorldToScreen(pos)
-	local x, y = self.cameraTransform:transformPoint(pos[1], pos[2])
+	local x, y = CameraHandler.GetCameraTransform():transformPoint(pos[1], pos[2])
 	return {x, y}
 end
 
 function api.ScreenToWorld(pos)
-	local x, y = self.cameraTransform:inverse():transformPoint(pos[1], pos[2])
+	local x, y = CameraHandler.GetCameraTransform():inverse():transformPoint(pos[1], pos[2])
 	return {x, y}
 end
 
@@ -171,7 +172,7 @@ function api.GetMousePosition()
 end
 
 function api.WorldScaleToScreenScale()
-	local m11 = self.cameraTransform:getMatrix()
+	local m11 = CameraHandler.GetCameraTransform():getMatrix()
 	return m11
 end
 
@@ -191,19 +192,6 @@ function api.GetPhysicsWorld()
 	return PhysicsHandler.GetPhysicsWorld()
 end
 
-local function UpdateCamera()
-	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(dt, 
-		{
-			{pos = TerrainHandler.GridToWorld({1, 1}), xOff = 50, yOff = 50},
-			{pos = TerrainHandler.GridToWorld({LevelHandler.Width(), 1}), xOff = 50, yOff = 50},
-			{pos = TerrainHandler.GridToWorld({1, LevelHandler.Height()}), xOff = 50, yOff = 50},
-			{pos = TerrainHandler.GridToWorld({LevelHandler.Width(), LevelHandler.Height()}), xOff = 50, yOff = 50},
-		}
-		, 0, 0
-	)
-	Camera.UpdateTransform(self.cameraTransform, cameraX, cameraY, cameraScale)
-end
-
 --------------------------------------------------
 -- Updates
 --------------------------------------------------
@@ -215,7 +203,7 @@ function api.Update(dt)
 	dt = dt * Global.GAME_SPEED
 	GameHandler.Update(dt)
 	if api.GetPaused() then
-		UpdateCamera()
+		CameraHandler.Update(dt)
 		return
 	end
 	
@@ -228,7 +216,7 @@ function api.Update(dt)
 	GuyHandler.Update(dt)
 	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
-	UpdateCamera()
+	CameraHandler.Update(dt)
 end
 
 function api.Draw()
@@ -236,9 +224,7 @@ function api.Draw()
 	local drawQueue = PriorityQueue.new(function(l, r) return l.y < r.y end)
 
 	-- Draw world
-	love.graphics.replaceTransform(self.cameraTransform)
-	
-	love.graphics.replaceTransform(self.cameraTransform)
+	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
 	while true do
 		local d = preShadowQueue:pop()
 		if not d then break end
@@ -252,7 +238,7 @@ function api.Draw()
 	ShopHandler.Draw(drawQueue)
 	GuyHandler.Draw(drawQueue)
 	
-	love.graphics.replaceTransform(self.cameraTransform)
+	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
 	while true do
 		local d = drawQueue:pop()
 		if not d then break end
@@ -285,7 +271,6 @@ end
 function api.Initialize(cosmos, levelData)
 	self = {}
 	self.cosmos = cosmos
-	self.cameraTransform = love.math.newTransform()
 	self.rightInterfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	self.paused = false
@@ -308,12 +293,7 @@ function api.Initialize(cosmos, levelData)
 	TerrainHandler.Initialize(api)
 	DoodadHandler.Initialize(api)
 	ShopHandler.Initialize(api)
-	
-	-- Note that the camera pins only function for these particular second entries.
-	Camera.Initialize({
-		windowPadding = {left = 0, right = Global.SHOP_WIDTH/Global.VIEW_WIDTH, top = 0, bot = 0},
-	})
-	UpdateCamera()
+	CameraHandler.Initialize(api)
 end
 
 return api

@@ -116,6 +116,9 @@ local function NewBuilding(self, building)
 		if resDef.jobActivationResources and not self.HasResources(resDef.jobActivationResources) then
 			return false
 		end
+		if resDef.dependOnActivation and not self.resourceState[resDef.dependOnActivation].active then
+			return false
+		end
 		return (resDef.count or 1) > (IterableMap.Count(resState.activeWorkers) + IterableMap.Count(resState.pendingWorkers))
 	end
 	
@@ -221,9 +224,7 @@ local function NewBuilding(self, building)
 		end
 	end
 	
-	
 	-- Updating
-	
 	function self.Update(dt)
 		for i = 1, #self.def.needResourceList do
 			local resource = self.def.needResourceList[i]

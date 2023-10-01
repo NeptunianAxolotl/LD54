@@ -1,5 +1,6 @@
 local data = {
 	width = 12,
+	cameraPos = {6, 6},
 	tileDeck = {
 		[1] = {
 			farm = 8,
@@ -8,6 +9,7 @@ local data = {
 			sawmill = 6,
 			mill = 6,
 			fishery = 8,
+			barracks = 7,
 		},
 		[2] = {
 			woodcutter = 8,
