@@ -28,11 +28,18 @@ local data = {
 		TerrainHandler.CheckOutRangedTilesForDestruction("invasion")
 	end,
 	drawFunc = function (self, pos)
+		if MapEditor.InEditMode() then
+			Font.SetSize(0)
+			love.graphics.setColor(1, 0.2, 0.2, 1)
+			love.graphics.printf("INDEX " .. self.invasionIndex, pos[1] - 240, pos[2] - 80, 600, "center")
+		end
+		
 		Font.SetSize(1)
 		pos = util.Add(pos, {-450, -180})
-		love.graphics.setColor(0, 0, 0, 1)
 		local nearbyArmy = GetNearbyArmySize(self)
 		
+		
+		love.graphics.setColor(0, 0, 0, 1)
 		if nearbyArmy < self.armySize then
 			Font.SetSize(1)
 			love.graphics.printf("Too few scouts for expedition\n - Needed: " .. self.armySize .. "\n - Have: " .. nearbyArmy, pos[1] + 280, pos[2] - 13, 380, "left")

@@ -118,11 +118,25 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.brushMode = "invasion"
 		self.brushType = "tile"
 		self.brushData = {armySize = 10, invasionIndex = 2}
+	elseif key == "h" then
+		self.brushMode = "invasion"
+		self.brushType = "tile"
+		self.brushData = {armySize = 20, invasionIndex = 3}
+	elseif key == "j" then
+		self.brushMode = "invasion"
+		self.brushType = "tile"
+		self.brushData = {armySize = 30, invasionIndex = 4}
 	elseif key == "v" then
 		self.brushMode = 1
 		self.brushType = "invadeArea"
 	elseif key == "b" then
 		self.brushMode = 2
+		self.brushType = "invadeArea"
+	elseif key == "n" then
+		self.brushMode = 3
+		self.brushType = "invadeArea"
+	elseif key == "m" then
+		self.brushMode = 4
 		self.brushType = "invadeArea"
 	end
 	return true
@@ -219,8 +233,8 @@ invasion mask, structure)
 - Ctrl+K: Save to file name
 - Ctrl+L: Load from file name
 - ER: Some Doodads, more needed.
-- FG: Exploration focus
-- VB: Dark area
+- FGHJ: Exploration focus
+- VBNM: Dark area
 - ZXC: Basic Buildings
 - Most of the numpad: Other buildings
 
