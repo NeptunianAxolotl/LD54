@@ -2,7 +2,7 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "house_single",
-	groundImage = "town_ground",
+	groundImage = "stone_ground",
 	upgradeImage = "house_double",
 	building = "town",
 	inShop = true,
