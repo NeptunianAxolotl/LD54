@@ -4,7 +4,7 @@ local data = {
 	height = 17,
 	cameraPos = {
 		[1] = 12,
-		[2] = 12,
+		[2] = 7,
 	},
 	tileDeck = {
 		[2] = {

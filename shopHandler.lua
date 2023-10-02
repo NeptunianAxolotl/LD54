@@ -462,7 +462,7 @@ local function DrawGameEndArea()
 	local buttonName = ""
 	local action = ""
 	if GameHandler.InVictoryState() then
-		text = "Every corner of the land has been explored."
+		text = LevelHandler.GetLevelData().customVictoryText or "Every corner of the land has been explored."
 		buttonName = "Next Island"
 		action = "next"
 	elseif GameHandler.HaveStarved() then
@@ -507,7 +507,7 @@ local function DrawGameEndArea()
 	love.graphics.setColor(0, 0, 0, 0.8)
 	love.graphics.printf(buttonName, buttonX, buttonY + 10, buttonWidth, "center")
 	
-	Font.SetSize(2)
+	Font.SetSize(3)
 	love.graphics.setColor(0, 0, 0, (self.endGameFadeTimer or 0))
 	
 	love.graphics.printf(text, textX, textY, 360, "left")
@@ -544,6 +544,11 @@ local function DrawRefreshButton()
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 32)
 	
+	if not canAfford then
+		local prop = affordProp
+		love.graphics.setColor(0.5, 0.5, 0.5, 0.4)
+		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra - 2, y - Global.SHOP_SIZE- 2, prop * (Global.SHOP_SIZE * 2 + buttonExtra*2) + 4, Global.SHOP_SIZE + 4, 8, 8, 32)
+	end
 	
 	if self.hoveredItem == GameHandler.GetShopSlots() + 1 and not self.shopBlockedTimer then
 		love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
@@ -553,11 +558,6 @@ local function DrawRefreshButton()
 	love.graphics.setLineWidth(8)
 	love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 32)
 	
-	if not canAfford then
-		local prop = affordProp
-		love.graphics.setColor(0.5, 0.5, 0.5, 0.4)
-		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra - 4, y - Global.SHOP_SIZE- 4, prop * (Global.SHOP_SIZE * 2 + buttonExtra*2) + 8, Global.SHOP_SIZE + 8, 8, 8, 32)
-	end
 	
 	Font.SetSize(1)
 	love.graphics.setColor(0, 0, 0, 0.8)

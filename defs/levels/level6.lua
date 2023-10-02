@@ -32,8 +32,8 @@ local data = {
 	},
 	hints = {
 		[1] = {
-			text = "Send tools from Blacksmiths to Outputs for a scouting boost.",
-			size = {1.58, 0.62},
+			text = "Suppply Outposts with tools from the Blacksmith to boost scouting power.",
+			size = {1.9, 0.62},
 			pos = {
 				[1] = 6,
 				[2] = 20,
