@@ -4,7 +4,7 @@ local data = {
 	image = "barracks_wood",
 	building = "barracks",
 	inShop = true,
-	cannotPairWith = {"sawmill"},
+	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	
 	canBuildOn = {"grass", "desert"},

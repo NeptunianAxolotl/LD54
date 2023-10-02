@@ -163,17 +163,19 @@ end
 	HoverOverTile()
 	DoInvasionWave(dt)end
 
-function api.DescribeNearBuildings(gridPos, needBuildingNearby)
+function api.DescribeNearBuildings(gridPos, needBuildingNearby, otherTileName)
 	local nearInfo = {}
 	if needBuildingNearby then
 		for i = 1, #needBuildingNearby do
 			local near = needBuildingNearby[i]
-			local nearby, dist = BuildingHandler.GetNearestBuilding(gridPos, near[1])
-			if nearby then
-				nearInfo[#nearInfo + 1] = {
-					pos = api.GridToWorld(nearby.GetPos()),
-					valid = (dist <= near[2])
-				}
+			if not (otherTileName and otherTileName == near[1]) then
+				local nearby, dist = BuildingHandler.GetNearestBuilding(gridPos, near[1])
+				if nearby then
+					nearInfo[#nearInfo + 1] = {
+						pos = api.GridToWorld(nearby.GetPos()),
+						valid = (dist <= near[2])
+					}
+				end
 			end
 		end
 	end
@@ -186,12 +188,12 @@ function api.DescribeNearDomino(gridPos, rotation, domino)
 	local defSecond = TileDefs[domino[2]]
 	
 	return {
-		api.DescribeNearBuildings(gridPos, defFirst.needBuildingNearby),
-		api.DescribeNearBuildings(secondPos, defSecond.needBuildingNearby),
+		api.DescribeNearBuildings(gridPos, defFirst.needBuildingNearby, domino[2]),
+		api.DescribeNearBuildings(secondPos, defSecond.needBuildingNearby, domino[1]),
 	}
 end
 
-function api.TerrainMatches(pos, buildOn, buildNear, needBuildingNearby)
+function api.TerrainMatches(pos, buildOn, buildNear, needBuildingNearby, otherTileName)
 	local x, y = pos[1], pos[2]
 	if not api.GetTerrainAt(x, y) then
 		return false
@@ -203,7 +205,7 @@ function api.TerrainMatches(pos, buildOn, buildNear, needBuildingNearby)
 	if needBuildingNearby then
 		for i = 1, #needBuildingNearby do
 			local near = needBuildingNearby[i]
-			if not BuildingHandler.IsBuildingNear(pos, near[1], near[2]) then
+			if not (otherTileName and otherTileName == near[1]) and (not BuildingHandler.IsBuildingNear(pos, near[1], near[2])) then
 				return false
 			end
 		end
@@ -229,13 +231,13 @@ end
 			pos = gridPos,
 			valid = api.IsTileEmpty(gridPos) and api.TerrainMatches(
 				gridPos, defFirst.canBuildOn_map, defFirst.mustBuildNear_map,
-				defFirst.needBuildingNearby),
+				defFirst.needBuildingNearby, domino[2]),
 		},
 		{
 			pos = secondPos,
 			valid = api.IsTileEmpty(secondPos) and api.TerrainMatches(
 				secondPos, defSecond.canBuildOn_map, defSecond.mustBuildNear_map,
-				defSecond.needBuildingNearby),
+				defSecond.needBuildingNearby, domino[1]),
 		}
 	}endfunction api.GetValidWorldPlacement(worldPos, rotation, domino)	return api.GetValidGridPlacement(api.WorldToGrid(worldPos), rotation, domino)end
 
