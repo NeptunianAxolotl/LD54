@@ -63,7 +63,7 @@ local globals = {
 	VIEW_HEIGHT = 1080,
 	GAME_SPEED = 2,
 	WORKER_SPEED = 0.9,
-	REFRESH_TIMER = 0.7,
+	REFRESH_TIMER = 0.05,
 }
 
 return globals

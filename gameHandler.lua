@@ -42,7 +42,7 @@ end
 
 function api.GetStockInfo(name)
 	local stock = self.stockpile[name]
-	return {cost = stock.cost, total = stock.total}
+	return {cost = math.floor(stock.cost), total = stock.total}
 end
 
 function api.AddResource(name, amount)
@@ -82,6 +82,7 @@ function api.DoTurnTick()
 		baseSlots = baseSlots + 1
 	end
 	self.shopSlots = baseSlots
+	self.maxShopSlotsSoFar = math.max(self.shopSlots, self.maxShopSlotsSoFar)
 	
 	api.AddResource("explosion", BuildingHandler.CountResourceType("alchemist"))
 	api.AddResource("refresh", BuildingHandler.CountResourceType("chapel"))
@@ -101,6 +102,10 @@ end
 
 function api.GetShopSlots()
 	return self.shopSlots
+end
+
+function api.GetMaxSlotsSoFar()
+	return self.maxShopSlotsSoFar
 end
 
 function api.GetStarvation()
@@ -145,6 +150,7 @@ function api.Initialize(parentWorld)
 			explosion = InitStockpile(Global.EXPLODE_COST, Global.EXPLODE_COST_INC),
 			refresh = InitStockpile(Global.REFRESH_COST, Global.REFRESH_COST_INC),
 		},
+		maxShopSlotsSoFar = Global.SHOP_SLOTS,
 	}
 end
 

@@ -104,6 +104,7 @@ local function ClickShopButton(item)
 		end
 		self.shopBlockedTimer = Global.REFRESH_TIMER
 		self.heldTile = false
+		GameHandler.BuyNext("refresh")
 		UpdateItems()
 		return
 	end
@@ -316,11 +317,23 @@ end
 local function DrawTileArea()
 	local mousePos = self.world.GetMousePositionInterface()
 	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
-	local shopItemsY = 280
+	local shopItemsY = 290
 	local buttonExtra = 20
+	local y = shopItemsY
+	
+	local columnAlign = 0.275
+	
+	if GameHandler.GetMaxSlotsSoFar() > 3 then
+		shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*(1 - columnAlign)
+	end
 	
 	for i = 1, GameHandler.GetShopSlots() do
-		local y = shopItemsY + Global.SHOP_SPACING * i
+		if i == 4 then
+			shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*columnAlign
+			y = shopItemsY
+		end
+		y = y + Global.SHOP_SPACING
+		
 		if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE) then
 			self.hoveredItem = i
 		end
@@ -329,12 +342,6 @@ local function DrawTileArea()
 		love.graphics.setLineWidth(4)
 		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
 		
-		for j = 1, 2 do
-			if self.items[i] then
-				Resources.DrawImage(TileDefs[self.items[i][j]].image, shopItemsX + (j*2 - 3)*Global.SHOP_SIZE/2, y + Global.SHOP_SIZE*0.5, 0, 1, Global.SHOP_IMAGE_SCALE)
-			end
-		end
-		
 		if self.hoveredItem == i then
 			love.graphics.setColor(0.35, 1, 0.35, 0.8)
 		else
@@ -342,8 +349,13 @@ local function DrawTileArea()
 		end
 		love.graphics.setLineWidth(8)
 		love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
+		
+		for j = 1, 2 do
+			if self.items[i] then
+				Resources.DrawImage(TileDefs[self.items[i][j]].image, shopItemsX + (j*2 - 3)*Global.SHOP_SIZE/2, y + Global.SHOP_SIZE*0.5, 0, 1, Global.SHOP_IMAGE_SCALE)
+			end
+		end
 	end
-	
 end
 
 local function DrawHeldTile()
@@ -369,15 +381,19 @@ local function DrawRefreshButton()
 	local shopItemsY = 160
 	local buttonExtra = 20
 
-	if not GameHandler.CanAfford("refresh") then
+	if not GameHandler.CanAfford("refresh") and not GameHandler.IsStockActive("refresh") then
 		return
 	end
 	
+	local refreshInfo = GameHandler.GetStockInfo("refresh")
+	local affordProp  = refreshInfo.total / refreshInfo.cost
+	local canAfford   = GameHandler.CanAfford("refresh")
+	
 	local y = shopItemsY + Global.VIEW_HEIGHT - Global.SHOP_SPACING - Global.SHOP_SIZE
-	if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE) then
+	if canAfford and util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE) then
 		self.hoveredItem = GameHandler.GetShopSlots() + 1
 	end
-	if self.shopBlockedTimer then
+	if not canAfford then
 		love.graphics.setColor(0.45, 0.65, 0.72, 1)
 	else
 		love.graphics.setColor(0.5, 0.7, 0.8, 1)
@@ -385,8 +401,8 @@ local function DrawRefreshButton()
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 16)
 	
-	if self.shopBlockedTimer then
-		local prop = self.shopBlockedTimer / Global.REFRESH_TIMER
+	if not canAfford then
+		local prop = affordProp
 		love.graphics.setColor(0.5, 0.5, 0.5, 1)
 		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, prop * (Global.SHOP_SIZE * 2 + buttonExtra*2), Global.SHOP_SIZE, 8, 8, 16)
 	end
@@ -401,7 +417,7 @@ local function DrawRefreshButton()
 		
 	Font.SetSize(1)
 	love.graphics.setColor(0, 0, 0, 0.8)
-	love.graphics.printf("Refresh", shopItemsX - Global.SHOP_SIZE - 20, y - Global.SHOP_SIZE + 14, Global.SHOP_SIZE * 2 + 35, "center")
+	love.graphics.printf("Refresh", shopItemsX - Global.SHOP_SIZE - 20, y - Global.SHOP_SIZE + 12, Global.SHOP_SIZE * 2 + 35, "center")
 end
 
 function api.DrawInterface()
@@ -437,7 +453,6 @@ function api.DrawInterface()
 	DrawTileArea()
 	DrawRefreshButton()
 	DrawHeldTile()
-	
 	
 	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
 	
