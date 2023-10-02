@@ -220,7 +220,6 @@ function api.Update(dt)
 	GuyHandler.Update(dt)
 	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
-	CameraHandler.Update(dt)
 end
 
 function api.Draw()

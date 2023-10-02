@@ -1,7 +1,7 @@
 local data = {
-	image = "wood",
+	image = "stone",
 	speed = 0.8,
-	resourceType = "wood",
+	resourceType = "stone",
 	hideWhenInactive = true,
 }
 

@@ -1,19 +1,20 @@
 local TileUtils = require("utilities/tileUtils")
 
 local data = {
-	image = "woodcutter",
-	building = "woodcutter",
+	image = "mine",
+	building = "mine",
 	inShop = true,
-	cannotPairWith = {"sawmill"},
+	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	
 	canBuildOn = {"grass", "desert"},
-	mustBuildNear = {"forest"},
+	mustBuildNear = {"mountain"},
+	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}},
 	
 	population = 1,
-	popType = "wood",
+	popType = "ore",
 	bonusOnEdges = true,
-	bonusBuilding = "woodblock",
+	bonusBuilding = "mine",
 	
 	guyActivationResources = {
 		worker = 1,
@@ -27,6 +28,14 @@ local data = {
 			homeWaitTime = 1,
 			maximumStockpile = 4,
 			stockpilePerJob = 1,
+			dependOnActivation = "plank",
+		},
+		plank = {
+			workTime = 1,
+			idleTimeout = 10,
+			searchRadius = Global.LONG_WALK_RANGE,
+			homeWaitTime = 1,
+			needDelay = 20,
 		},
 	},
 }

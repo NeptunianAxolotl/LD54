@@ -68,6 +68,14 @@ local function UpdateCameraToViewPoints(dt, pointList, moveSmooth, scaleSmooth)
 	return self.cameraPos[1], self.cameraPos[2], self.cameraScale
 end
 
+local function PushCamera(dt, vector, moveSmooth)
+	self.cameraVelocity = util.Average(self.cameraVelocity, vector, (1 - moveSmooth))
+	local newPos = util.Add(util.Mult(dt, self.cameraVelocity), self.cameraPos)
+	self.cameraPos = newPos
+	
+	return self.cameraPos[1], self.cameraPos[2], self.cameraScale
+end
+
 local function UpdateTransform(cameraTransform, cameraX, cameraY, cameraScale)
 	local windowX, windowY = love.window.getMode()
 	
@@ -121,6 +129,7 @@ return {
 	UpdateCameraToPlayer = UpdateCameraToPlayer,
 	UpdateCameraToViewPoints = UpdateCameraToViewPoints,
 	UpdateTransform = UpdateTransform,
+	PushCamera = PushCamera,
 	Initialize = Initialize,
 	GetCameraScale = GetCameraScale,
 	GetCameraPos = GetCameraPos,

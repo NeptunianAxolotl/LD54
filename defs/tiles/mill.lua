@@ -10,7 +10,7 @@ local data = {
 	doesUpgrade = "mill",
 	
 	canBuildOn = {"grass", "desert"},
-	needBuildingNearby = {{"sawmill", 6}},
+	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}},
 	
 	bonusOnEdges = false,
 	
@@ -18,7 +18,7 @@ local data = {
 		plank = {
 			workTime = 1,
 			idleTimeout = 10,
-			searchRadius = 6,
+			searchRadius = Global.LONG_WALK_RANGE,
 			homeWaitTime = 1,
 			needDelay = 20,
 		},

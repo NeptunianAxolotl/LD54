@@ -130,6 +130,7 @@ function api.Update(dt, realDt)
 	self.realTime = self.realTime + realDt
 	MusicHandler.Update(realDt)
 	SoundHandler.Update(realDt)
+	CameraHandler.Update(realDt)
 	World.Update(dt)
 end
 

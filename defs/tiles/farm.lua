@@ -25,7 +25,7 @@ local data = {
 		worker = {
 			workTime = 4,
 			idleTimeout = 10,
-			searchRadius = 4,
+			searchRadius = Global.SHORT_WALK_RANGE,
 			homeWaitTime = 1,
 			needDelay = 6,
 		},

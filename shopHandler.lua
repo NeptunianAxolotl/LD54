@@ -17,10 +17,10 @@ local function InitializeDeck(deckFrequency)
 			end
 		end
 	end
-	local function ModifyDeckOnShuffleFunc(deckCards)
-		return util.CopyTable(validItems)
-	end
-	return DeckHandler.GetDeck(validItems, true, ModifyDeckOnShuffleFunc)
+	--local function ModifyDeckOnShuffleFunc(deckCards)
+	--	return util.CopyTable(validItems)
+	--end
+	return DeckHandler.GetDeck(validItems, true) --, ModifyDeckOnShuffleFunc)
 end
 
 local function DominoIsomorphism(dom1, dom2)

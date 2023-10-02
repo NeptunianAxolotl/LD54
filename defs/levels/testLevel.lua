@@ -1,210 +1,631 @@
 local data = {
 	tiles = {
 		[1] = {
+			def = "farm",
+			pos = {
+				[1] = 2,
+				[2] = 5,
+			},
+		},
+		[2] = {
+			def = "town",
+			pos = {
+				[1] = 2,
+				[2] = 4,
+			},
+		},
+		[3] = {
+			def = "town",
+			pos = {
+				[1] = 2,
+				[2] = 3,
+			},
+		},
+		[4] = {
+			def = "woodcutter",
 			pos = {
 				[1] = 3,
 				[2] = 6,
 			},
-			def = "woodcutter",
 		},
-		[2] = {
+		[5] = {
+			def = "farm",
+			pos = {
+				[1] = 3,
+				[2] = 5,
+			},
+		},
+		[6] = {
+			def = "farm",
 			pos = {
 				[1] = 3,
 				[2] = 4,
 			},
-			def = "farm",
 		},
-		[3] = {
+		[7] = {
+			def = "town",
 			pos = {
 				[1] = 4,
 				[2] = 8,
 			},
-			def = "town",
 		},
-		[4] = {
+		[8] = {
+			def = "town",
 			pos = {
 				[1] = 4,
 				[2] = 6,
 			},
-			def = "town",
 		},
-		[5] = {
+		[9] = {
+			def = "town",
+			pos = {
+				[1] = 4,
+				[2] = 5,
+			},
+		},
+		[10] = {
+			def = "mill",
+			pos = {
+				[1] = 4,
+				[2] = 4,
+			},
+		},
+		[11] = {
+			def = "town",
+			pos = {
+				[1] = 4,
+				[2] = 3,
+			},
+		},
+		[12] = {
+			def = "fishery",
+			pos = {
+				[1] = 4,
+				[2] = 2,
+			},
+		},
+		[13] = {
+			def = "farm",
 			pos = {
 				[1] = 5,
 				[2] = 8,
 			},
-			def = "farm",
 		},
-		[6] = {
+		[14] = {
+			def = "farm",
+			pos = {
+				[1] = 5,
+				[2] = 7,
+			},
+		},
+		[15] = {
+			def = "town",
+			pos = {
+				[1] = 5,
+				[2] = 6,
+			},
+		},
+		[16] = {
+			def = "town",
+			pos = {
+				[1] = 5,
+				[2] = 3,
+			},
+		},
+		[17] = {
+			def = "fishery",
+			pos = {
+				[1] = 5,
+				[2] = 2,
+			},
+		},
+		[18] = {
+			def = "woodcutter",
 			pos = {
 				[1] = 6,
 				[2] = 7,
 			},
-			def = "woodcutter",
 		},
-		[7] = {
+		[19] = {
+			def = "sawmill",
 			pos = {
 				[1] = 6,
 				[2] = 6,
 			},
-			def = "sawmill",
 		},
-		[8] = {
+		[20] = {
+			def = "town",
 			pos = {
 				[1] = 6,
 				[2] = 5,
 			},
-			def = "town",
 		},
-		[9] = {
+		[21] = {
+			def = "barracks",
 			pos = {
 				[1] = 6,
 				[2] = 4,
 			},
-			def = "barracks",
 		},
-		[10] = {
+		[22] = {
+			def = "town",
 			pos = {
 				[1] = 7,
 				[2] = 8,
 			},
-			def = "town",
 		},
-		[11] = {
+		[23] = {
+			def = "town",
 			pos = {
 				[1] = 7,
 				[2] = 7,
 			},
-			def = "town",
 		},
-		[12] = {
+		[24] = {
+			def = "woodcutter",
 			pos = {
 				[1] = 7,
 				[2] = 4,
 			},
-			def = "woodcutter",
 		},
-		[13] = {
+		[25] = {
+			def = "plenty",
+			pos = {
+				[1] = 8,
+				[2] = 10,
+			},
+		},
+		[26] = {
+			def = "farm",
 			pos = {
 				[1] = 8,
 				[2] = 8,
 			},
-			def = "farm",
 		},
-		[14] = {
+		[27] = {
+			def = "farm",
 			pos = {
 				[1] = 8,
 				[2] = 7,
 			},
-			def = "farm",
 		},
-		[15] = {
+		[28] = {
+			def = "farm",
 			pos = {
 				[1] = 8,
 				[2] = 6,
 			},
-			def = "farm",
 		},
-		[16] = {
+		[29] = {
+			def = "farm",
 			pos = {
 				[1] = 9,
 				[2] = 10,
 			},
-			def = "farm",
 		},
-		[17] = {
+		[30] = {
+			def = "farm",
 			pos = {
 				[1] = 9,
 				[2] = 9,
 			},
-			def = "farm",
 		},
-		[18] = {
+		[31] = {
+			def = "woodcutter",
 			pos = {
 				[1] = 9,
 				[2] = 8,
 			},
-			def = "woodcutter",
 		},
-		[19] = {
+		[32] = {
+			def = "mill",
 			pos = {
 				[1] = 9,
 				[2] = 7,
 			},
-			def = "mill",
 		},
-		[20] = {
+		[33] = {
+			def = "town",
 			pos = {
 				[1] = 10,
 				[2] = 9,
 			},
-			def = "town",
 		},
-		[21] = {
+		[34] = {
+			def = "farm",
 			pos = {
 				[1] = 10,
 				[2] = 8,
 			},
-			def = "farm",
 		},
-		[22] = {
+		[35] = {
+			def = "farm",
 			pos = {
 				[1] = 10,
 				[2] = 6,
 			},
-			def = "farm",
 		},
-		[23] = {
+		[36] = {
+			def = "woodcutter",
 			pos = {
 				[1] = 10,
 				[2] = 5,
 			},
-			def = "woodcutter",
 		},
-		[24] = {
+		[37] = {
 			def = "invasion",
+			extraData = {
+				invasionIndex = 1,
+				armySize = 0,
+			},
 			pos = {
 				[1] = 10,
 				[2] = 2,
 			},
-			extraData = {
-				armySize = 0,
-				invasionIndex = 1,
+		},
+		[38] = {
+			def = "mine",
+			pos = {
+				[1] = 11,
+				[2] = 17,
 			},
 		},
-		[25] = {
+		[39] = {
+			def = "sawmill",
+			pos = {
+				[1] = 11,
+				[2] = 16,
+			},
+		},
+		[40] = {
+			def = "sawmill",
+			pos = {
+				[1] = 11,
+				[2] = 15,
+			},
+		},
+		[41] = {
+			def = "mine",
+			pos = {
+				[1] = 11,
+				[2] = 14,
+			},
+		},
+		[42] = {
+			def = "farm",
 			pos = {
 				[1] = 11,
 				[2] = 10,
 			},
-			def = "farm",
 		},
-		[26] = {
+		[43] = {
+			def = "fishery",
 			pos = {
 				[1] = 11,
 				[2] = 9,
 			},
+		},
+		[44] = {
+			def = "woodcutter",
+			pos = {
+				[1] = 12,
+				[2] = 19,
+			},
+		},
+		[45] = {
+			def = "woodcutter",
+			pos = {
+				[1] = 12,
+				[2] = 18,
+			},
+		},
+		[46] = {
+			def = "sawmill",
+			pos = {
+				[1] = 12,
+				[2] = 16,
+			},
+		},
+		[47] = {
+			def = "blacksmith",
+			pos = {
+				[1] = 12,
+				[2] = 15,
+			},
+		},
+		[48] = {
+			def = "quarry",
+			pos = {
+				[1] = 12,
+				[2] = 9,
+			},
+		},
+		[49] = {
+			def = "barracks",
+			pos = {
+				[1] = 12,
+				[2] = 8,
+			},
+		},
+		[50] = {
+			def = "woodcutter",
+			pos = {
+				[1] = 13,
+				[2] = 18,
+			},
+		},
+		[51] = {
+			def = "town",
+			pos = {
+				[1] = 13,
+				[2] = 17,
+			},
+		},
+		[52] = {
+			def = "town",
+			pos = {
+				[1] = 13,
+				[2] = 16,
+			},
+		},
+		[53] = {
+			def = "town",
+			pos = {
+				[1] = 13,
+				[2] = 15,
+			},
+		},
+		[54] = {
+			def = "town",
+			pos = {
+				[1] = 13,
+				[2] = 14,
+			},
+		},
+		[55] = {
+			def = "blacksmith",
+			pos = {
+				[1] = 13,
+				[2] = 13,
+			},
+		},
+		[56] = {
+			def = "sawmill",
+			pos = {
+				[1] = 13,
+				[2] = 9,
+			},
+		},
+		[57] = {
+			def = "barracks",
+			pos = {
+				[1] = 13,
+				[2] = 8,
+			},
+		},
+		[58] = {
+			def = "woodcutter",
+			pos = {
+				[1] = 14,
+				[2] = 18,
+			},
+		},
+		[59] = {
+			def = "town",
+			pos = {
+				[1] = 14,
+				[2] = 17,
+			},
+		},
+		[60] = {
+			def = "town",
+			pos = {
+				[1] = 14,
+				[2] = 16,
+			},
+		},
+		[61] = {
+			def = "town",
+			pos = {
+				[1] = 14,
+				[2] = 15,
+			},
+		},
+		[62] = {
+			def = "town",
+			pos = {
+				[1] = 14,
+				[2] = 14,
+			},
+		},
+		[63] = {
+			def = "farm",
+			pos = {
+				[1] = 14,
+				[2] = 13,
+			},
+		},
+		[64] = {
+			def = "quarry",
+			pos = {
+				[1] = 14,
+				[2] = 12,
+			},
+		},
+		[65] = {
+			def = "woodcutter",
+			pos = {
+				[1] = 15,
+				[2] = 18,
+			},
+		},
+		[66] = {
+			def = "town",
+			pos = {
+				[1] = 15,
+				[2] = 17,
+			},
+		},
+		[67] = {
+			def = "town",
+			pos = {
+				[1] = 15,
+				[2] = 16,
+			},
+		},
+		[68] = {
+			def = "town",
+			pos = {
+				[1] = 15,
+				[2] = 15,
+			},
+		},
+		[69] = {
+			def = "town",
+			pos = {
+				[1] = 15,
+				[2] = 14,
+			},
+		},
+		[70] = {
+			def = "farm",
+			pos = {
+				[1] = 15,
+				[2] = 13,
+			},
+		},
+		[71] = {
+			def = "quarry",
+			pos = {
+				[1] = 15,
+				[2] = 12,
+			},
+		},
+		[72] = {
+			def = "woodcutter",
+			pos = {
+				[1] = 16,
+				[2] = 18,
+			},
+		},
+		[73] = {
+			def = "woodcutter",
+			pos = {
+				[1] = 17,
+				[2] = 18,
+			},
+		},
+		[74] = {
+			def = "quarry",
+			pos = {
+				[1] = 18,
+				[2] = 11,
+			},
+		},
+		[75] = {
 			def = "fishery",
+			pos = {
+				[1] = 19,
+				[2] = 11,
+			},
+		},
+	},
+	invasionMask = {
+		[6] = {
+			[3] = 1,
+		},
+		[7] = {
+			[2] = 1,
+			[3] = 1,
+		},
+		[8] = {
+			[2] = 1,
+			[3] = 1,
+			[4] = 1,
+		},
+		[9] = {
+			[2] = 1,
+			[3] = 1,
+		},
+		[10] = {
+			[3] = 1,
+		},
+	},
+	humanName = "test level",
+	width = 20,
+	height = 20,
+	cameraPos = {
+		[1] = 12,
+		[2] = 12,
+	},
+	doodads = {
+		[1] = {
+			doodadType = "coast2",
+			pos = {
+				[2] = 1.493776957194,
+				[1] = 6.0122871398926,
+			},
+		},
+		[2] = {
+			doodadType = "coast1",
+			pos = {
+				[2] = 5.5532646179199,
+				[1] = 10.645553588867,
+			},
+		},
+		[3] = {
+			doodadType = "coast1",
+			pos = {
+				[2] = 4.219228108724,
+				[1] = 10.659898122152,
+			},
+		},
+		[4] = {
+			doodadType = "coast2",
+			pos = {
+				[2] = 1.4292265574137,
+				[1] = 5.0870685577393,
+			},
+		},
+		[5] = {
+			doodadType = "coast2",
+			pos = {
+				[2] = 1.4148826599121,
+				[1] = 8.7162208557129,
+			},
+		},
+		[6] = {
+			doodadType = "coast2",
+			pos = {
+				[2] = 1.465087890625,
+				[1] = 7.331979115804,
+			},
 		},
 	},
 	tileDeck = {
 		[2] = {
-			sawmill = 3,
-			town = 6,
+			mill = 2,
 			fishery = 6,
 			barracks = 5,
-			woodcutter = 4,
+			quarry = 9,
 			farm = 7,
-			mill = 2,
+			sawmill = 3,
+			woodcutter = 4,
+			blacksmith = 9,
+			town = 6,
+			mine = 9,
 		},
 		[1] = {
-			sawmill = 3,
-			town = 6,
+			mill = 2,
 			fishery = 6,
 			barracks = 5,
-			woodcutter = 4,
+			quarry = 9,
 			farm = 7,
-			mill = 2,
+			sawmill = 3,
+			woodcutter = 4,
+			blacksmith = 9,
+			town = 6,
+			mine = 9,
 		},
 	},
 	terrain = {
@@ -319,6 +740,14 @@ local data = {
 			[10] = "grass",
 			[11] = "mountain",
 			[12] = "water",
+			[13] = "water",
+			[14] = "water",
+			[15] = "water",
+			[16] = "water",
+			[17] = "water",
+			[18] = "water",
+			[19] = "water",
+			[20] = "water",
 		},
 		[9] = {
 			[1] = "water",
@@ -333,6 +762,14 @@ local data = {
 			[10] = "grass",
 			[11] = "mountain",
 			[12] = "water",
+			[13] = "mountain",
+			[14] = "mountain",
+			[15] = "mountain",
+			[16] = "mountain",
+			[17] = "mountain",
+			[18] = "mountain",
+			[19] = "mountain",
+			[20] = "water",
 		},
 		[10] = {
 			[1] = "water",
@@ -347,6 +784,14 @@ local data = {
 			[10] = "grass",
 			[11] = "mountain",
 			[12] = "water",
+			[13] = "grass",
+			[14] = "mountain",
+			[15] = "mountain",
+			[16] = "mountain",
+			[17] = "mountain",
+			[18] = "mountain",
+			[19] = "mountain",
+			[20] = "water",
 		},
 		[11] = {
 			[1] = "water",
@@ -355,12 +800,20 @@ local data = {
 			[4] = "water",
 			[5] = "water",
 			[6] = "water",
-			[7] = "water",
-			[8] = "water",
+			[7] = "grass",
+			[8] = "grass",
 			[9] = "grass",
 			[10] = "grass",
-			[11] = "mountain",
-			[12] = "water",
+			[11] = "grass",
+			[12] = "grass",
+			[13] = "grass",
+			[14] = "grass",
+			[15] = "grass",
+			[16] = "grass",
+			[17] = "grass",
+			[18] = "grass",
+			[19] = "grass",
+			[20] = "water",
 		},
 		[12] = {
 			[1] = "water",
@@ -369,100 +822,149 @@ local data = {
 			[4] = "water",
 			[5] = "water",
 			[6] = "water",
+			[7] = "grass",
+			[8] = "grass",
+			[9] = "grass",
+			[10] = "grass",
+			[11] = "grass",
+			[12] = "grass",
+			[13] = "grass",
+			[14] = "grass",
+			[15] = "grass",
+			[16] = "grass",
+			[17] = "grass",
+			[18] = "grass",
+			[19] = "grass",
+			[20] = "water",
+		},
+		[13] = {
+			[6] = "water",
+			[7] = "water",
+			[8] = "grass",
+			[9] = "grass",
+			[10] = "grass",
+			[11] = "grass",
+			[12] = "grass",
+			[13] = "grass",
+			[14] = "grass",
+			[15] = "grass",
+			[16] = "grass",
+			[17] = "grass",
+			[18] = "grass",
+			[19] = "forest",
+			[20] = "water",
+		},
+		[14] = {
+			[7] = "water",
+			[8] = "grass",
+			[9] = "grass",
+			[10] = "grass",
+			[11] = "grass",
+			[12] = "grass",
+			[13] = "grass",
+			[14] = "grass",
+			[15] = "grass",
+			[16] = "grass",
+			[17] = "grass",
+			[18] = "grass",
+			[19] = "forest",
+			[20] = "water",
+		},
+		[15] = {
+			[7] = "water",
+			[8] = "grass",
+			[9] = "grass",
+			[10] = "grass",
+			[11] = "grass",
+			[12] = "grass",
+			[13] = "grass",
+			[14] = "grass",
+			[15] = "grass",
+			[16] = "grass",
+			[17] = "grass",
+			[18] = "grass",
+			[19] = "forest",
+			[20] = "water",
+		},
+		[16] = {
+			[7] = "water",
+			[8] = "forest",
+			[9] = "grass",
+			[10] = "grass",
+			[11] = "grass",
+			[12] = "grass",
+			[13] = "grass",
+			[14] = "grass",
+			[15] = "grass",
+			[16] = "grass",
+			[17] = "grass",
+			[18] = "grass",
+			[19] = "forest",
+			[20] = "water",
+		},
+		[17] = {
+			[7] = "water",
+			[8] = "forest",
+			[9] = "grass",
+			[10] = "grass",
+			[11] = "grass",
+			[12] = "grass",
+			[13] = "grass",
+			[14] = "grass",
+			[15] = "grass",
+			[16] = "grass",
+			[17] = "grass",
+			[18] = "grass",
+			[19] = "forest",
+			[20] = "water",
+		},
+		[18] = {
+			[7] = "water",
+			[8] = "forest",
+			[9] = "forest",
+			[10] = "grass",
+			[11] = "grass",
+			[12] = "grass",
+			[13] = "grass",
+			[14] = "grass",
+			[15] = "grass",
+			[16] = "grass",
+			[17] = "grass",
+			[18] = "grass",
+			[19] = "water",
+			[20] = "water",
+		},
+		[19] = {
+			[7] = "water",
+			[8] = "forest",
+			[9] = "forest",
+			[10] = "forest",
+			[11] = "grass",
+			[12] = "forest",
+			[13] = "forest",
+			[14] = "forest",
+			[15] = "forest",
+			[16] = "forest",
+			[17] = "forest",
+			[18] = "water",
+			[19] = "water",
+		},
+		[20] = {
 			[7] = "water",
 			[8] = "water",
 			[9] = "water",
 			[10] = "water",
 			[11] = "water",
 			[12] = "water",
+			[13] = "water",
+			[14] = "water",
+			[15] = "water",
+			[16] = "water",
+			[17] = "water",
+			[18] = "water",
+			[19] = "water",
 		},
 	},
-	cameraPos = {
-		[1] = 6,
-		[2] = 6,
-	},
-	width = 12,
-	doodads = {
-		[1] = {
-			pos = {
-				[2] = 6.9805399576823,
-				[1] = 10.58100382487,
-			},
-			doodadType = "coast1",
-		},
-		[2] = {
-			pos = {
-				[2] = 5.5532646179199,
-				[1] = 10.645553588867,
-			},
-			doodadType = "coast1",
-		},
-		[3] = {
-			pos = {
-				[2] = 4.219228108724,
-				[1] = 10.659898122152,
-			},
-			doodadType = "coast1",
-		},
-		[4] = {
-			pos = {
-				[2] = 9.1824175516764,
-				[1] = 11.54925664266,
-			},
-			doodadType = "coast1",
-		},
-		[5] = {
-			pos = {
-				[2] = 1.4148826599121,
-				[1] = 8.7162208557129,
-			},
-			doodadType = "coast2",
-		},
-		[6] = {
-			pos = {
-				[2] = 1.465087890625,
-				[1] = 7.331979115804,
-			},
-			doodadType = "coast2",
-		},
-		[7] = {
-			pos = {
-				[2] = 1.493776957194,
-				[1] = 6.0122871398926,
-			},
-			doodadType = "coast2",
-		},
-		[8] = {
-			pos = {
-				[2] = 1.4292265574137,
-				[1] = 5.0870685577393,
-			},
-			doodadType = "coast2",
-		},
-	},
-	humanName = "test level",
-	invasionMask = {
-		[6] = {
-			[3] = 1,
-		},
-		[7] = {
-			[2] = 1,
-			[3] = 1,
-		},
-		[8] = {
-			[2] = 1,
-			[3] = 1,
-			[4] = 1,
-		},
-		[9] = {
-			[2] = 1,
-			[3] = 1,
-		},
-		[10] = {
-			[3] = 1,
-		},
-	},
-	height = 12,
 }
 
 return data

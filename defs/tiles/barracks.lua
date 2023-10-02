@@ -8,7 +8,7 @@ local data = {
 	spawnTilePositions = {{0, 0}},
 	
 	canBuildOn = {"grass", "desert"},
-	needBuildingNearby = {{"sawmill", 6}, {"invasion", Global.INVASION_RANGE}},
+	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},
 	destroyIfNotNearby = "invasion",
 	
 	bonusOnEdges = false,
@@ -22,7 +22,7 @@ local data = {
 		worker = {
 			workTime = 10,
 			idleTimeout = 5,
-			searchRadius = 4,
+			searchRadius = Global.SHORT_WALK_RANGE,
 			homeWaitTime = 1,
 			dependOnActivation = "plank",
 			needDelay = 2,
@@ -30,7 +30,7 @@ local data = {
 		plank = {
 			workTime = 1,
 			idleTimeout = 10,
-			searchRadius = 6,
+			searchRadius = Global.LONG_WALK_RANGE,
 			homeWaitTime = 1,
 			needDelay = 30,
 		},

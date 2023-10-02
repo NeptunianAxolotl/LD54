@@ -18,7 +18,7 @@ local data = {
 		wood = {
 			workTime = 1,
 			idleTimeout = 0,
-			searchRadius = 6,
+			searchRadius = Global.LONG_WALK_RANGE,
 			homeWaitTime = 1,
 			needDelay = 45,
 		},

@@ -42,18 +42,30 @@ function api.KeyPressed(key, scancode, isRepeat)
 	elseif key == "5" then
 		self.brushMode = "water"
 		self.brushType = "terrain"
+		
+		
 	elseif key == "q" then
 		self.brushMode = "coast1"
 		self.brushType = "doodad"
 	elseif key == "e" then
 		self.brushMode = "coast2"
 		self.brushType = "doodad"
+		
+		
 	elseif key == "z" then
 		self.brushMode = "farm"
 		self.brushType = "tile"
 	elseif key == "x" then
 		self.brushMode = "town"
 		self.brushType = "tile"
+	elseif key == "c" then
+		self.brushMode = "woodcutter"
+		self.brushType = "tile"
+	elseif key == "p" then
+		self.brushMode = "plenty"
+		self.brushType = "tile"
+		
+		
 	elseif key == "f" then
 		self.brushMode = "invasion"
 		self.brushType = "tile"
