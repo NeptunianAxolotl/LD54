@@ -110,14 +110,15 @@ function api.KeyPressed(key, scancode, isRepeat)
 end
 
 function api.Draw(drawQueue)
+	if not self.levelData.hints then
+		return
+	end
 	drawQueue:push({y=100000; f=function()
 		for i = 1, #self.levelData.hints do
 			local hint = self.levelData.hints[i]
 			local pos = TerrainHandler.GridToWorld(hint.pos)
 			local size = util.Mult(api.TileSize()*4, hint.size)
 			
-			print(hint.pos[1], hint.pos[2])
-			print(pos[1], pos[2])
 			if hint.arrowDest then
 				local arrowDest = TerrainHandler.GridToWorld(hint.arrowDest)
 				love.graphics.setColor(0, 0, 0, 1)

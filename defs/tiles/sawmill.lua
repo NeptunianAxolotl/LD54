@@ -7,6 +7,8 @@ local data = {
 	cannotPairWith = {"mill", "sawmill", "woodcutter"},
 	spawnTilePositions = {{0, 0}},
 	
+	tooltip = "Sawmill\nProcesses logs into planks to maintain a variety of wooden structures.",
+	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"woodcutter", Global.LONG_WALK_RANGE}},
 	

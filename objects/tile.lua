@@ -113,6 +113,11 @@ local function NewTile(self, terrain, buildingData)
 	end
 	
 	function self.Draw(drawQueue)
+		if self.def.groundImage then
+			drawQueue:push({y=-30 +(self.def.depthNudge or 0) - (self.pos[2] - self.pos[1])*0.01; f=function()
+				Resources.DrawImage(self.def.groundImage, self.worldPos[1], self.worldPos[2])
+			end})
+		end
 	end
 	
 	function self.DrawInterface()

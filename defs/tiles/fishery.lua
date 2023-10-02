@@ -9,6 +9,8 @@ local data = {
 	canBuildOn = {"grass", "desert"},
 	mustBuildNear = {"water"},
 	
+	tooltip = "Fishery\nProduces food (4). Requires less work than farms, but must be built next to water.",
+	
 	upgradeBuilding = "mill",
 	upgradeDistance = 1.49,
 	

@@ -7,6 +7,12 @@ local data = {
 	spawnTilePositions = {{0, 0}},
 	destroyPlacement = true,
 	
+	TooltipFunc = function() 
+		local refreshInfo = GameHandler.GetStockInfo("explosion")
+		local income = BuildingHandler.CountResourceType("alchemist")
+		return string.format("Explosives\nClears buildings. Stocks increase after placing a tile.\n  - Stockpile: %d\n  - Income: %d\n  - Current cost: %d", refreshInfo.total, income, refreshInfo.cost)
+	end,
+	
 	canBuildOn = false, -- Anywhere
 	needBuildingNearby = {{"alchemist", Global.ALCHEMIST_RANGE}},
 	

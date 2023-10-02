@@ -11,6 +11,8 @@ local data = {
 	drawWiggle = 0,
 	drawFlip = 1,
 	
+	tooltip = "Fountain\nUpgrades nearby houses, allowing them to house two people. Requires stone to maintain.",
+	
 	collectableResourceType = "invasion",
 	collectableResourceTypeFunc = function (self)
 		return 1

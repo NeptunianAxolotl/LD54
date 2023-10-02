@@ -10,6 +10,7 @@ local data = {
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"mine", Global.LONG_WALK_RANGE}},
 	
+	tooltip = "Alchemist\nProduces explosives from ore. Explosives are used to destroy buildings when they are no longer required.",
 	bonusOnEdges = false,
 	drawWiggle = 0.1,
 	collectableResourceType = "alchemist",

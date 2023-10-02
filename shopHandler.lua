@@ -256,7 +256,8 @@ local function TryToExplodeDominio(dominoPos)
 	end
 	
 	for i = 1, 2 do
-		if TerrainHandler.GetTile(dominoPos[i].pos) == "invasion" then
+		local tile = TerrainHandler.GetTile(dominoPos[i].pos)
+		if tile and tile.def.defName == "invasion" then
 			return false
 		end
 		local validPlacement = nearbyInfo[i] and nearbyInfo[i][1] and nearbyInfo[i][1].valid

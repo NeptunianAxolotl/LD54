@@ -11,6 +11,8 @@ local data = {
 	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},
 	destroyIfNotNearby = "invasion",
 	
+	tooltip = "Watchtower\nEach watchtower employs one scout. Requires planks to maintain. Supplying tools dobules scouting effectiveness.",
+	
 	bonusOnEdges = false,
 	drawWiggle = 0.05,
 	collectableResourceType = "army",
