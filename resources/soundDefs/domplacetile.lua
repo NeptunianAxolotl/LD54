@@ -1,4 +1,4 @@
 return {
 	file = "effects/domplacetile.mp3",
-	volMult = 0.5,
+	volMult = 0.3,
 }
