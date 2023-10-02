@@ -2,51 +2,51 @@ local data = {
 	humanName = "test",
 	width = 10,
 	height = 18,
-    customVictoryText = "You've explored the entire island!  We're calling this one 'Long Island' because it sounded better than Squat Rectangle Island.",
 	cameraPos = {
-		[1] = 5,
 		[2] = 5,
+		[1] = 5,
 	},
+	customVictoryText = "You've explored the entire island!  We're calling this one 'Long Island' because it sounded better than Squat Rectangle Island.",
 	tileDeck = {
-		[2] = {
-			woodcutter = 2,
-			barracks = 2,
-			town = 5,
-			sawmill = 2,
-			fishery = 3,
-			farm = 3,
-		},
 		[1] = {
-			woodcutter = 2,
-			barracks = 2,
-			town = 5,
+			farm = 3,
 			sawmill = 2,
 			fishery = 3,
+			woodcutter = 2,
+			town = 5,
+			barracks = 2,
+		},
+		[2] = {
 			farm = 3,
+			sawmill = 2,
+			fishery = 3,
+			woodcutter = 2,
+			town = 5,
+			barracks = 2,
 		},
 	},
 	tiles = {
 		[1] = {
+			def = "invasion",
 			extraData = {
-				invasionIndex = 2,
 				armySize = 6,
+				invasionIndex = 2,
 			},
 			pos = {
 				[1] = 5,
 				[2] = 13,
 			},
-			def = "invasion",
 		},
 		[2] = {
+			def = "invasion",
 			extraData = {
-				invasionIndex = 1,
 				armySize = 3,
+				invasionIndex = 1,
 			},
 			pos = {
 				[1] = 5,
 				[2] = 9,
 			},
-			def = "invasion",
 		},
 		[3] = {
 			def = "town",
@@ -260,10 +260,11 @@ local data = {
 	},
 	invasionMask = {
 		[0] = {
+			[11] = 1,
 			[13] = 1,
+			[10] = 1,
 		},
 		[1] = {
-			[8] = 1,
 			[9] = 1,
 			[10] = 1,
 			[11] = 1,
@@ -273,7 +274,6 @@ local data = {
 			[15] = 2,
 			[16] = 2,
 			[17] = 2,
-			[18] = 2,
 		},
 		[2] = {
 			[8] = 1,
@@ -374,7 +374,6 @@ local data = {
 			[18] = 2,
 		},
 		[10] = {
-			[8] = 1,
 			[9] = 1,
 			[10] = 1,
 			[11] = 1,
@@ -384,7 +383,9 @@ local data = {
 			[15] = 2,
 			[16] = 2,
 			[17] = 2,
-			[18] = 2,
+		},
+		[11] = {
+			[8] = 1,
 		},
 	},
 }

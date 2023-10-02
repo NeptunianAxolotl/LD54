@@ -87,7 +87,7 @@ local globals = {
 	TOOLTIP_FADE_DELAY = 0.11,
 	END_GAME_FADE_RATE = 2.8,
 	
-	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "tileDeck", "hints", "tiles", "terrain", "doodads", "invasionMask"},
+	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "customVictoryText", "tileDeck", "hints", "tiles", "terrain", "doodads", "invasionMask"},
 }
 
 return globals
