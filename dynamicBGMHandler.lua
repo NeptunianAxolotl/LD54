@@ -191,8 +191,8 @@ function api.Update(dt)
   
   -- If net food is positive, prefer the oboe solo.  Otherwise, prefer Hymnal.
   if (BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger") - BuildingHandler.CountResourceType("tavern")*Global.TAVERN_FOOD_COST > 0) then
-    soloWeights = {4,0,0,0}
-  else
+    soloWeights = {4,4,4,0}
+  else  
     soloWeights = {0,0,0,4}
   end
   
