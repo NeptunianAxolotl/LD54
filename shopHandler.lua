@@ -448,7 +448,7 @@ local function DrawGameEndArea()
 	local buttonName = ""
 	local action = ""
 	if GameHandler.InVictoryState() then
-		text = "The land something etc"
+		text = "Every corner of the land has been explored. On to the next one."
 		buttonName = "Next Island"
 		action = "next"
 	elseif GameHandler.HaveStarved() then
