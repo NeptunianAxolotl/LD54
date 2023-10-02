@@ -9,12 +9,13 @@ local data = {
 	tileDeck = {
 		[2] = {
 			woodcutter = 1,
-			fishery = 4,
+			farm = 5,
 			town = 4,
 			sawmill = 1,
 		},
 		[1] = {
 			town = 1,
+			farm = 1,
 			barracks = 5,
 		},
 	},

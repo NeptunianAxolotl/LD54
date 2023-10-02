@@ -140,6 +140,10 @@ local function ClickOnTile()
 	end
 end
 
+function api.GetHoveredTile()
+	return self.hoveredTile
+end
+
 function api.MousePressed(x, y, button)
 	ClickOnTile()
 end
