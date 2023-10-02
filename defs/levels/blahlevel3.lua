@@ -2,6 +2,7 @@ local data = {
 	humanName = "Atoll",
 	width = 20,
 	height = 20,
+    customVictoryText = "You've explored the entire island.  Very picturesque, though you're not sure where the serfs are supposed to fit.",
 	cameraPos = {
 		[1] = 14,
 		[2] = 7,

@@ -466,11 +466,11 @@ local function DrawGameEndArea()
 		buttonName = "Next Island"
 		action = "next"
 	elseif GameHandler.HaveStarved() then
-		text = "Your people have starved"
+		text = "Your people have starved!  Unfortunate.  They'll probably have you beheaded."
 		buttonName = "Retry Island"
 		action = "retry"
 	elseif api.OutOfSpace() then
-		text = "You have run out of space"
+		text = "You have run out of space.  Understandable, really."
 		buttonName = "Retry Island"
 		action = "retry"
 	end

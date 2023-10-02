@@ -2,6 +2,7 @@ local data = {
 	humanName = "test",
 	width = 30,
 	height = 17,
+    customVictoryText = "You've explored the entire island.  Now this one is more like it!",
 	cameraPos = {
 		[2] = 9.3,
 		[1] = 18,
@@ -28,11 +29,11 @@ local data = {
 	},
 	hints = {
 		[1] = {
-			text = "- Move the camera with the arrow keys or WSAD.\n- Press Ctrl+R to restart at any time.\n- Press Ctrl+N/P skip to the next or previous level.\n\nOutposts are dismantled when there are no unscouted lands nearby.",
+			text = "- WASD (or Arrow Keys) to move the camera.\n- Ctrl+R to restart the game at any time.\n- Ctrl+N/Ctrl+P to skip to the next or previous level.\n\nOutposts are dismantled when there are no longer any unscouted lands in range.",
 			size = {3.2, 1.1},
 			pos = {
-				[1] = 13.8,
-				[2] = 15.6,
+				[1] = 17.95,
+				[2] = 1.6,
 			},
 		},
 	},

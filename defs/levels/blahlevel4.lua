@@ -2,6 +2,7 @@ local data = {
 	humanName = "Pinnacle",
 	width = 16,
 	height = 23,
+    customVictoryText = "You've explored the entire island, and developed an entire military force in the process!",
 	cameraPos = {
 		[2] = 6,
 		[1] = 6,

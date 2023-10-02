@@ -2,6 +2,7 @@ local data = {
 	humanName = "test",
 	width = 20,
 	height = 28,
+    customVictoryText = "You've explored the entire island!  The Kingdom has dubbed you 'Master of Logistics'.  Also 'Duke of Tiny Island #3'.",
 	cameraPos = {
 		[2] = 8,
 		[1] = 12,

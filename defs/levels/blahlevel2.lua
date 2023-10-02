@@ -2,6 +2,7 @@ local data = {
 	humanName = "test level",
 	width = 17,
 	height = 17,
+    customVictoryText = "You've explored the entire island!  Shame you cluttered it up so badly in the process.",
 	cameraPos = {
 		[1] = 12,
 		[2] = 7,

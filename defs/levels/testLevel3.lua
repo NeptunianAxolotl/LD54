@@ -2,6 +2,7 @@ local data = {
 	humanName = "test level",
 	width = 20,
 	height = 20,
+    customVictoryText = "How did you get in here?",
 	cameraPos = {
 		[2] = 12,
 		[1] = 12,

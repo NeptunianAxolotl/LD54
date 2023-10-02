@@ -2,6 +2,7 @@ local data = {
 	humanName = "redemption",
 	width = 22,
 	height = 12,
+    customVictoryText = "You've explored the entire island!  You really hope someone's been naming these as you went along.",
 	cameraPos = {
 		[2] = 6,
 		[1] = 6,

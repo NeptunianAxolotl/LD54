@@ -2,6 +2,7 @@ local data = {
 	humanName = "test",
 	width = 20,
 	height = 22,
+    customVictoryText = "You've explored the entire island!\n\nThis one looked more promising, but really, it's also quite small.",
 	cameraPos = {
 		[2] = 10,
 		[1] = 10,
@@ -24,11 +25,11 @@ local data = {
 	},
 	hints = {
 		[1] = {
-			text = "- Outposts need planks as upkeep\n- The sawmill turns logs into planks\n- Logs are harvested by woodcutters\n- Buildings nearby workers so keep growing your population.",
-			size = {2.6, 1},
+			text = "- Outposts need planks as upkeep; the sawmill turns logs into planks.\n- Logs are harvested by woodcutters.\n- Bulidings need other buildings nearby to function, and most of them need people to run them - so keep growing your population.",
+			size = {2.8, 1.1},
 			pos = {
 				[1] = 15,
-				[2] = 8.8,
+				[2] = 7.2,
 			},
 		},
 	},
