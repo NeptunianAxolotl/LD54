@@ -87,6 +87,9 @@ function api.GetViewRestriction()
 end
 
 function api.DoTurnTick()
+	api.AddResource("explosion", BuildingHandler.CountResourceType("alchemist"))
+	api.AddResource("refresh", BuildingHandler.CountResourceType("chapel"))
+	
 	local baseSlots = Global.SHOP_SLOTS
 	if BuildingHandler.CountResourceType("tavern") > 0 then
 		baseSlots = baseSlots + 1
@@ -94,16 +97,11 @@ function api.DoTurnTick()
 	if BuildingHandler.CountResourceType("cathedral") > 0 then
 		baseSlots = baseSlots + 1
 	end
-	print(BuildingHandler.CountResourceType("tavern"))
-	print(BuildingHandler.CountResourceType("cathedral"))
 	if api.CanAfford("explosion") then
 		baseSlots = baseSlots + 1
 	end
 	self.shopSlots = baseSlots
 	self.maxShopSlotsSoFar = math.max(self.shopSlots, self.maxShopSlotsSoFar)
-	
-	api.AddResource("explosion", BuildingHandler.CountResourceType("alchemist"))
-	api.AddResource("refresh", BuildingHandler.CountResourceType("chapel"))
 end
 
 function api.GetArmyMultiplier()
@@ -131,6 +129,10 @@ function api.GetMaxSlotsSoFar()
 	return self.maxShopSlotsSoFar
 end
 
+function api.HaveStarved()
+	return self.stavation > 1
+end
+
 function api.GetStarvation()
 	return self.stavation
 end
@@ -138,6 +140,14 @@ end
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
+
+function api.InSoftLossState()
+	return ShopHandler.OutOfSpace() or api.HaveStarved()
+end
+
+function api.InVictoryState()
+	return BuildingHandler.CountResourceType("invasion") <= 0
+end
 
 local function UpdateStarvation(dt)
 	local food = api.GetNetFood()
@@ -150,9 +160,6 @@ local function UpdateStarvation(dt)
 	if self.stavation < 0 then
 		self.stavation = 0
 		return
-	end
-	if self.stavation > 1 then
-		self.world.SetGameOver(false, "Starvation")
 	end
 end
 

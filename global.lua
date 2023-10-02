@@ -3,7 +3,18 @@ local globals = {
 	BACK_COL = {36/255, 77/255, 135/255},
 	TILE_COL = {124/255, 149/255, 61/255},
 	BACK_COL_EDITOR = {1.2*10/255, 1.2*84/255, 1.2*156/255},
-	PANEL_COL = {0.53, 0.53, 0.55},
+	
+	PANEL_COL = {197/255, 136/255, 71/255},
+	
+	HOVER_HIGHLIGHT = {240/255, 179/255, 86/255},
+	BUTTON_BORDER = {99/255, 68/255, 36/255},
+	
+	PUSH_BUTTON_BORDER = {124/255, 149/255, 61/255},
+	BUTTON_HIGHLIGHT = {198/255, 206/255, 105/255},
+	BUTTON_BACK = {175/255, 185/255, 92/255},
+	
+	HINT_BACK = {198/255, 206/255, 105/255},
+	HINT_OUTLINE = {74/255, 91/255, 32/255},
 	
 	GREY = {0.7, 0.7, 0.7},
 	WHITE = {1, 1, 1},
@@ -45,11 +56,11 @@ local globals = {
 	RESOURCE_MOVE_SPEED = 0.9,
 	
 	EXPLODE_COST = 4,
-	EXPLODE_COST_INC = 1.5,
+	EXPLODE_COST_INC = 1,
 	EXPLODE_CHARGES = 2,
 	
 	REFRESH_COST = 1,
-	REFRESH_COST_INC = 0.5,
+	REFRESH_COST_INC = 1,
 	REFRESH_CHARGES = 2,
 	
 	WEAPON_ARMY_MULT = 2,
@@ -60,8 +71,7 @@ local globals = {
 	DECK_SIZE_MULT = 1,
 	SHOP_SLOTS = 3,
 	
-	SHOW_REFRESH_DEBUG_MODE = true,
-	INIT_LEVEL = "level1",
+	SHOW_REFRESH_DEBUG_MODE = false,
 	
 	DESTROY_NAME = "explosion",
 	SHOP_WIDTH = 450,
@@ -70,10 +80,11 @@ local globals = {
 	GAME_SPEED = 2,
 	WORKER_SPEED = 0.9,
 	REFRESH_TIMER = 0.05,
-	TOOLTIP_FADE_RATE = 4,
-	TOOLTIP_FADE_DELAY = 0.12,
+	TOOLTIP_FADE_RATE = 5.2,
+	TOOLTIP_FADE_DELAY = 0.11,
+	END_GAME_FADE_RATE = 2.8,
 	
-	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "tileDeck", "tiles", "terrain", "doodads", "invasionMask"},
+	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "tileDeck", "hints", "tiles", "terrain", "doodads", "invasionMask"},
 }
 
 return globals

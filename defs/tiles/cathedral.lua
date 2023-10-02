@@ -2,6 +2,7 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "cathedral",
+	groundImage = "stone_ground",
 	building = "cathedral",
 	inShop = true,
 	cannotPairWith = {"cathedral"},
@@ -9,6 +10,8 @@ local data = {
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"quarry", Global.LONG_WALK_RANGE}, {"cathedral", Global.CATHEDRAL_BUILD_GAP, true}},
+	
+	tooltip = "Cathedral\nExpands build options and boosts explorer effectiveness (+20%) but requires significant stone to maintain.",
 	
 	bonusOnEdges = false,
 	collectableResourceType = "cathedral",

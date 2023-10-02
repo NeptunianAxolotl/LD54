@@ -2,6 +2,7 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "barracks_wood",
+	groundImage = "workshop_ground",
 	building = "barracks",
 	inShop = true,
 	cannotPairWith = {},
@@ -10,6 +11,8 @@ local data = {
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},
 	destroyIfNotNearby = "invasion",
+	
+	tooltip = "Outpost\nTrains one scout. Requires a worker and planks from the sawmill to maintain. Tools improve scout power (+1).",
 	
 	bonusOnEdges = false,
 	drawWiggle = 0.05,

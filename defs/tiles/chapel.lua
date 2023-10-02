@@ -2,6 +2,7 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "chapel",
+	groundImage = "stone_ground",
 	building = "chapel",
 	inShop = true,
 	cannotPairWith = {},
@@ -9,6 +10,8 @@ local data = {
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"quarry", Global.LONG_WALK_RANGE}},
+	
+	tooltip = "Chapel\nAllows the shop to be refreshed. Requires stone to maintain.",
 	
 	bonusOnEdges = true,
 	noBonusForMiddle = true,

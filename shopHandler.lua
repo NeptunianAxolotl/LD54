@@ -60,6 +60,10 @@ local function GenerateDomino(otherDominos, dominoIndex, prevMatchAllowed)
 	return domino
 end
 
+function api.OutOfSpace()
+	return self.outOfSpaceRetryTimer and true or false
+end
+
 local function UpdateItems()
 	local shopSlots = GameHandler.GetShopSlots()
 	for i = 1, shopSlots do
@@ -72,7 +76,7 @@ local function UpdateItems()
 				domino = GenerateDomino(self.items, i, tries > Global.DOMINIO_DUPLICATE_RELAX * Global.DOMINO_GENERATION_TRIES)
 				tries = tries + 1
 				if tries > Global.DOMINO_GENERATION_TRIES then
-					self.world.SetGameOver(false, "Ran out of space")
+					self.outOfSpaceRetryTimer = 10
 					break
 				end
 			end
@@ -174,6 +178,23 @@ function api.Update(dt)
 	end
 	UpdateFoodDial(dt)
 	
+	if GameHandler.InSoftLossState() or GameHandler.InVictoryState() then
+		self.endGameFadeTimer = math.min(1, (self.endGameFadeTimer or 0) + dt*Global.END_GAME_FADE_RATE)
+	elseif self.endGameFadeTimer then
+		self.endGameFadeTimer = self.endGameFadeTimer - dt*Global.END_GAME_FADE_RATE
+		if self.endGameFadeTimer < 0 then
+			self.endGameFadeTimer = false
+		end
+	end
+	
+	if self.outOfSpaceRetryTimer then
+		self.outOfSpaceRetryTimer = self.outOfSpaceRetryTimer - dt
+		if self.outOfSpaceRetryTimer < 0 then
+			self.outOfSpaceRetryTimer = false
+			UpdateItems()
+		end
+	end
+	
 	if self.tooltip then
 		self.tooltipFade = math.min(1, self.tooltipFade + Global.TOOLTIP_FADE_RATE*dt)
 		self.tooltipFadeDelay = Global.TOOLTIP_FADE_DELAY
@@ -209,7 +230,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 			ClickShopButton(i)
 		end
 	end
-	if key == "e" then
+	if key == "e" and GameHandler.CanAfford("refresh") then
 		ClickShopButton(GameHandler.GetShopSlots() + 1)
 	end
 end
@@ -235,7 +256,8 @@ local function TryToExplodeDominio(dominoPos)
 	end
 	
 	for i = 1, 2 do
-		if TerrainHandler.GetTile(dominoPos[i].pos) == "invasion" then
+		local tile = TerrainHandler.GetTile(dominoPos[i].pos)
+		if tile and tile.def.defName == "invasion" then
 			return false
 		end
 		local validPlacement = nearbyInfo[i] and nearbyInfo[i][1] and nearbyInfo[i][1].valid
@@ -274,12 +296,23 @@ function api.MousePressed(x, y, button)
 	if button ~= 1 then
 		return false
 	end
+	if self.hoveredEndLevelAction == "retry" then
+		self.world.Restart()
+	elseif self.hoveredEndLevelAction == "next" then
+		self.world.GetCosmos().SwitchLevel(true)
+	end
+	if GameHandler.InSoftLossState() then
+		return false
+	end
 	return ClickShopButton(self.hoveredItem)
 end
 
 function api.Draw(drawQueue)
-	if (not self.heldTile) or self.world.GetGameOver() then
+	if (not self.heldTile) then
 		return
+	end
+	if GameHandler.InSoftLossState() then
+		return false
 	end
 	local dominoPos = TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
 	
@@ -301,11 +334,11 @@ function api.Draw(drawQueue)
 			
 			for j = 1, #nearbyInfo[i] do
 				local info = nearbyInfo[i][j]
-				love.graphics.setLineWidth(6)
+				love.graphics.setLineWidth(10)
 				if info.valid then
 					--love.graphics.setColor(0.6, 0.6, 0.6, 0.2)
 				else
-					love.graphics.setColor(1, 0.1, 0.1, 0.2)
+					love.graphics.setColor(209/255, 66/255, 33/255, 0.5)
 					love.graphics.line(pos[1], pos[2], info.pos[1], info.pos[2])
 				end
 			end
@@ -336,19 +369,6 @@ local function DrawFoodArea()
 	love.graphics.printf("Food Production: " .. foodInfo.income, textX + math.random()*math.pow(starvation, 1.8)*10, textY + math.random()*starvation*3, 400, "left")
 	textY = textY + textSpacing
 	love.graphics.printf("Food Consumption: " .. foodInfo.expense, textX + math.random()*math.pow(starvation, 1.8)*10, textY + math.random()*starvation*3, 400, "left")
-	
-	--local explosion = GameHandler.GetStockInfo("explosion")
-	--love.graphics.printf("Explode " .. explosion.cost .. " / " .. explosion.total, 20, 100, 400, "left")
-	--
-	--local refreshAmount = GameHandler.GetStockInfo("refresh")
-	--love.graphics.printf("Refresh " .. refreshAmount.cost .. " / " .. refreshAmount.total, 20, 180, 400, "left")
-	
-	if self.world.GetGameOver() then
-		Font.SetSize(1)
-		love.graphics.printf("Game Over", 20, 80, 400, "left")
-		local _, _, _, lossType = self.world.GetGameOver()
-		love.graphics.printf(lossType, 20, 140, 400, "left")
-	end
 end
 
 local function DrawTileArea()
@@ -387,9 +407,9 @@ local function DrawTileArea()
 		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
 		
 		if self.hoveredItem == i then
-			love.graphics.setColor(0.35, 1, 0.35, 0.8)
+			love.graphics.setColor(unpack(Global.HOVER_HIGHLIGHT))
 		else
-			love.graphics.setColor(0, 0, 0, 0.8)
+			love.graphics.setColor(unpack(Global.BUTTON_BORDER))
 		end
 		love.graphics.setLineWidth(8)
 		love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
@@ -419,9 +439,71 @@ local function DrawHeldTile()
 	end
 end
 
+--------------------------------------------------
+-- Updating
+--------------------------------------------------
+
+local function DrawGameEndArea()
+	local text = ""
+	local buttonName = ""
+	local action = ""
+	if GameHandler.InVictoryState() then
+		text = "Every corner of the land has been explored. On to the next one."
+		buttonName = "Next Island"
+		action = "next"
+	elseif GameHandler.HaveStarved() then
+		text = "Your people have starved"
+		buttonName = "Retry Island"
+		action = "retry"
+	elseif api.OutOfSpace() then
+		text = "You have run out of space"
+		buttonName = "Retry Island"
+		action = "retry"
+	end
+	
+	local mousePos = self.world.GetMousePositionInterface()
+	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
+	local shopItemsY = 420
+	local buttonExtra = 20
+	
+	local buttonWidth = 310
+	local buttonX = shopItemsX - buttonWidth*0.5
+	local buttonY = shopItemsY
+	
+	local textX = math.floor(Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.88)
+	local textY = 520
+	
+	if util.PosInRectangle(mousePos, buttonX, buttonY, buttonWidth, Global.SHOP_SIZE) and (self.endGameFadeTimer or 0) > 0.8 then
+		self.hoveredEndLevelAction = action
+	end
+	
+	love.graphics.setColor(unpack(Global.BUTTON_BACK))
+	love.graphics.setLineWidth(4)
+	love.graphics.rectangle("fill", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
+	
+	
+	if self.hoveredEndLevelAction then
+		love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
+	else
+		love.graphics.setColor(unpack(Global.PUSH_BUTTON_BORDER))
+	end
+	love.graphics.setLineWidth(8)
+	love.graphics.rectangle("line", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
+		
+	Font.SetSize(1)
+	love.graphics.setColor(0, 0, 0, 0.8)
+	love.graphics.printf(buttonName, buttonX, buttonY + 10, buttonWidth, "center")
+	
+	Font.SetSize(2)
+	love.graphics.setColor(0, 0, 0, (self.endGameFadeTimer or 0))
+	
+	love.graphics.printf(text, textX, textY, 320, "left")
+end
+
 local function DrawRefreshButton()
 	local mousePos = self.world.GetMousePositionInterface()
 	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
+	local shopItemsY = 160
 	local shopItemsY = 160
 	local buttonExtra = 20
 
@@ -439,31 +521,32 @@ local function DrawRefreshButton()
 			self.hoveredItem = GameHandler.GetShopSlots() + 1
 		else
 			local income = BuildingHandler.CountResourceType("chapel")
-			api.SetTooltip(string.format("Chapels add to refresh charge each time a tile is placed.\n  - Charge: %d\n  - Income: %d\n  - Current cost: %d", refreshInfo.total, income, refreshInfo.cost))
+			api.SetTooltip(string.format("Chapels partially charge refresh after placing a tile.\n  - Charge: %d\n  - Income: %d\n  - Current cost: %d", refreshInfo.total, income, refreshInfo.cost))
 		end
 	end
 	if not canAfford then
-		love.graphics.setColor(0.5*0.75, 0.7*0.75, 0.8*0.75, 1)
+		love.graphics.setColor(Global.BUTTON_BACK[1]*0.75, Global.BUTTON_BACK[2]*0.75, Global.BUTTON_BACK[3]*0.75, 1)
 	else
-		love.graphics.setColor(0.5, 0.7, 0.8, 1)
+		love.graphics.setColor(unpack(Global.BUTTON_BACK))
 	end
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 32)
 	
-	if not canAfford then
-		local prop = affordProp
-		love.graphics.setColor(0.5, 0.5, 0.5, 1)
-		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, prop * (Global.SHOP_SIZE * 2 + buttonExtra*2), Global.SHOP_SIZE, 8, 8, 32)
-	end
 	
 	if self.hoveredItem == GameHandler.GetShopSlots() + 1 and not self.shopBlockedTimer then
-		love.graphics.setColor(0.35, 1, 0.35, 0.8)
+		love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
 	else
-		love.graphics.setColor(0, 0, 0, 0.8)
+		love.graphics.setColor(unpack(Global.PUSH_BUTTON_BORDER))
 	end
 	love.graphics.setLineWidth(8)
 	love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 32)
-		
+	
+	if not canAfford then
+		local prop = affordProp
+		love.graphics.setColor(0.5, 0.5, 0.5, 0.4)
+		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra - 4, y - Global.SHOP_SIZE- 4, prop * (Global.SHOP_SIZE * 2 + buttonExtra*2) + 8, Global.SHOP_SIZE + 8, 8, 8, 32)
+	end
+	
 	Font.SetSize(1)
 	love.graphics.setColor(0, 0, 0, 0.8)
 	love.graphics.printf("Refresh", shopItemsX - Global.SHOP_SIZE - 20, y - Global.SHOP_SIZE + 12, Global.SHOP_SIZE * 2 + 35, "center")
@@ -483,6 +566,7 @@ end
 
 function api.DrawInterface()
 	self.hoveredItem = false
+	self.hoveredEndLevelAction = false
 	
 	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
 	local shopItemsY = 160
@@ -490,7 +574,7 @@ function api.DrawInterface()
 	
 	love.graphics.setColor(Global.PANEL_COL[1], Global.PANEL_COL[2], Global.PANEL_COL[3], 0.98)
 	love.graphics.rectangle("fill", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000)
-	love.graphics.setColor(0, 0, 0, 1)
+	love.graphics.setColor(unpack(Global.BUTTON_BORDER))
 	love.graphics.setLineWidth(12)
 	love.graphics.rectangle("line", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000, 8, 8, 16)
 	
@@ -511,10 +595,19 @@ function api.DrawInterface()
 	end
 	
 	DrawFoodArea()
-	DrawTileArea()
-	DrawRefreshButton()
-	DrawHeldTile()
+	local endLevelState = GameHandler.InSoftLossState() or GameHandler.InVictoryState()
+	if endLevelState then
+		DrawGameEndArea()
+	else
+		DrawTileArea()
+	end
+	if not endLevelState then
+		DrawRefreshButton()
+	end
 	DrawTooltipArea()
+	if not endLevelState then
+		DrawHeldTile()
+	end
 	
 	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
 	
@@ -535,6 +628,7 @@ function api.Initialize(world)
 		shopBlockedTimer = false,
 		dialPosition = 0.5,
 		tooltipFade = 0,
+		outOfSpaceRetryTimer = false,
 	}
 	self.heldTile = false
 	self.tileRotation = 0

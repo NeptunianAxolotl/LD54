@@ -2,10 +2,13 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "fountain",
+	groundImage = "stone_ground",
 	building = "fountain",
 	inShop = true,
 	cannotPairWith = {"fountain"},
 	spawnTilePositions = {{0, 0}},
+	
+	tooltip = "Fountain\nUpgrades nearby houses, allowing them to house two people. Requires stone to maintain, but no workers.",
 	
 	doesUpgrade = "fountain",
 	

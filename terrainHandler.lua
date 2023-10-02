@@ -140,6 +140,10 @@ local function ClickOnTile()
 	end
 end
 
+function api.GetHoveredTile()
+	return self.hoveredTile
+end
+
 function api.MousePressed(x, y, button)
 	ClickOnTile()
 end
@@ -344,7 +348,10 @@ end
 				if self.invasionMask[x] and self.invasionMask[x][y] then
 					local pos = api.GridToWorld({x, y})
 					if MapEditor.InEditMode() then
-						Resources.DrawImage("invasion_area" .. self.invasionMask[x][y], pos[1], pos[2], 0, alpha)
+						Resources.DrawImage("invasion_area1", pos[1], pos[2], 0, alpha)
+						Font.SetSize(0)
+						love.graphics.setColor(1, 1, 1, 0.8)
+						love.graphics.printf(self.invasionMask[x][y],  pos[1] - 80, pos[2] - 42, 200, "center")
 					else
 						Resources.DrawImage("darkness", pos[1], pos[2], 0, alpha)
 					end

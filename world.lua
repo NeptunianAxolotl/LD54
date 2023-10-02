@@ -69,6 +69,9 @@ end
 --------------------------------------------------
 
 function api.KeyPressed(key, scancode, isRepeat)
+	if LevelHandler.KeyPressed(key, scancode, isRepeat) then
+		return
+	end
 	if MapEditor.KeyPressed and MapEditor.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
@@ -240,6 +243,7 @@ function api.Draw()
 	BuildingHandler.Draw(drawQueue)
 	ShopHandler.Draw(drawQueue)
 	GuyHandler.Draw(drawQueue)
+	LevelHandler.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
 	while true do
@@ -267,6 +271,7 @@ function api.Draw()
 	EffectsHandler.DrawInterface()
 	DialogueHandler.DrawInterface()
 	ChatHandler.DrawInterface()
+	LevelHandler.DrawInterface()
 	
 	love.graphics.replaceTransform(self.emptyTransform)
 end

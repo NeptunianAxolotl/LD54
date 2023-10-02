@@ -2,10 +2,13 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "woodcutter",
+	groundImage = "workshop_ground",
 	building = "woodcutter",
 	inShop = true,
 	cannotPairWith = {"sawmill"},
 	spawnTilePositions = {{0, 0}},
+	
+	tooltip = "Woodcutter\nProduces logs for construction and heating homes, boosting speed and productivity by 50%. Requires workers and trees.",
 	
 	canBuildOn = {"grass", "desert"},
 	mustBuildNear = {"forest"},

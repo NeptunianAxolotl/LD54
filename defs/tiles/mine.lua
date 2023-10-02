@@ -2,10 +2,13 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "mine",
+	groundImage = "workshop_ground",
 	building = "mine",
 	inShop = true,
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
+	
+	tooltip = "Mine\nProduces ore for use by the blacksmith and alchemist. Requires workers, a mountain, and planks to maintain.",
 	
 	canBuildOn = {"grass", "desert"},
 	mustBuildNear = {"mountain"},

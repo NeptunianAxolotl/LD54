@@ -5,6 +5,7 @@ MusicHandler = require("musicHandler")
 BGM = require("dynamicBGMHandler")
 
 local LevelDefs = util.LoadDefDirectory("defs/levels")
+local LevelOrder = require("defs/levelList")
 
 local self = {}
 local api = {}
@@ -41,13 +42,8 @@ function api.LoadLevelByTable(levelTable)
 end
 
 function api.SwitchLevel(goNext)
-	local nameKey = (goNext and "nextLevel") or "prevLevel"
-	local newLevelName = LevelDefs[self.inbuiltLevelName][nameKey]
-	if not newLevelName then
-		return
-	end
-	self.inbuiltLevelName = newLevelName
-	self.curLevelData = LevelDefs[self.inbuiltLevelName]
+	self.inbuiltLevelIndex = math.max(1, math.min(#LevelOrder, self.inbuiltLevelIndex + (goNext and 1 or -1)))
+	self.curLevelData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
 	World.Initialize(api, self.curLevelData)
 end
 
@@ -139,10 +135,10 @@ end
 function api.Initialize()
 	self = {
 		realTime = 0,
-		inbuiltLevelName = Global.INIT_LEVEL,
+		inbuiltLevelIndex = 1,
 		musicEnabled = true,
 	}
-	self.curLevelData = LevelDefs[self.inbuiltLevelName]
+	self.curLevelData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
 	MusicHandler.Initialize(api)
 	SoundHandler.Initialize(api)
 	World.Initialize(api, self.curLevelData)

@@ -2,10 +2,13 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "mill",
+	groundImage = "stone_ground",
 	building = "mill",
 	inShop = true,
 	cannotPairWith = {"mill", "sawmill"},
 	spawnTilePositions = {{0, 0}},
+	
+	tooltip = "Windmill\nImproves the production of nearby farms. Requires planks to maintain, but no workers.",
 	
 	doesUpgrade = "mill",
 	

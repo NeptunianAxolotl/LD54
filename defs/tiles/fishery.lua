@@ -2,12 +2,15 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "fishery",
+	groundImage = "light_ground",
 	building = "fishery",
 	inShop = true,
 	cannotPairWith = {"fishery"},
 	spawnTilePositions = {{0, 0}},
 	canBuildOn = {"grass", "desert"},
 	mustBuildNear = {"water"},
+	
+	tooltip = "Fishery\nProduces food (4). Requires less work than farms, but must be built next to water.",
 	
 	upgradeBuilding = "mill",
 	upgradeDistance = 1.49,

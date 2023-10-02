@@ -9,6 +9,8 @@ local data = {
 	
 	canBuildOn = {"grass", "desert"},
 	
+	tooltip = "Quarry\nProduces stone for advanced structures. Requires tools and workers.",
+	
 	population = 1,
 	popType = "stone",
 	bonusOnEdges = true,

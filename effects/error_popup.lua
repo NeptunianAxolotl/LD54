@@ -1,9 +1,9 @@
 
 return {
-	fontSize = 0,
-	interface = false,
+	fontSize = 2,
+	interface = true,
 	alphaScale = true,
-	duration = 3.5,
+	duration = 6,
 	alphaBuffer = 0.35,
 	textWidth = 6000,
 	textHeight = 10,

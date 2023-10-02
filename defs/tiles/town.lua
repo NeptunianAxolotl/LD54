@@ -2,11 +2,14 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "house_single",
+	groundImage = "stone_ground",
 	upgradeImage = "house_double",
 	building = "town",
 	inShop = true,
 	cannotPairWith = {},
 	spawnTilePositions = {{0.15, -0.15}, {-0.15, 0.15}},
+	
+	tooltip = "Housing\nEach home houses one worker, which require food (2). Most strctures need workers nearby so keep expanding the town.",
 	
 	canBuildOn = {"grass", "desert"},
 	upgradeBuilding = "fountain",

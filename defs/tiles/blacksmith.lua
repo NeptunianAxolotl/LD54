@@ -2,6 +2,7 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "blacksmith",
+	groundImage = "stone_ground",
 	building = "blacksmith",
 	inShop = true,
 	cannotPairWith = {"mine", "blacksmith"},
@@ -9,6 +10,8 @@ local data = {
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"mine", Global.LONG_WALK_RANGE}},
+	
+	tooltip = "Blacksmith\nProduces tools from ore. Tools improve scout power (+1) and are used to quarry stone.",
 	
 	population = 1,
 	popType = "tool",

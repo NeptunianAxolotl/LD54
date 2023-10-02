@@ -3,83 +3,102 @@ local data = {
 	width = 20,
 	height = 20,
 	cameraPos = {
-		[2] = 9.5,
 		[1] = 11.5,
+		[2] = 9.5,
 	},
 	tileDeck = {
-		[1] = {
-			town = 1,
-			barracks = 5,
-		},
 		[2] = {
+			town = 1,
+			farm = 1,
 			woodcutter = 1,
-			sawmill = 1,
-			town = 4,
-			fishery = 3,
+		},
+		[1] = {
+			barracks = 1,
+		},
+	},
+	hints = {
+		{
+			text = "- Select tiles with Left Click\n- Place tiles with Left Click\n- Rotate with Right Click or Space\n\nPush back the darkness!\n- Workers activate buildings and need food and shelter\n- Outposts recruit scouts",
+			pos = {15, 10},
+			size = {2.2, 1.5},
 		},
 	},
 	tiles = {
 		[1] = {
+			def = "town",
+			pos = {
+				[1] = 9,
+				[2] = 9,
+			},
+		},
+		[2] = {
+			def = "fishery",
+			pos = {
+				[1] = 9,
+				[2] = 8,
+			},
+		},
+		[3] = {
 			def = "woodcutter",
 			pos = {
 				[1] = 10,
 				[2] = 9,
 			},
 		},
-		[2] = {
+		[4] = {
 			def = "sawmill",
 			pos = {
 				[1] = 11,
 				[2] = 9,
 			},
 		},
-		[3] = {
-			extraData = {
-				armySize = 2,
-				invasionIndex = 1,
-			},
+		[5] = {
 			pos = {
 				[1] = 12,
 				[2] = 12,
 			},
+			extraData = {
+				invasionIndex = 1,
+				armySize = 1,
+			},
 			def = "invasion",
 		},
-		[4] = {
+		[6] = {
 			def = "farm",
 			pos = {
 				[1] = 13,
 				[2] = 7,
 			},
 		},
-		[5] = {
-			def = "town",
-			pos = {
-				[1] = 13,
-				[2] = 6,
-			},
-		},
-		[6] = {
-			def = "fishery",
-			pos = {
-				[1] = 13,
-				[2] = 5,
-			},
-		},
 		[7] = {
 			def = "town",
 			pos = {
-				[1] = 14,
+				[1] = 13,
 				[2] = 6,
 			},
 		},
 		[8] = {
 			def = "fishery",
 			pos = {
-				[1] = 14,
+				[1] = 13,
 				[2] = 5,
 			},
 		},
 		[9] = {
+			def = "town",
+			pos = {
+				[1] = 14,
+				[2] = 6,
+			},
+		},
+		[10] = {
+			def = "fishery",
+			pos = {
+				[1] = 14,
+				[2] = 5,
+			},
+		},
+		[11] = {
 			def = "fishery",
 			pos = {
 				[1] = 15,
