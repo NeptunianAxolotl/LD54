@@ -467,6 +467,9 @@ local function DrawGameEndArea()
 		text = LevelHandler.GetLevelData().customVictoryText or "Every corner of the land has been explored."
 		buttonName = "Next Island"
 		action = "next"
+		if LevelHandler.GetLevelData().lastLevel then
+			buttonName = false
+		end
 	elseif GameHandler.HaveStarved() then
 		text = "Your people have starved!  Unfortunate.  They'll probably have you beheaded."
 		buttonName = "Retry Island"
@@ -489,25 +492,31 @@ local function DrawGameEndArea()
 	local textX = math.floor(Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.88)
 	local textY = 520
 	
-	if util.PosInRectangle(mousePos, buttonX, buttonY, buttonWidth, Global.SHOP_SIZE) and (self.endGameFadeTimer or 0) > 0.8 then
-		self.hoveredEndLevelAction = action
-	end
-	
-	love.graphics.setColor(unpack(Global.BUTTON_BACK))
-	love.graphics.setLineWidth(4)
-	love.graphics.rectangle("fill", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
-	
-	if self.hoveredEndLevelAction then
-		love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
-	else
-		love.graphics.setColor(unpack(Global.PUSH_BUTTON_BORDER))
-	end
-	love.graphics.setLineWidth(8)
-	love.graphics.rectangle("line", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
+	if buttonName then
+		if util.PosInRectangle(mousePos, buttonX, buttonY, buttonWidth, Global.SHOP_SIZE) and (self.endGameFadeTimer or 0) > 0.8 then
+			self.hoveredEndLevelAction = action
+		end
 		
-	Font.SetSize(1)
-	love.graphics.setColor(0, 0, 0, 0.8)
-	love.graphics.printf(buttonName, buttonX, buttonY + 10, buttonWidth, "center")
+		love.graphics.setColor(unpack(Global.BUTTON_BACK))
+		love.graphics.setLineWidth(4)
+		love.graphics.rectangle("fill", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
+		
+		if self.hoveredEndLevelAction then
+			love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
+		else
+			love.graphics.setColor(unpack(Global.PUSH_BUTTON_BORDER))
+		end
+		love.graphics.setLineWidth(8)
+		love.graphics.rectangle("line", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
+			
+		Font.SetSize(1)
+		love.graphics.setColor(0, 0, 0, 0.8)
+		love.graphics.printf(buttonName, buttonX, buttonY + 10, buttonWidth, "center")
+	else
+		Font.SetSize(1)
+		love.graphics.setColor(0, 0, 0, 0.8)
+		love.graphics.printf("Victory!", Global.VIEW_WIDTH -  Global.SHOP_WIDTH, buttonY + 10, Global.SHOP_WIDTH, "center")
+	end
 	
 	Font.SetSize(3)
 	love.graphics.setColor(0, 0, 0, (self.endGameFadeTimer or 0))
