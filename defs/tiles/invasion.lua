@@ -34,7 +34,7 @@ local data = {
 	
 	onClick = function (self)
 		local nearbyArmy = GetNearbyArmySize(self)
-		if nearbyArmy < self.armySize then
+		if nearbyArmy < self.armySize and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
 			return
 		end
 		local invasionsLeft = BuildingHandler.CountResourceType("invasion")
@@ -62,7 +62,7 @@ local data = {
 		
 		
 		love.graphics.setColor(0, 0, 0, 1)
-		if nearbyArmy < self.armySize then
+		if nearbyArmy < self.armySize and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
 			Font.SetSize(0)
             love.graphics.printf(nearbyArmy .. "/" .. self.armySize, pos[1] + 60, pos[2] + 10, 380, "right")
             Font.SetSize(1)

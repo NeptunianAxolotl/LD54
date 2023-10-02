@@ -73,6 +73,7 @@ local globals = {
 	DECK_SIZE_MULT = 1,
 	SHOP_SLOTS = 3,
 	
+	DEBUG_CAN_ALWAYS_EXPLORE = false,
 	SHOW_REFRESH_DEBUG_MODE = false,
 	DEBUG_MODE_START_LEVEL = false,
 	
