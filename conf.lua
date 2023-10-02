@@ -1,5 +1,5 @@
 function love.conf(t)
-	t.window.title = "LD54"
+	t.window.title = "Compact Domain"
 	t.window.width = 1280
 	t.window.height = 768
 	--t.window.fullscreen = true -- Do not fullscreen since we lack an exit button.
