@@ -30,7 +30,7 @@ local data = {
 		},
 		stone = {
 			workTime = 2,
-			idleTimeout = 3,
+			idleTimeout = 6,
 			searchRadius = Global.LONG_WALK_RANGE,
 			homeWaitTime = 1,
 			needDelay = 4,
