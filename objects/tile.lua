@@ -63,7 +63,7 @@ local function NewTile(self, terrain, buildingData)
 	end
 	
 	for i = 1, #self.def.spawnTilePositions do
-		BuildingHandler.AddBuilding({self}, self.def.building, util.Add(self.pos, self.def.spawnTilePositions[i]), buildingData)
+		BuildingHandler.AddBuilding({self}, self.def.building, util.Add(self.pos, self.def.spawnTilePositions[i]), buildingData and util.CopyTable(buildingData))
 	end
 	
 	if self.def.bonusOnEdges then

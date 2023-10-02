@@ -74,6 +74,7 @@ local globals = {
 	SHOP_SLOTS = 3,
 	
 	SHOW_REFRESH_DEBUG_MODE = false,
+	DEBUG_MODE_START_LEVEL = 6,
 	
 	DESTROY_NAME = "explosion",
 	SHOP_WIDTH = 450,

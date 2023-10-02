@@ -133,7 +133,7 @@ end
 function api.Initialize()
 	self = {
 		realTime = 0,
-		inbuiltLevelIndex = 1,
+		inbuiltLevelIndex = Global.DEBUG_MODE_START_LEVEL or 1,
 		musicEnabled = true,
 	}
 	self.curLevelData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
