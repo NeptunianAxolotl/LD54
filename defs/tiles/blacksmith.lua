@@ -5,7 +5,7 @@ local data = {
 	groundImage = "stone_ground",
 	building = "blacksmith",
 	inShop = true,
-	cannotPairWith = {"mine", "blacksmith"},
+	cannotPairWith = {"blacksmith", "mill", "sawmill"},
 	spawnTilePositions = {{0, 0}},
 	
 	canBuildOn = {"grass", "desert"},
