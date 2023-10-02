@@ -19,9 +19,7 @@ local api = {}
 
 function api.ToggleMusic()
 	self.musicEnabled = not self.musicEnabled
-	if not self.musicEnabled then
-		--MusicHandler.StopCurrentTrack()
-	end
+	BGM.SetMusicEnabled(self.musicEnabled)
 end
 
 function api.MusicEnabled()

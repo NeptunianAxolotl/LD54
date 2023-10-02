@@ -5,6 +5,7 @@ local api = {}
 -- At bank cutover, all ten tracks on the new bank are to start simultaneously.  The samples are all slightly longer so that reverb tails blend together seamlessly.
 local loopTime = 14.4
 local remainingTime = 0
+local globalVolume = 1
 -- Per-track volumes between all banks are identical.
 
 -- THE INDEXING ON THIS LIST IS CRITICAL TO THE REST OF THE FILE
@@ -153,13 +154,12 @@ end
 local ripienoNext = true
 local nextPhase = nil
 local activeBank = nil
+local oldActiveMusic = {}
 
 function api.Update(dt)
   remainingTime = remainingTime - dt
-  print("crossfades")
   -- Update the crossfades table.
   for i=1,#musicFadeRequest do
-    print(musicFadeRequest[i][1],musicFadeRequest[i][2],musicFadeRequest[i][3])
     if musicFadeRequest[i][2] == 0 then
       musicFadeRequest[i][3] = musicFadeRequest[i][1]
     else
@@ -202,10 +202,18 @@ function api.Update(dt)
   
     -- Start playing the active tracks.
     for i=1,#activeBank do
-      activeBank[i]:setVolume(musicFadeRequest[i][3])
+      activeBank[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume)
       activeBank[i]:play()
     end
+   oldActiveMusic = activeBank
   end
+end
+
+function api.SetMusicEnabled(enabled)
+	globalVolume = (enabled and 1) or 0
+    for i=1,#oldActiveMusic do
+      oldActiveMusic[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume)
+    end
 end
 
 --
