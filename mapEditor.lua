@@ -122,12 +122,30 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.brushMode = "invasion"
 		self.brushType = "tile"
 		self.brushData = {armySize = 10, invasionIndex = 2}
+	elseif key == "h" then
+		self.brushMode = "invasion"
+		self.brushType = "tile"
+		self.brushData = {armySize = 20, invasionIndex = 3}
+	elseif key == "j" then
+		self.brushMode = "invasion"
+		self.brushType = "tile"
+		self.brushData = {armySize = 30, invasionIndex = 4}
 	elseif key == "v" then
 		self.brushMode = 1
 		self.brushType = "invadeArea"
 	elseif key == "b" then
 		self.brushMode = 2
 		self.brushType = "invadeArea"
+	elseif key == "n" then
+		self.brushMode = 3
+		self.brushType = "invadeArea"
+	elseif key == "m" then
+		self.brushMode = 4
+		self.brushType = "invadeArea"
+		
+		
+	elseif key == "q" then
+		self.brushType = "printCoord"
 	end
 	return true
 end
@@ -162,7 +180,11 @@ function api.MousePressed(x, y, button)
 	end
 	
 	if button == 1 then
-		if self.brushType == "doodad" then
+		if self.brushType == "printCoord" then
+			local pos = TerrainHandler.WorldToContinuousGrid(self.world.GetMousePosition())
+			local text = string.format("%.2f, %.2f", pos[1], pos[2])
+			EffectsHandler.SpawnEffect("error_popup", {700, 200}, {text = text, velocity = {0, 0}})
+		elseif self.brushType == "doodad" then
 			self.attachedDooddad = DoodadHandler.AddDoodad(self.brushMode, TerrainHandler.WorldToContinuousGrid(self.world.GetMousePosition()))
 		elseif self.brushType == "tile" then
 			TerrainHandler.AddTile(self.brushMode, TerrainHandler.WorldToGrid(self.world.GetMousePosition()), self.brushData)
@@ -219,12 +241,14 @@ Right click to remove thing
 of matching type (terrain,
 invasion mask, structure)
 
+- WSAD move camera
+- Q: print the coordinates to the screen.
 - Ctrl+S: Save to scratchLevel.lua
 - Ctrl+K: Save to file name
 - Ctrl+L: Load from file name
 - ER: Some Doodads, more needed.
-- FG: Exploration focus
-- VB: Dark area
+- FGHJ: Exploration focus
+- VBNM: Dark area
 - ZXC: Basic Buildings
 - Most of the numpad: Other buildings
 
