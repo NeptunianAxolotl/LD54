@@ -145,6 +145,14 @@ local function UpdateFoodDial(dt)
 	self.dialPosition = smooth*self.dialPosition + (1 - smooth)*wantedPosition
 end
 
+function api.SetTooltip(newTooltip)
+	self.tooltip = newTooltip
+end
+
+function api.SetTooltipToTile(tileName)
+	self.tooltip = TileDefs[tileName].tooltip or ("Tile name " .. tileName .. " missing tooltip")
+end
+
 function api.Update(dt)
 	if MapEditor.InEditMode() then
 		self.mapRules = false -- Remove hints etc
@@ -156,6 +164,17 @@ function api.Update(dt)
 		end
 	end
 	UpdateFoodDial(dt)
+	
+	if self.tooltip then
+		self.tooltipFade = math.min(1, self.tooltipFade + Global.TOOLTIP_FADE_RATE*dt)
+		self.oldTooltip = self.tooltip
+	else
+		self.tooltipFade = math.max(0, self.tooltipFade - Global.TOOLTIP_FADE_RATE*dt)
+		if self.tooltipFade <= 0 then
+			self.oldTooltip = false
+		end
+	end
+	self.tooltip = false
 end
 
 function api.AddResource(resource, count)
@@ -282,7 +301,7 @@ local function DrawFoodArea()
 	local shopItemsX = Global.VIEW_WIDTH - Global.SHOP_WIDTH*0.5
 	local shopItemsY = 160
 	
-	local textX = Global.VIEW_WIDTH - Global.SHOP_WIDTH + 60
+	local textX = math.floor(Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.88)
 	local textY = 265
 	local textSpacing = 40
 	local dialY = 230
@@ -336,6 +355,11 @@ local function DrawTileArea()
 		
 		if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE) then
 			self.hoveredItem = i
+			if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE, Global.SHOP_SIZE) then
+				api.SetTooltipToTile(self.items[i][1])
+			else
+				api.SetTooltipToTile(self.items[i][2])
+			end
 		end
 		
 		love.graphics.setColor(Global.TILE_COL[1], Global.TILE_COL[2], Global.TILE_COL[3], 1)
@@ -420,6 +444,18 @@ local function DrawRefreshButton()
 	love.graphics.printf("Refresh", shopItemsX - Global.SHOP_SIZE - 20, y - Global.SHOP_SIZE + 12, Global.SHOP_SIZE * 2 + 35, "center")
 end
 
+local function DrawTooltipArea()
+	local toWrite = self.tooltip or self.oldTooltip
+	if not toWrite then
+		return
+	end
+	local shopItemsX = math.floor(Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.88)
+	
+	Font.SetSize(3)
+	love.graphics.setColor(0, 0, 0, self.tooltipFade)
+	love.graphics.printf(toWrite, shopItemsX, 750, Global.SHOP_WIDTH*0.8, "left")
+end
+
 function api.DrawInterface()
 	self.hoveredItem = false
 	
@@ -453,6 +489,7 @@ function api.DrawInterface()
 	DrawTileArea()
 	DrawRefreshButton()
 	DrawHeldTile()
+	DrawTooltipArea()
 	
 	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
 	
@@ -472,6 +509,7 @@ function api.Initialize(world)
 		},
 		shopBlockedTimer = false,
 		dialPosition = 0.5,
+		tooltipFade = 0,
 	}
 	self.heldTile = false
 	self.tileRotation = 0

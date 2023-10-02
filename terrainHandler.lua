@@ -116,6 +116,9 @@ local function HoverOverTile()
 	end
 	local gridPos = api.WorldToGrid(self.world.GetMousePosition())
 	self.hoveredTile = api.GetTile(gridPos)
+	if self.hoveredTile then
+		ShopHandler.SetTooltipToTile(self.hoveredTile.def.defName)
+	end
 end
 
 local function ClickOnTile()

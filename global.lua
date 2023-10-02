@@ -64,6 +64,7 @@ local globals = {
 	GAME_SPEED = 2,
 	WORKER_SPEED = 0.9,
 	REFRESH_TIMER = 0.05,
+	TOOLTIP_FADE_RATE = 4,
 }
 
 return globals
