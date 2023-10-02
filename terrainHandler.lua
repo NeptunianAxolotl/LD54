@@ -341,7 +341,7 @@ function api.GetSaveData()
 	return self.terrainType, saveTiles, self.invasionMask
 end
 function api.Draw(drawQueue)	IterableMap.ApplySelf(self.tileList, "Draw", drawQueue)	drawQueue:push({y=-100; f=function()		for x = 1, LevelHandler.Width() do			for y = LevelHandler.Height(), 1, -1 do
-				if self.terrainDraw[x] and self.terrainDraw[x][y] and self.terrainDraw[x][y] ~= "mountain_1" then
+				if self.terrainDraw[x] and self.terrainDraw[x][y] then
 					local pos = api.GridToWorld({x, y})
 					Resources.DrawImage(self.terrainDraw[x][y], pos[1], pos[2])
 				end			end		end	end})
@@ -350,7 +350,7 @@ end
 			if self.terrainDraw[x] and self.terrainDraw[x][y] and self.terrainDraw[x][y] == "mountain_1" then
 				drawQueue:push({y=-80 - (y - x)*0.01; f=function()
 					local pos = api.GridToWorld({x, y})
-					Resources.DrawImage(self.terrainDraw[x][y], pos[1], pos[2])
+					Resources.DrawImage("mountain_top", pos[1], pos[2])
 				end})
 			end
 		end
