@@ -16,9 +16,15 @@ local function NewDoodad(self)
 	end
 	
 	function self.Draw(drawQueue)
-		drawQueue:push({y=-80 - (self.pos[2] - self.pos[1])*0.001; f=function()
-			Resources.DrawImage(self.doodadType, self.drawPos[1], self.drawPos[2], 0, false, LevelHandler.TileScale())
-		end})
+		if self.doodadType == "coast_behind" or self.doodadType == "coast_behind_flip" then
+			drawQueue:push({y=-135 - (self.pos[2] - self.pos[1])*0.001; f=function()
+				Resources.DrawImage(self.doodadType, self.drawPos[1], self.drawPos[2], 0, false, LevelHandler.TileScale())
+			end})
+		else
+			drawQueue:push({y=-85 - (self.pos[2] - self.pos[1])*0.001; f=function()
+				Resources.DrawImage(self.doodadType, self.drawPos[1], self.drawPos[2], 0, false, LevelHandler.TileScale())
+			end})
+		end
 	end
 	
 	return self

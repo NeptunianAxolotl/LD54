@@ -344,10 +344,20 @@ function api.GetSaveData()
 	return self.terrainType, saveTiles, self.invasionMask
 end
 function api.Draw(drawQueue)	IterableMap.ApplySelf(self.tileList, "Draw", drawQueue)	drawQueue:push({y=-100; f=function()		for x = 1, LevelHandler.Width() do			for y = LevelHandler.Height(), 1, -1 do
-				if self.terrainDraw[x] and self.terrainDraw[x][y] then
+				if self.terrainDraw[x] and self.terrainDraw[x][y] and self.terrainDraw[x][y] ~= "water" then
 					local pos = api.GridToWorld({x, y})
 					Resources.DrawImage(self.terrainDraw[x][y], pos[1], pos[2])
 				end			end		end	end})
+	drawQueue:push({y=-150; f=function()
+		for x = 1, LevelHandler.Width() do
+			for y = LevelHandler.Height(), 1, -1 do
+				if self.terrainDraw[x] and self.terrainDraw[x][y] and self.terrainDraw[x][y] == "water" then
+					local pos = api.GridToWorld({x, y})
+					Resources.DrawImage(self.terrainDraw[x][y], pos[1], pos[2])
+				end
+			end
+		end
+	end})
 	for x = 1, LevelHandler.Width() do
 		for y = LevelHandler.Height(), 1, -1 do
 			if self.terrainDraw[x] and self.terrainDraw[x][y] and self.terrainDraw[x][y] == "mountain_1" then
@@ -365,10 +375,12 @@ end
 				if self.invasionMask[x] and self.invasionMask[x][y] then
 					local pos = api.GridToWorld({x, y})
 					if MapEditor.InEditMode() then
-						Resources.DrawImage("invasion_area1", pos[1], pos[2], 0, alpha)
-						Font.SetSize(0)
-						love.graphics.setColor(1, 1, 1, 0.8)
-						love.graphics.printf(self.invasionMask[x][y],  pos[1] - 80, pos[2] - 42, 200, "center")
+						if not Global.EDIT_MODE_HIDE_FOG then
+							Resources.DrawImage("invasion_area1", pos[1], pos[2], 0, alpha)
+							Font.SetSize(0)
+							love.graphics.setColor(1, 1, 1, 0.8)
+							love.graphics.printf(self.invasionMask[x][y],  pos[1] - 80, pos[2] - 42, 200, "center")
+						end
 					else
 						Resources.DrawImage("darkness", pos[1], pos[2], 0, alpha)
 					end
@@ -377,7 +389,7 @@ end
 		end
 	end})
 	
-	if MapEditor.InEditMode() then
+	if MapEditor.InEditMode() and not Global.EDIT_MODE_HIDE_FOG then
 		drawQueue:push({y=-70; f=function()
 			for x = 1, LevelHandler.Width() do
 				for y = LevelHandler.Height(), 1, -1 do

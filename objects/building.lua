@@ -300,6 +300,9 @@ local function NewBuilding(self, building)
 	
 	function self.Draw(drawQueue)
 		local drawRot = (self.spawnTimer or 0)*0.4*math.pi
+		if Global.EDIT_MODE_HIDE_FOG then
+			return
+		end
 		if self.def.image then
 			local image = self.def.image
 			if self.def.upgradeImage and self.upgradeState then
