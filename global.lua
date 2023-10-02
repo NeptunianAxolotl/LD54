@@ -5,7 +5,7 @@ local globals = {
 	BACK_COL_EDITOR = {1.2*10/255, 1.2*84/255, 1.2*156/255},
 	PANEL_COL = {0.53, 0.53, 0.55},
 	
-	GREY = {0.5, 0.5, 0.5},
+	GREY = {0.7, 0.7, 0.7},
 	WHITE = {1, 1, 1},
 	RED = {1, 0.3, 0.3},
 	
@@ -38,8 +38,14 @@ local globals = {
 	LONG_WALK_RANGE = 6.49,
 	MEDIUM_WALK_RANGE = 5.49,
 	SHORT_WALK_RANGE = 4.49,
+	ALCHEMIST_RANGE = 8.49,
 	
 	RESOURCE_MOVE_SPEED = 0.9,
+	
+	EXPLODE_COST = 4,
+	EXPLODE_COST_INC = 1,
+	REFRESH_COST = 1,
+	REFRESH_COST_INC = 0.5,
 	
 	WEAPON_ARMY_MULT = 2,
 	BEER_BUFF_MULT = 1.5,
@@ -51,6 +57,7 @@ local globals = {
 	SHOP_SLOTS = 3,
 	CAN_REFRESH = false,
 	
+	DESTROY_NAME = "explosion",
 	SHOP_WIDTH = 350,
 	VIEW_WIDTH = 1920,
 	VIEW_HEIGHT = 1080,

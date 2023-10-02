@@ -9,7 +9,9 @@ function api.InitTileData(data)
 	data.needResourceList = resourceList
 	
 	data.cannotPairWith_map = util.ToMask(data.cannotPairWith or {})
-	data.canBuildOn_map = util.ToMask(data.canBuildOn or {})
+	if data.canBuildOn then
+		data.canBuildOn_map = util.ToMask(data.canBuildOn)
+	end
 	if data.mustBuildNear then
 		data.mustBuildNear_map = util.ToMask(data.mustBuildNear)
 	end

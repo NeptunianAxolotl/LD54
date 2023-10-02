@@ -198,7 +198,7 @@ function api.TerrainMatches(pos, buildOn, buildNear, needBuildingNearby, otherTi
 	if not api.GetTerrainAt(x, y) then
 		return false
 	end
-	if not buildOn[api.GetTerrainAt(x, y)] then
+	if buildOn and not buildOn[api.GetTerrainAt(x, y)] then
 		return false
 	end
 	

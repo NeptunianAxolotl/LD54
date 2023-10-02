@@ -55,11 +55,12 @@ local function GenerateDomino(otherDominos, dominoIndex, prevMatchAllowed)
 	return domino
 end
 
-local function UpdateItems(refreshAll)
-	GameHandler.UpdateShopSlots()
+local function UpdateItems()
 	local shopSlots = GameHandler.GetShopSlots()
 	for i = 1, shopSlots do
-		if refreshAll or (not self.items[i]) then
+		if i == shopSlots and GameHandler.CanAfford("explosion") then
+			self.items[i] = {Global.DESTROY_NAME, Global.DESTROY_NAME}
+		else
 			local domino = GenerateDomino(self.items, i)
 			local tries = 0
 			while not TerrainHandler.DominoCanBePlacedAtAll(domino) do
@@ -103,7 +104,7 @@ local function ClickShopButton(item)
 		end
 		self.shopBlockedTimer = Global.REFRESH_TIMER
 		self.heldTile = false
-		UpdateItems(true)
+		UpdateItems()
 		return
 	end
 	if item > GameHandler.GetShopSlots() + 1 then
@@ -173,12 +174,44 @@ end
 function api.MouseMoved(x, y)
 end
 
+local function TryToExplodeDominio(dominoPos)
+	local nearbyInfo = TerrainHandler.DescribeNearDomino(dominoPos[1].pos, self.tileRotation, self.heldTile)
+	
+	if not (TerrainHandler.GetTile(dominoPos[1].pos) or TerrainHandler.GetTile(dominoPos[2].pos)) then
+		-- If not overlapping any tiles, then none will be destroyed.
+		return false
+	end
+	
+	for i = 1, 2 do
+		if TerrainHandler.GetTile(dominoPos[i].pos) == "invasion" then
+			return false
+		end
+		local validPlacement = nearbyInfo[i] and nearbyInfo[i][1] and nearbyInfo[i][1].valid
+		if not validPlacement then
+			return false
+		end
+	end
+	
+	for i = 1, 2 do
+		TerrainHandler.RemoveTile(dominoPos[i].pos)
+	end
+	GameHandler.BuyNext("explosion")
+	return true
+end
+
 function api.MousePressed(x, y, button)
 	if button == 1 and self.heldTile and not api.MouseIsOverInterface() then
 		local dominoPos = TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
-		if dominoPos and dominoPos[1].valid and dominoPos[2].valid then
+		if self.heldTile[1] == Global.DESTROY_NAME and dominoPos then
+			if TryToExplodeDominio(dominoPos) then
+				GameHandler.DoTurnTick()
+				UpdateItems()
+				self.heldTile = false
+			end
+		elseif dominoPos and dominoPos[1].valid and dominoPos[2].valid then
 			TerrainHandler.AddDomino(self.heldTile, {dominoPos[1].pos, dominoPos[2].pos})
-			UpdateItems(true)
+			GameHandler.DoTurnTick()
+			UpdateItems()
 			self.heldTile = false
 		end
 	end
@@ -208,6 +241,10 @@ function api.Draw(drawQueue)
 		for i = 1, 2 do
 			local pos = TerrainHandler.GridToWorld(dominoPos[i].pos)
 			local validPlacement = dominoPos[i].valid
+			if self.heldTile[1] == Global.DESTROY_NAME then
+				validPlacement = nearbyInfo[i] and nearbyInfo[i][1] and nearbyInfo[i][1].valid
+			end
+			
 			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1, validPlacement and Global.WHITE or Global.RED)
 			
 			for j = 1, #nearbyInfo[i] do
@@ -259,6 +296,9 @@ function api.DrawInterface()
 	
 	local starvation = GameHandler.GetStarvation()
 	love.graphics.printf("Food " .. food, 20 + math.random()*starvation*500, 20 + math.random()*starvation*350, 400, "left")
+	
+	local explosion = GameHandler.GetStockInfo("explosion")
+	love.graphics.printf("Explode " .. explosion.cost .. " / " .. explosion.total, 20, 100, 400, "left")
 	
 	if self.world.GetGameOver() then
 		love.graphics.printf("Game Over", 20, 80, 400, "left")
@@ -361,7 +401,7 @@ function api.Initialize(world)
 	self.heldTile = false
 	self.tileRotation = 0
 	
-	UpdateItems(true)
+	UpdateItems()
 end
 
 return api

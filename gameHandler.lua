@@ -13,6 +13,48 @@ local api = {}
 --------------------------------------------------
 
 --------------------------------------------------
+-- Stockpiles
+--------------------------------------------------
+
+local function InitStockpile(startCost, costInc)
+	local data = {
+		cost = startCost,
+		costInc = costInc,
+		hasBeenUsed = false,
+		total = 0,
+	}
+	return data
+end
+
+function api.IsStockActive(name)
+	return self.stockpile[name].hasBeenUsed
+end
+
+function api.CanAfford(name)
+	return self.stockpile[name].cost <= self.stockpile[name].total
+end
+
+function api.BuyNext(name)
+	local stock = self.stockpile[name]
+	stock.total = stock.total - stock.cost
+	stock.cost = stock.cost + stock.costInc
+end
+
+function api.GetStockInfo(name)
+	local stock = self.stockpile[name]
+	return {cost = stock.cost, total = stock.total}
+end
+
+function api.AddResource(name, amount)
+	if amount == 0 then
+		return
+	end
+	local stock = self.stockpile[name]
+	stock.total = stock.total + amount
+	stock.hasBeenUsed = true
+end
+
+--------------------------------------------------
 -- API
 --------------------------------------------------
 
@@ -31,13 +73,18 @@ function api.GetViewRestriction()
 	return pointsToView
 end
 
-function api.UpdateShopSlots()
+function api.DoTurnTick()
 	local baseSlots = Global.SHOP_SLOTS
-	
 	if BuildingHandler.CountResourceType("tavern") > 0 then
 		baseSlots = baseSlots + 1
 	end
+	if api.CanAfford("explosion") then
+		baseSlots = baseSlots + 1
+	end
 	self.shopSlots = baseSlots
+	
+	api.AddResource("explosion", BuildingHandler.CountResourceType("alchemist"))
+	api.AddResource("refresh", BuildingHandler.CountResourceType("chapel"))
 end
 
 function api.GetNetFood()
@@ -88,6 +135,10 @@ function api.Initialize(parentWorld)
 		stavation = 0,
 		world = parentWorld,
 		shopSlots = Global.SHOP_SLOTS,
+		stockpile = {
+			explosion = InitStockpile(Global.EXPLODE_COST, Global.EXPLODE_COST_INC),
+			refresh = InitStockpile(Global.REFRESH_COST, Global.REFRESH_COST_INC),
+		},
 	}
 end
 
