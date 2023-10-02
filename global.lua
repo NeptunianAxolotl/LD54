@@ -76,7 +76,7 @@ local globals = {
 	DEBUG_CAN_ALWAYS_EXPLORE = false,
 	SHOW_REFRESH_DEBUG_MODE = false,
 	DEBUG_MODE_START_LEVEL = false,
-	EDIT_MODE_HIDE_FOG = true,
+	EDIT_MODE_HIDE_FOG = false,
 	
 	DESTROY_NAME = "explosion",
 	SHOP_WIDTH = 450,
