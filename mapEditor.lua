@@ -254,23 +254,23 @@ function api.DrawInterface()
 	
 	Font.SetSize(3)
 	love.graphics.printf([[
-- Numbers 1-5:
-     Place terrain
+Welcome to the map editor
+- Ctrl+E to toggle the editor
 
 Right click to remove thing
 of matching type (terrain,
 invasion mask, structure)
 
 - WSAD move camera
-- Q: print the coordinates to the screen.
+- Numbers 1-5 Place terrain
+- Q: print the mouse coords.
 - Ctrl+S: Save to scratchLevel.lua
 - Ctrl+K: Save to file name
 - Ctrl+L: Load from file name
-- ER: Some Doodads, more needed.
-- FGHJ: Exploration focus
-- VBNM: Dark area
+- ERTYUIOP78: Some Doodads
+- FGHJVBNM: Dark area
 - ZXC: Basic Buildings
-- Most of the numpad: Other buildings
+- Numpad: Other buildings
 
 ]], shopItemsX - Global.SHOP_WIDTH*0.42, shopItemsY, Global.SHOP_WIDTH*1.22, "left")
 end
