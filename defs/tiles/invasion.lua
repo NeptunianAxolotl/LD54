@@ -55,11 +55,17 @@ local data = {
 		
 		love.graphics.setColor(0, 0, 0, 1)
 		if nearbyArmy < self.armySize then
-			Font.SetSize(1)
-			love.graphics.printf(nearbyArmy .. "/" .. self.armySize .. " scouts\nToo few scouts for expedition.", pos[1] + 280, pos[2] - 13, 380, "left")
+			Font.SetSize(0)
+            love.graphics.printf(nearbyArmy .. "/" .. self.armySize, pos[1] + 60, pos[2] + 10, 380, "right")
+            Font.SetSize(1)
+            love.graphics.printf("scouts", pos[1] + 455, pos[2] + 25, 380, "left")
+			love.graphics.printf("Too few scouts for expedition.", pos[1] + 280, pos[2] + 100, 380, "left")
 			return
 		else
-			love.graphics.printf(nearbyArmy .. "/" .. self.armySize .. " scouts", pos[1] + 280, pos[2] - 13, 380, "left")
+            Font.SetSize(0)
+            love.graphics.printf(nearbyArmy .. "/" .. self.armySize, pos[1] + 60, pos[2] + 10, 380, "right")
+            Font.SetSize(1)
+            love.graphics.printf("scouts", pos[1] + 455, pos[2] + 25, 380, "left")
 		end
 		
 		local bx, by, width, height = pos[1] + 280, pos[2] + 120, 350, 140
