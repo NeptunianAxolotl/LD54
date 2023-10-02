@@ -5,6 +5,12 @@ local data = {}
 local altScale = {
 	darkness = 2,
 	woodblock = 0.4,
+	house_single = 0.95,
+	house_double = 0.95,
+}
+
+local altOrigin = {
+	mill = {0, 0},
 }
 
 for i = 1, #names do
@@ -14,8 +20,8 @@ for i = 1, #names do
 		form = "image",
 		xScale = Global.GRID_SIZE*4/600 * (altScale[names[i]] or 1),
 		yScale = Global.GRID_SIZE*4/600 * (altScale[names[i]] or 1),
-		xOffset = 0.5,
-		yOffset = 0.75,
+		xOffset = 0.5 or altOrigin[names[i]][1],
+		yOffset = 0.75 or altOrigin[names[i]][2],
 	}
 end
 
