@@ -136,6 +136,13 @@ local function NewBuilding(self, building)
 		return distSq <= radius * radius
 	end
 	
+	function self.IsResourceActive(resource)
+		if self.def.needResource[resource] and (not self.resourceState[resource].active) then
+			return false
+		end
+		return true
+	end
+	
 	function self.GetActive()
 		for i = 1, #self.def.needResourceList do
 			local resource = self.def.needResourceList[i]

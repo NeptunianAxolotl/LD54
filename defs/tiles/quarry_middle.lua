@@ -11,8 +11,7 @@ local data = {
 	
 	population = 1,
 	popType = "stone",
-	bonusOnEdges = true,
-	setBonusFlip = true,
+	bonusOnEdges = false,
 	drawWiggle = 0,
 	depthNudge = -16,
 	

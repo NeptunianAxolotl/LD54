@@ -1,21 +1,21 @@
 local TileUtils = require("utilities/tileUtils")
 
 local data = {
-	image = "barracks_wood",
-	building = "barracks",
+	image = "wall",
+	building = "tower",
 	inShop = true,
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	
 	canBuildOn = {"grass", "desert"},
-	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},
+	needBuildingNearby = {{"quarry", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},
 	destroyIfNotNearby = "invasion",
 	
 	bonusOnEdges = false,
-	drawWiggle = 0.05,
+	drawWiggle = 0,
 	collectableResourceType = "army",
 	collectableResourceTypeFunc = function (self)
-		return (self.GetActive() and (self.IsResourceActive("tool") and 2 or 1)) or 0
+		return (self.GetActive() and (self.IsResourceActive("tool") and 3 or 2)) or 0
 	end,
 	
 	needResource = {
@@ -24,10 +24,10 @@ local data = {
 			idleTimeout = 5,
 			searchRadius = Global.SHORT_WALK_RANGE,
 			homeWaitTime = 1,
-			dependOnActivation = "plank",
+			dependOnActivation = "stone",
 			needDelay = 2,
 		},
-		plank = {
+		stone = {
 			workTime = 1,
 			idleTimeout = 10,
 			searchRadius = Global.LONG_WALK_RANGE,

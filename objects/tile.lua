@@ -37,6 +37,9 @@ local function GenerateBonusBuildings(self)
 		end
 	end
 	
+	if self.def.noBonusForMiddle then
+		return
+	end
 	if hasBonus[0] and hasBonus[1] then
 		CheckAddBonus(self, {1, 1}, {{1, 0}, {0, 1}})
 	end

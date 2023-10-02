@@ -36,6 +36,8 @@ local globals = {
 	MEDIUM_WALK_RANGE = 5.49,
 	SHORT_WALK_RANGE = 4.49,
 	
+	WEAPON_ARMY_MULT = 2,
+	
 	DECK_SIZE_MULT = 1,
 	INIT_LEVEL = "testLevel",
 	SHOP_SLOTS = 4,
