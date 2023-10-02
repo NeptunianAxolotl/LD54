@@ -476,15 +476,15 @@ local function DrawGameEndArea()
 		self.hoveredEndLevelAction = action
 	end
 	
-	love.graphics.setColor(0.5, 0.7, 0.8, 1)
+	love.graphics.setColor(unpack(Global.BUTTON_BACK))
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("fill", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
 	
 	
 	if self.hoveredEndLevelAction then
-		love.graphics.setColor(0.35, 1, 0.35, 0.8)
+		love.graphics.setColor(unpack(Global.HOVER_HIGHLIGHT))
 	else
-		love.graphics.setColor(0, 0, 0, 0.8)
+		love.graphics.setColor(unpack(Global.BUTTON_BORDER))
 	end
 	love.graphics.setLineWidth(8)
 	love.graphics.rectangle("line", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
@@ -523,9 +523,9 @@ local function DrawRefreshButton()
 		end
 	end
 	if not canAfford then
-		love.graphics.setColor(0.5*0.75, 0.7*0.75, 0.8*0.75, 1)
+		love.graphics.setColor(Global.BUTTON_BACK[1]*0.75, Global.BUTTON_BACK[2]*0.75, Global.BUTTON_BACK[3]*0.75, 1)
 	else
-		love.graphics.setColor(0.5, 0.7, 0.8, 1)
+		love.graphics.setColor(unpack(Global.BUTTON_BACK))
 	end
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 32)
@@ -537,9 +537,9 @@ local function DrawRefreshButton()
 	end
 	
 	if self.hoveredItem == GameHandler.GetShopSlots() + 1 and not self.shopBlockedTimer then
-		love.graphics.setColor(0.35, 1, 0.35, 0.8)
+		love.graphics.setColor(unpack(Global.HOVER_HIGHLIGHT))
 	else
-		love.graphics.setColor(0, 0, 0, 0.8)
+		love.graphics.setColor(unpack(Global.BUTTON_BORDER))
 	end
 	love.graphics.setLineWidth(8)
 	love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 32)

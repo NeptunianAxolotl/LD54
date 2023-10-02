@@ -40,15 +40,15 @@ local data = {
 		
 		local bx, by, width, height = pos[1] + 280, pos[2] + 120, 350, 140
 		
-		love.graphics.setColor(0.5, 0.7, 0.8, 1)
+		love.graphics.setColor(unpack(Global.BUTTON_BACK))
 		love.graphics.setLineWidth(4)
 		love.graphics.rectangle("fill", bx, by, width, height, 8, 8, 32)
 		
 		local hover = TerrainHandler.GetHoveredTile()
 		if hover and hover.pos[1] == self.pos[1] and hover.pos[2] == self.pos[2] then
-			love.graphics.setColor(0.35, 1, 0.35, 0.8)
+			love.graphics.setColor(unpack(Global.HOVER_HIGHLIGHT))
 		else
-			love.graphics.setColor(0, 0, 0, 0.8)
+			love.graphics.setColor(unpack(Global.BUTTON_BORDER))
 		end
 		love.graphics.setLineWidth(8)
 		love.graphics.rectangle("line", bx, by, width, height, 8, 8, 32)

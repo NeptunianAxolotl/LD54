@@ -5,6 +5,10 @@ local globals = {
 	BACK_COL_EDITOR = {1.2*10/255, 1.2*84/255, 1.2*156/255},
 	PANEL_COL = {0.53, 0.53, 0.55},
 	
+	HOVER_HIGHLIGHT = {0.5,0.5,0,1.0},
+	BUTTON_BORDER = {0,0,0,1.0},
+	BUTTON_BACK = {0.5, 0.7, 0.8, 1},
+	
 	GREY = {0.7, 0.7, 0.7},
 	WHITE = {1, 1, 1},
 	RED = {1, 0.3, 0.3},
