@@ -2,6 +2,7 @@ local data = {
 	humanName = "test",
 	width = 25,
 	height = 25,
+	lastLevel = true,
 	cameraPos = {
 		[1] = 14,
 		[2] = 14,
