@@ -23,20 +23,43 @@ local function InitializeDeck(deckFrequency)
 	return DeckHandler.GetDeck(validItems, true, ModifyDeckOnShuffleFunc)
 end
 
-local function GenerateDomino()
+local function DominoIsomorphism(dom1, dom2)
+	return (dom1[1] == dom2[1] and dom1[2] == dom2[2]) or (dom1[1] == dom2[2] and dom1[2] == dom2[1])
+end
+
+local function DominionMatchesPrevious(domino, otherDominos, dominoIndex)
+	for i = 1, dominoIndex - 1 do
+		if DominoIsomorphism(domino, otherDominos[i]) then
+			return true
+		end
+	end
+	return false
+end
+
+local function GenerateDomino(otherDominos, dominoIndex)
 	local first = DeckHandler.GetNextDraw(self.decks[1], 1)[1]
 	local second = DeckHandler.GetNextDraw(self.decks[2], 1, TileDefs[first].cannotPairWith_map)[1]
-	return {first, second}
+	local domino = {first, second}
+	local tries = 0
+	while DominionMatchesPrevious(domino, otherDominos, dominoIndex) do 
+		domino[1] = DeckHandler.GetNextDraw(self.decks[1], 1)[1]
+		domino[2] = DeckHandler.GetNextDraw(self.decks[2], 1, TileDefs[first].cannotPairWith_map)[1]
+		tries = tries + 1
+		if tries > Global.DOMINIO_DUPLICATE_TRIES then
+			return domino
+		end
+	end
+	return domino
 end
 
 local function UpdateItems(refreshAll)
 	local shopSlots = GameHandler.GetShopSlots()
 	for i = 1, shopSlots do
 		if refreshAll or (not self.items[i]) then
-			local domino = GenerateDomino()
+			local domino = GenerateDomino(self.items, i)
 			local tries = 0
 			while not TerrainHandler.DominoCanBePlacedAtAll(domino) do
-				domino = GenerateDomino()
+				domino = GenerateDomino(self.items, i)
 				tries = tries + 1
 				if tries > Global.DOMINO_GENERATION_TRIES then
 					self.world.SetGameOver(false, "Ran out of space")
