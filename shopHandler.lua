@@ -64,26 +64,28 @@ function api.OutOfSpace()
 	return self.outOfSpaceRetryTimer and true or false
 end
 
-local function UpdateItems()
+local function UpdateItems(onlyUpdateEmpty)
 	local shopSlots = GameHandler.GetShopSlots()
 	local canAffordExplosion = GameHandler.CanAfford("explosion")
 	for i = 1, shopSlots do
-		if i == shopSlots and canAffordExplosion then
-			self.items[i] = {Global.DESTROY_NAME, Global.DESTROY_NAME}
-		else
-			local domino = GenerateDomino(self.items, i)
-			local tries = 0
-			while not TerrainHandler.DominoCanBePlacedAtAll(domino) do
-				domino = GenerateDomino(self.items, i, tries > Global.DOMINIO_DUPLICATE_RELAX * Global.DOMINO_GENERATION_TRIES)
-				tries = tries + 1
-				if tries > Global.DOMINO_GENERATION_TRIES then
-					if not canAffordExplosion then
-						self.outOfSpaceRetryTimer = 10
+		if (not onlyUpdateEmpty) or (not self.items[i]) then
+			if i == shopSlots and canAffordExplosion then
+				self.items[i] = {Global.DESTROY_NAME, Global.DESTROY_NAME}
+			else
+				local domino = GenerateDomino(self.items, i)
+				local tries = 0
+				while not TerrainHandler.DominoCanBePlacedAtAll(domino) do
+					domino = GenerateDomino(self.items, i, tries > Global.DOMINIO_DUPLICATE_RELAX * Global.DOMINO_GENERATION_TRIES)
+					tries = tries + 1
+					if tries > Global.DOMINO_GENERATION_TRIES then
+						if not canAffordExplosion then
+							self.outOfSpaceRetryTimer = 10
+						end
+						break
 					end
-					break
 				end
+				self.items[i] = domino
 			end
-			self.items[i] = domino
 		end
 	end
 end
@@ -281,8 +283,8 @@ function api.MousePressed(x, y, button)
 		local dominoPos = TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
 		if self.heldTile[1] == Global.DESTROY_NAME and dominoPos then
 			if TryToExplodeDominio(dominoPos) then
-				GameHandler.DoTurnTick()
-				UpdateItems()
+				UpdateItems(true)
+				GameHandler.PlaceExplosionUpdateShopSpots()
 				self.heldTile = false
 			end
 		elseif dominoPos and dominoPos[1].valid and dominoPos[2].valid then

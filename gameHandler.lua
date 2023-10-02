@@ -86,6 +86,12 @@ function api.GetViewRestriction()
 	return pointsToView
 end
 
+function api.PlaceExplosionUpdateShopSpots()
+	if not api.CanAfford("explosion") then
+		self.shopSlots = self.shopSlots - 1
+	end
+end
+
 function api.DoTurnTick()
 	api.AddResource("explosion", BuildingHandler.CountResourceType("alchemist"))
 	api.AddResource("refresh", BuildingHandler.CountResourceType("chapel"))
