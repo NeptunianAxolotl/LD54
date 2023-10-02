@@ -68,6 +68,8 @@ local globals = {
 	BEER_BUFF_TIME = 70,
 	BEER_RANGE_BUFF = 1,
 	
+	BUILDING_STOCKPILE_SIZE = 2,
+	
 	DECK_SIZE_MULT = 1,
 	SHOP_SLOTS = 3,
 	

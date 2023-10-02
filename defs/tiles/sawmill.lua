@@ -27,7 +27,7 @@ local data = {
 			idleTimeout = 0,
 			searchRadius = Global.SHORT_WALK_RANGE,
 			homeWaitTime = 1,
-			maximumStockpile = 3,
+			maximumStockpile = Global.BUILDING_STOCKPILE_SIZE,
 			stockpilePerJob = 2,
 			jobActivationResources = {
 				wood = 1,
@@ -38,7 +38,7 @@ local data = {
 			idleTimeout = 0,
 			searchRadius = Global.LONG_WALK_RANGE,
 			homeWaitTime = 1,
-			maximumStockpile = 3,
+			maximumStockpile = Global.BUILDING_STOCKPILE_SIZE,
 			stockpilePerJob = 1,
 			ignoreForActivation = true,
 		},

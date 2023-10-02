@@ -25,7 +25,7 @@ local data = {
 			idleTimeout = 1,
 			searchRadius = Global.MEDIUM_WALK_RANGE,
 			homeWaitTime = 1,
-			maximumStockpile = 4,
+			maximumStockpile = Global.BUILDING_STOCKPILE_SIZE,
 			stockpilePerJob = 1,
 		},
 	},
