@@ -2,6 +2,7 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "blacksmith",
+	groundImage = "stone_ground",
 	building = "blacksmith",
 	inShop = true,
 	cannotPairWith = {"mine", "blacksmith"},
