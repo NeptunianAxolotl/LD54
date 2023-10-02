@@ -39,20 +39,20 @@ local musicSuffixes = {
   
   -- fading interpolation:
   -- musicFadeRequest[trackNumber][1] = target volume
-  -- musicFadeRequest[trackNumber][2] = time (s) until this volume to be achieved
+  -- musicFadeRequest[trackNumber][2] = rate (per second) until this volume is to be achieved
   -- musicFadeRequest[trackNumber][3] = current volume
   -- INTENTIONALLY GLOBAL
 musicFadeRequest = {
-  {1,0,1}, -- Bassoons
-  {1,0,1},
-  {1,0,1},
-  {1,0,1},
-  {1,0,1}, -- Bass and Tenor Recorder
-  {1,0,1}, -- Snare Drum (NOT WORKING)
-  {1,0,1}, -- Snare Drum (NOT WORKING)
-  {1,0,1}, -- Tambourine
-  {1,0,1}, -- Horn
-  {1,0,1}  -- Trumpet
+  {1, 0.1,1}, -- Bassoons
+  {1,0.04,1},
+  {1,0.01,1},
+  {1,0.01,1},
+  {1,0.01,1}, -- Bass and Tenor Recorder
+  {1,0.01,1}, -- Snare Drum (NOT WORKING)
+  {1,0.01,1}, -- Snare Drum (NOT WORKING)
+  {1,0.06,1}, -- Tambourine
+  {1,0.01,1}, -- Horn
+  {1,0.01,1}  -- Trumpet
   }
 
 -- All tracks have an "all-others" track, and possibly a RIPIENO track, a SOLO track and a HYMNAL track.
@@ -156,13 +156,20 @@ local activeBank = nil
 
 function api.Update(dt)
   remainingTime = remainingTime - dt
-  
+  print("crossfades")
   -- Update the crossfades table.
   for i=1,#musicFadeRequest do
+    print(musicFadeRequest[i][1],musicFadeRequest[i][2],musicFadeRequest[i][3])
     if musicFadeRequest[i][2] == 0 then
       musicFadeRequest[i][3] = musicFadeRequest[i][1]
     else
-      musicFadeRequest[i][3] = musicFadeRequest[i][3] - (musicFadeRequest[i][3] - musicFadeRequest[i][1] / musicFadeRequest[i][2]) * dt
+      if(musicFadeRequest[i][3]<musicFadeRequest[i][1]) then
+        if(musicFadeRequest[i][2] < 0) then musicFadeRequest[i][2] = 0 end
+        musicFadeRequest[i][3] = musicFadeRequest[i][3] + musicFadeRequest[i][2] * dt
+      else
+        if(musicFadeRequest[i][2] > 0) then musicFadeRequest[i][2] = 0 end
+        musicFadeRequest[i][3] = musicFadeRequest[i][3] - musicFadeRequest[i][2] * dt
+      end
     end
   end
   
