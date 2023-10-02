@@ -67,7 +67,7 @@ local volMult = {
 	--[8] = 0.7,
 	--[9] = 0.6,
 	--[10] = 0.4,
-	[7] = 0.3,
+	[1] = 0.3,
 	[9] = 0.3,
 	[10] = 0.3,
 }
@@ -189,6 +189,7 @@ function api.Update(dt)
     end
   end
   
+  local volShift = {}
   -- Determine if we are at bank cutover time.
   if(remainingTime <= 0) then
     remainingTime = loopTime -- Reset the loop timer.
@@ -203,6 +204,7 @@ function api.Update(dt)
       ripienoNext = false
       -- Activate ripieno.
       activeBank = musicBankRipieno
+	  volShift = volMult
     else
       ripienoNext = true
       -- Swap tracks between the solo and other banks.
@@ -218,7 +220,7 @@ function api.Update(dt)
   
     -- Start playing the active tracks.
     for i=1,#activeBank do
-      activeBank[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume * (volMult[i] or 1))
+      activeBank[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume * (volShift[i] or 1))
       activeBank[i]:play()
     end
    oldActiveMusic = activeBank
@@ -228,7 +230,7 @@ end
 function api.SetMusicEnabled(enabled)
 	globalVolume = (enabled and 1) or 0
     for i=1,#oldActiveMusic do
-      oldActiveMusic[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume * (volMult[i] or 1))
+      oldActiveMusic[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume)
     end
 end
 

@@ -40,6 +40,8 @@ local data = {
 		local invasionsLeft = BuildingHandler.CountResourceType("invasion")
 		if invasionsLeft > 1 then
 			SoundHandler.PlaySound("domexplore")
+		elseif LevelHandler.GetLevelData().lastLevel then
+			SoundHandler.PlaySound("domvictoryfinal")
 		else
 			SoundHandler.PlaySound("domvictory")
 		end

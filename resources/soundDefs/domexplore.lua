@@ -1,1 +1,1 @@
-return {	file = "effects/domexplore.mp3",	volMult = 0.08,}
+return {	file = "effects/domexplore.mp3",	volMult = 0.06,}
