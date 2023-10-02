@@ -211,10 +211,18 @@ function api.DrawInterface()
 - Numbers 1-5:
      Place terrain
 
-- Ctrl+S: Save
-- ER: Doodads
-- FV/GB: Invasions
-- ZX: Buildings
+Right click to remove thing
+of matching type (terrain,
+invasion mask, structure)
+
+- Ctrl+S: Save to scratchLevel.lua
+- Ctrl+K: Save to file name
+- Ctrl+L: Load from file name
+- ER: Some Doodads, more needed.
+- FG: Exploration focus
+- VB: Dark area
+- ZXC: Basic Buildings
+- Most of the numpad: Other buildings
 
 ]], shopItemsX - Global.SHOP_WIDTH*0.42, shopItemsY, Global.SHOP_WIDTH*1.22, "left")
 end
