@@ -6,6 +6,7 @@ local data = {
 	building = "mill",
 	animationImage = "turbine",
 	animationRate = 2,
+	animationOffset = {0, -113},
 	
 	inShop = true,
 	cannotPairWith = {"mill", "sawmill"},

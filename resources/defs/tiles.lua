@@ -10,7 +10,7 @@ local altScale = {
 }
 
 local altOrigin = {
-	mill = {0, 0},
+	turbine = {301/600, 272/600},
 }
 
 for i = 1, #names do
@@ -20,8 +20,8 @@ for i = 1, #names do
 		form = "image",
 		xScale = Global.GRID_SIZE*4/600 * (altScale[names[i]] or 1),
 		yScale = Global.GRID_SIZE*4/600 * (altScale[names[i]] or 1),
-		xOffset = 0.5 or altOrigin[names[i]][1],
-		yOffset = 0.75 or altOrigin[names[i]][2],
+		xOffset = (altOrigin[names[i]] and altOrigin[names[i]][1]) or 0.5,
+		yOffset = (altOrigin[names[i]] and altOrigin[names[i]][2]) or 0.75,
 	}
 end
 

@@ -314,7 +314,8 @@ local function NewBuilding(self, building)
 					self.def.drawFunc(self, self.drawPos)
 				end
 				if self.def.animationImage then
-					Resources.DrawImage(self.def.animationImage, self.drawPos[1], self.drawPos[2], self.animDt, false, self.drawScale, self.GetActive() and Global.WHITE or Global.GREY)
+					local pos = util.Add(self.def.animationOffset, self.drawPos)
+					Resources.DrawImage(self.def.animationImage, pos[1], pos[2], self.animDt, false, self.drawScale, self.GetActive() and Global.WHITE or Global.GREY)
 				end
 			end})
 		end
