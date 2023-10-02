@@ -4,6 +4,9 @@ local data = {
 	image = "mill",
 	groundImage = "stone_ground",
 	building = "mill",
+	animationImage = "turbine",
+	animationRate = 2,
+	
 	inShop = true,
 	cannotPairWith = {"mill", "sawmill"},
 	spawnTilePositions = {{0, 0}},

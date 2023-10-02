@@ -250,6 +250,10 @@ local function NewBuilding(self, building)
 	
 	-- Init
 	
+	if self.def.animationImage then
+		self.animDt = 0
+	end
+	
 	self.drawPos = TerrainHandler.GridToWorld(util.RandomPointInRectangle(self.pos, self.def.drawWiggle or 0.1, self.def.drawWiggle or 0.1))
 	self.drawScale = {((self.drawFlip or self.def.drawFlip or (math.random() > 0.5 and 1) or -1))*LevelHandler.TileScale(), LevelHandler.TileScale()}
 	
@@ -266,6 +270,9 @@ local function NewBuilding(self, building)
 	
 	-- Updating
 	function self.Update(dt)
+		if self.animDt then
+			self.animDt = (self.animDt + dt*self.def.animationRate)%(2*math.pi)
+		end
 		for i = 1, #self.def.needResourceList do
 			local resource = self.def.needResourceList[i]
 			local resState = self.resourceState[resource]
@@ -305,6 +312,9 @@ local function NewBuilding(self, building)
 				Resources.DrawImage(image, self.drawPos[1], self.drawPos[2], 0, false, self.drawScale, self.GetActive() and Global.WHITE or Global.GREY)
 				if self.def.drawFunc then
 					self.def.drawFunc(self, self.drawPos)
+				end
+				if self.def.animationImage then
+					Resources.DrawImage(self.def.animationImage, self.drawPos[1], self.drawPos[2], self.animDt, false, self.drawScale, self.GetActive() and Global.WHITE or Global.GREY)
 				end
 			end})
 		end

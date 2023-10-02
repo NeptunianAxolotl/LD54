@@ -24,7 +24,7 @@ local data = {
 	},
 	hints = {
 		[1] = {
-			text = "- Outposts need planks as upkeep\n- Planks made from logs by the sawmill\n- Logs are harvested by woodcutters\n- These structures require workers so keep building farms and houses.",
+			text = "- Outposts need planks as upkeep\n- Planks made from logs by the sawmill\n- Logs are harvested by woodcutters\n- These require workers NEARBY so keep adding farms and houses.",
 			size = {2.6, 1},
 			pos = {
 				[1] = 15,
