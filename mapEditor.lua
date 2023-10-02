@@ -146,6 +146,8 @@ local function DoDragClick(button)
 			TerrainHandler.RemoveTile(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
 		elseif self.brushType == "invadeArea" then
 			TerrainHandler.RemoveInvasion(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
+		elseif self.brushType == "terrain" then
+			TerrainHandler.RemoveTerrain(TerrainHandler.WorldToGrid(self.world.GetMousePosition()))
 		end
 	end
 end

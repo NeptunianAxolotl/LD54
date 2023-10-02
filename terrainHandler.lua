@@ -55,6 +55,16 @@ function api.SetTerrainType(terrain, pos)
 	self.terrainDraw[x][y] = TerrainDefs[terrain].image
 end
 
+function api.RemoveTerrain(pos)
+	local x, y = pos[1], pos[2]
+	if self.terrainType[x] and self.terrainType[x][y] then
+		self.terrainType[x][y] = nil
+	end
+	if self.terrainDraw[x] and self.terrainDraw[x][y] then
+		self.terrainDraw[x][y] = nil
+	end
+end
+
 function api.AddInvasion(maskIndex, pos)
 	local x, y = pos[1], pos[2]
 	self.invasionMask[x] = self.invasionMask[x] or {}

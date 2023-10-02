@@ -626,41 +626,61 @@ function util.TableKeysToList(keyTable, indexToKey)
 	return list
 end
 
-local function TableToStringHelper(data, indent, tableChecked, lineFunc)
+local TableToStringHelper
+local function AddTableLine(nameRaw, value, newIndent, lineFunc)
+	local name = tostring(nameRaw)
+	if type(nameRaw) == "number" then
+		name = "[" .. name .. "]"
+	end
+	local ty = type(value)
+	if ty == "userdata" then
+		lineFunc("warning, userdata")
+	end
+	if ty == "table" then
+		lineFunc(newIndent .. name .. " = {")
+		TableToStringHelper(value, newIndent, true, lineFunc)
+		lineFunc(newIndent .. "},")
+	elseif ty == "boolean" then
+		lineFunc(newIndent .. name .. " = " .. (value and "true," or "false,"))
+	elseif ty == "string" then
+		lineFunc(newIndent .. name .. [[ = "]] .. value .. [[",]])
+	elseif ty == "number" then
+		lineFunc(newIndent .. name .. " = " .. value .. ",")
+	else
+		lineFunc(newIndent .. name .. " = ", value)
+	end
+end
+
+function TableToStringHelper(data, indent, tableChecked, lineFunc, orderPreference)
 	indent = indent or ""
 	local newIndent = indent .. "	"
-	for nameRaw, v in pairs(data) do
-		local name = tostring(nameRaw)
-		if type(nameRaw) == "number" then
-			name = "[" .. name .. "]"
+	
+	local alreadyAdded = false
+	if orderPreference then
+		alreadyAdded = {}
+		for i = 1, #orderPreference do
+			local nameRaw = orderPreference[i]
+			if data[nameRaw] then
+				AddTableLine(nameRaw, data[nameRaw], newIndent, lineFunc)
+				alreadyAdded[nameRaw] = true
+			end
 		end
-		local ty = type(v)
-		if ty == "userdata" then
-			lineFunc("warning, userdata")
-		end
-		if ty == "table" then
-			lineFunc(newIndent .. name .. " = {")
-			TableToStringHelper(v, newIndent, true, lineFunc)
-			lineFunc(newIndent .. "},")
-		elseif ty == "boolean" then
-			lineFunc(newIndent .. name .. " = " .. (v and "true," or "false,"))
-		elseif ty == "string" then
-			lineFunc(newIndent .. name .. [[ = "]] .. v .. [[",]])
-		elseif ty == "number" then
-			lineFunc(newIndent .. name .. " = " .. v .. ",")
-		else
-			lineFunc(newIndent .. name .. " = ", v)
+	end
+	
+	for nameRaw, value in pairs(data) do
+		if not (alreadyAdded and alreadyAdded[nameRaw]) then
+			AddTableLine(nameRaw, value, newIndent, lineFunc)
 		end
 	end
 end
 
-function util.TableToString(data)
+function util.TableToString(data, orderPreference)
 	local str = ""
 	local function Append(newLine)
 		str = str .. newLine .. "\n"
 	end
 	Append("{")
-	TableToStringHelper(data, indent, tableChecked, Append)
+	TableToStringHelper(data, indent, tableChecked, Append, orderPreference)
 	Append("}")
 	return str
 end
