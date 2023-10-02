@@ -164,7 +164,7 @@ local data = {
 		[18] = {
 			extraData = {
 				invasionIndex = 2,
-				armySize = 8,
+				armySize = 12,
 			},
 			pos = {
 				[1] = 19,
