@@ -36,17 +36,22 @@ local function DominionMatchesPrevious(domino, otherDominos, dominoIndex)
 	return false
 end
 
+local function DrawDomino(deck, cannotPair)
+	local drawn = DeckHandler.GetNextDraw(deck, 1, cannotPair)[1]
+	return drawn
+end
+
 local function GenerateDomino(otherDominos, dominoIndex, prevMatchAllowed)
-	local first = DeckHandler.GetNextDraw(self.decks[1], 1)[1]
-	local second = DeckHandler.GetNextDraw(self.decks[2], 1, TileDefs[first].cannotPairWith_map)[1]
+	local first = DrawDomino(self.decks[1], cannotPair)
+	local second = DrawDomino(self.decks[2], TileDefs[first].cannotPairWith_map)
 	local domino = {first, second}
-	if prevMatchAllowed or true then
+	if prevMatchAllowed then
 		return domino
 	end
 	local tries = 0
-	while DominionMatchesPrevious(domino, otherDominos, dominoIndex) do 
-		domino[1] = DeckHandler.GetNextDraw(self.decks[1], 1)[1]
-		domino[2] = DeckHandler.GetNextDraw(self.decks[2], 1, TileDefs[first].cannotPairWith_map)[1]
+	while DominionMatchesPrevious(domino, otherDominos, dominoIndex) do
+		domino[1] = DrawDomino(self.decks[1])
+		domino[2] = DrawDomino(self.decks[2], TileDefs[first].cannotPairWith_map)
 		tries = tries + 1
 		if tries > Global.DOMINIO_DUPLICATE_TRIES then
 			return domino
