@@ -189,6 +189,13 @@ function api.Update(dt)
     end
   end
   
+  -- If net food is positive, prefer the oboe solo.  Otherwise, prefer Hymnal.
+  if (BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger") - BuildingHandler.CountResourceType("tavern")*Global.TAVERN_FOOD_COST > 0) then
+    soloWeights = {4,0,0,0}
+  else
+    soloWeights = {0,0,0,4}
+  end
+  
   local volShift = {}
   -- Determine if we are at bank cutover time.
   if(remainingTime <= 0) then
