@@ -8,6 +8,8 @@ local data = {
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	
+	tooltip = "Tower\nTrains two scouts, plus one per wall. Tools improve scout power (+1). Requires stone to maintain.",
+	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"quarry", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},
 	destroyIfNotNearby = "invasion",

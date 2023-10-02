@@ -56,11 +56,11 @@ local globals = {
 	RESOURCE_MOVE_SPEED = 0.9,
 	
 	EXPLODE_COST = 4,
-	EXPLODE_COST_INC = 1.5,
+	EXPLODE_COST_INC = 1,
 	EXPLODE_CHARGES = 2,
 	
 	REFRESH_COST = 1,
-	REFRESH_COST_INC = 0.5,
+	REFRESH_COST_INC = 1,
 	REFRESH_CHARGES = 2,
 	
 	WEAPON_ARMY_MULT = 2,
@@ -81,9 +81,9 @@ local globals = {
 	GAME_SPEED = 2,
 	WORKER_SPEED = 0.9,
 	REFRESH_TIMER = 0.05,
-	TOOLTIP_FADE_RATE = 4,
-	TOOLTIP_FADE_DELAY = 0.12,
-	END_GAME_FADE_RATE = 2.6,
+	TOOLTIP_FADE_RATE = 5.2,
+	TOOLTIP_FADE_DELAY = 0.11,
+	END_GAME_FADE_RATE = 2.8,
 	
 	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "tileDeck", "hints", "tiles", "terrain", "doodads", "invasionMask"},
 }

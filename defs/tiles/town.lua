@@ -9,7 +9,7 @@ local data = {
 	cannotPairWith = {},
 	spawnTilePositions = {{0.15, -0.15}, {-0.15, 0.15}},
 	
-	tooltip = "Housing\nEach home houses one person, which require food (2). An adjacent fountain adds a story to house an additonal person.",
+	tooltip = "Housing\nEach home houses one worker, which require food (2). Most strctures need workers nearby so keep expanding the town.",
 	
 	canBuildOn = {"grass", "desert"},
 	upgradeBuilding = "fountain",

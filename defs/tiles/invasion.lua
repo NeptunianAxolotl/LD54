@@ -11,7 +11,7 @@ local data = {
 	drawWiggle = 0,
 	drawFlip = 1,
 	
-	tooltip = "Fountain\nUpgrades nearby houses, allowing them to house two people. Requires stone to maintain.",
+	tooltip = "Unknown Lands\nBuild outposts and towers to mount an expedition to reveal more land.",
 	
 	collectableResourceType = "invasion",
 	collectableResourceTypeFunc = function (self)

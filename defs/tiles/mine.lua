@@ -8,6 +8,8 @@ local data = {
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	
+	tooltip = "Mine\nProduces ore for use by the blacksmith and alchemist. Requires workers, a mountain, and planks to maintain.",
+	
 	canBuildOn = {"grass", "desert"},
 	mustBuildNear = {"mountain"},
 	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}},

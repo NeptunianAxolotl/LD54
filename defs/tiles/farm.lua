@@ -9,7 +9,7 @@ local data = {
 	spawnTilePositions = {{0, 0}},
 	canBuildOn = {"grass"},
 	
-	tooltip = "Farm\nProduces food (3). Requires workers and cannot be built on desert. An adjacent mill improves food output (5).",
+	tooltip = "Farm\nProduces food (3). Requires workers and cannot be built on desert. An adjacent windmill improves food output (5).",
 	
 	upgradeBuilding = "mill",
 	upgradeDistance = 1.49,

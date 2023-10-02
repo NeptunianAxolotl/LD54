@@ -8,6 +8,8 @@ local data = {
 	cannotPairWith = {"tavern"},
 	spawnTilePositions = {{0, 0}},
 	
+	tooltip = "Tavern\nImproves the speed and productivity of visitors (+50%) and increases build slots. Requires planks to maintain.",
+	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}},
 	

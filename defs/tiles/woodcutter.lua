@@ -8,7 +8,7 @@ local data = {
 	cannotPairWith = {"sawmill"},
 	spawnTilePositions = {{0, 0}},
 	
-	tooltip = "Woodcutter\nProduces logs for construction and heating homes, which boosts productivity by 50%. Requires workers and nearby forest.",
+	tooltip = "Woodcutter\nProduces logs for construction and heating homes, boosting speed and productivity by 50%. Requires workers and trees.",
 	
 	canBuildOn = {"grass", "desert"},
 	mustBuildNear = {"forest"},

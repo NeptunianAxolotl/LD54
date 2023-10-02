@@ -87,6 +87,9 @@ function api.GetViewRestriction()
 end
 
 function api.DoTurnTick()
+	api.AddResource("explosion", BuildingHandler.CountResourceType("alchemist"))
+	api.AddResource("refresh", BuildingHandler.CountResourceType("chapel"))
+	
 	local baseSlots = Global.SHOP_SLOTS
 	if BuildingHandler.CountResourceType("tavern") > 0 then
 		baseSlots = baseSlots + 1
@@ -94,16 +97,11 @@ function api.DoTurnTick()
 	if BuildingHandler.CountResourceType("cathedral") > 0 then
 		baseSlots = baseSlots + 1
 	end
-	print(BuildingHandler.CountResourceType("tavern"))
-	print(BuildingHandler.CountResourceType("cathedral"))
 	if api.CanAfford("explosion") then
 		baseSlots = baseSlots + 1
 	end
 	self.shopSlots = baseSlots
 	self.maxShopSlotsSoFar = math.max(self.shopSlots, self.maxShopSlotsSoFar)
-	
-	api.AddResource("explosion", BuildingHandler.CountResourceType("alchemist"))
-	api.AddResource("refresh", BuildingHandler.CountResourceType("chapel"))
 end
 
 function api.GetArmyMultiplier()

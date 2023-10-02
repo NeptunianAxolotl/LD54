@@ -8,6 +8,8 @@ local data = {
 	cannotPairWith = {"mill", "sawmill"},
 	spawnTilePositions = {{0, 0}},
 	
+	tooltip = "Windmill\nImproves the production of nearby farms. Requires planks to maintain, but no workers.",
+	
 	doesUpgrade = "mill",
 	
 	canBuildOn = {"grass", "desert"},
