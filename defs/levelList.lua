@@ -1,6 +1,5 @@
 
 local levelList = {
-	"emptyLevel",
 	"level1",
 	"level2",
 	"level3",
@@ -13,7 +12,6 @@ local levelList = {
 	"blahlevel5",
 	"blahlevel6",
 	"blahlevel7",
-	--"testLevel3",
 }
 
 return levelList
