@@ -43,54 +43,63 @@ local musicSuffixes = {
   -- musicFadeRequest[trackNumber][3] = current volume
   -- INTENTIONALLY GLOBAL
 musicFadeRequest = {
-  {0,0,0},
-  {0,0,0},
+  {1,0,1}, -- Bassoons
   {1,0,1},
   {1,0,1},
-  {0,0,0},
   {1,0,1},
-  {1,0,1},
-  {0,0,0},
-  {0,0,0},
-  {0,0,0}
+  {1,0,1}, -- Bass and Tenor Recorder
+  {1,0,1}, -- Snare Drum (NOT WORKING)
+  {1,0,1}, -- Snare Drum (NOT WORKING)
+  {1,0,1}, -- Tambourine
+  {1,0,1}, -- Horn
+  {1,0,1}  -- Trumpet
   }
 
 -- All tracks have an "all-others" track, and possibly a RIPIENO track, a SOLO track and a HYMNAL track.
 
 local musicBankRipieno = {}
-for i = 1,#musicPaths do
+local musicSource = nil
+for i=1,#musicPaths do
   if love.filesystem.getInfo(musicPaths[i].."ripieno.ogg") ~= nil then
-  local musicSource = love.audio.newSource(musicPaths[i].."ripieno.ogg","stream")
+  musicSource = love.audio.newSource(musicPaths[i].."ripieno.ogg","stream")
   else
-    musicSource = love.audio.newSource(musicPaths[i].."all-others.ogg","stream")
+   musicSource = love.audio.newSource(musicPaths[i].."all-others.ogg","stream")
   end
   table.insert(musicBankRipieno,musicSource)
 end
 
+musicSource = nil
+
 local musicBankHymnal = {}
-for i =1,#musicPaths do
+for i=1,#musicPaths do
   if love.filesystem.getInfo(musicPaths[i].."hymnal.ogg") ~= nil then
-  local musicSource = love.audio.newSource(musicPaths[i].."hymnal.ogg","stream")
+  musicSource = love.audio.newSource(musicPaths[i].."hymnal.ogg","stream")
   else
-    musicSource = love.audio.newSource(musicPaths[i].."all-others.ogg","stream")
+   musicSource = love.audio.newSource(musicPaths[i].."all-others.ogg","stream")
   end
   table.insert(musicBankHymnal,musicSource)
 end
 
+musicSource = nil
+
 local musicBankSolo = {}
 for i =1,#musicPaths do
   if love.filesystem.getInfo(musicPaths[i].."solo.ogg") ~= nil then
-  local musicSource = love.audio.newSource(musicPaths[i].."solo.ogg","stream")
+  musicSource = love.audio.newSource(musicPaths[i].."solo.ogg","stream")
   else
-    musicSource = love.audio.newSource(musicPaths[i].."all-others.ogg","stream")
+   musicSource = love.audio.newSource(musicPaths[i].."all-others.ogg","stream")
   end
   table.insert(musicBankSolo,musicSource)
 end
+
+musicSource = nil
 
 local musicBankOthers = {}
 for i =1,#musicPaths do
   table.insert(musicBankOthers,love.audio.newSource(musicPaths[i].."all-others.ogg","stream"))
 end
+
+print(#musicBankRipieno,#musicBankHymnal,#musicBankSolo,#musicBankOthers)
 
 -- The following instruments have SOLOs (they can perform an alternate melody during SOLO phase):
 
