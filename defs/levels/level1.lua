@@ -2,6 +2,7 @@ local data = {
 	humanName = "test",
 	width = 20,
 	height = 20,
+	customVictoryText = "Use key customVictoryText in level def",
 	cameraPos = {
 		[1] = 11.5,
 		[2] = 9.5,
@@ -10,7 +11,6 @@ local data = {
 		[2] = {
 			town = 1,
 			farm = 1,
-			woodcutter = 1,
 		},
 		[1] = {
 			barracks = 1,
@@ -46,7 +46,7 @@ local data = {
 			},
 		},
 		[4] = {
-			def = "sawmill",
+			def = "woodcutter",
 			pos = {
 				[1] = 11,
 				[2] = 9,
@@ -103,6 +103,27 @@ local data = {
 			pos = {
 				[1] = 15,
 				[2] = 6,
+			},
+		},
+		[12] = {
+			def = "town",
+			pos = {
+				[1] = 10,
+				[2] = 8,
+			},
+		},
+		[13] = {
+			def = "sawmill",
+			pos = {
+				[1] = 11,
+				[2] = 8,
+			},
+		},
+		[14] = {
+			def = "fishery",
+			pos = {
+				[1] = 9,
+				[2] = 7,
 			},
 		},
 	},

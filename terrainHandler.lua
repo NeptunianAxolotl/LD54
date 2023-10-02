@@ -83,6 +83,9 @@ function api.RemoveInvasion(pos)
 end
 
 function api.SpawnInvasionRemoveWave(pos, invasionIndex)
+	if not invasionIndex then
+		invasionIndex = api.GetInvasionAt(pos)
+	end
 	self.invasionWaves[invasionIndex] = self.invasionWaves[invasionIndex] or {
 		points = {pos}
 	}
