@@ -532,10 +532,9 @@ local function DrawRefreshButton()
 	if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE) then
 		if canAfford then
 			self.hoveredItem = GameHandler.GetShopSlots() + 1
-		else
-			local income = BuildingHandler.CountResourceType("chapel")
-			api.SetTooltip(string.format("Chapels partially charge refresh after placing a tile.\n  - Charge: %d\n  - Income: %d\n  - Current cost: %d", refreshInfo.total, income, refreshInfo.cost))
 		end
+		local income = BuildingHandler.CountResourceType("chapel")
+		api.SetTooltip(string.format("Chapels partially charge refresh after placing a tile.\n  - Charge: %d\n  - Income: %d\n  - Current cost: %d", refreshInfo.total, income, refreshInfo.cost))
 	end
 	if not canAfford then
 		love.graphics.setColor(Global.BUTTON_BACK[1]*0.75, Global.BUTTON_BACK[2]*0.75, Global.BUTTON_BACK[3]*0.75, 1)
