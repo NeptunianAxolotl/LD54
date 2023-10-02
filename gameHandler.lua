@@ -16,11 +16,12 @@ local api = {}
 -- Stockpiles
 --------------------------------------------------
 
-local function InitStockpile(startCost, costInc)
+local function InitStockpile(startCost, costInc, chargeStorage)
 	local data = {
 		cost = startCost,
 		costInc = costInc,
 		hasBeenUsed = false,
+		chargeStorage = chargeStorage,
 		total = 0,
 	}
 	return data
@@ -51,6 +52,18 @@ function api.AddResource(name, amount)
 	end
 	local stock = self.stockpile[name]
 	stock.total = stock.total + amount
+	
+	if stock.chargeStorage then
+		local stockCapacity = 0
+		local futureCost = stock.cost
+		for i = 1, stock.chargeStorage do
+			stockCapacity = stockCapacity + math.floor(futureCost)
+			futureCost = futureCost + stock.costInc
+		end
+		if stock.total > stockCapacity then
+			stock.total = stockCapacity
+		end
+	end
 	stock.hasBeenUsed = true
 end
 
@@ -147,8 +160,8 @@ function api.Initialize(parentWorld)
 		world = parentWorld,
 		shopSlots = Global.SHOP_SLOTS,
 		stockpile = {
-			explosion = InitStockpile(Global.EXPLODE_COST, Global.EXPLODE_COST_INC),
-			refresh = InitStockpile(Global.REFRESH_COST, Global.REFRESH_COST_INC),
+			explosion = InitStockpile(Global.EXPLODE_COST, Global.EXPLODE_COST_INC, Global.EXPLODE_CHARGES),
+			refresh = InitStockpile(Global.REFRESH_COST, Global.REFRESH_COST_INC, Global.REFRESH_CHARGES),
 		},
 		maxShopSlotsSoFar = Global.SHOP_SLOTS,
 	}

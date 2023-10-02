@@ -412,25 +412,30 @@ local function DrawRefreshButton()
 	end
 	
 	local refreshInfo = GameHandler.GetStockInfo("refresh")
-	local affordProp  = refreshInfo.total / refreshInfo.cost
+	local affordProp  = 1 - refreshInfo.total / refreshInfo.cost
 	local canAfford   = GameHandler.CanAfford("refresh")
 	
 	local y = shopItemsY + Global.VIEW_HEIGHT - Global.SHOP_SPACING - Global.SHOP_SIZE
-	if canAfford and util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE) then
-		self.hoveredItem = GameHandler.GetShopSlots() + 1
+	if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE) then
+		if canAfford then
+			self.hoveredItem = GameHandler.GetShopSlots() + 1
+		else
+			local income = BuildingHandler.CountResourceType("chapel")
+			api.SetTooltip(string.format("Chapels add to refresh charge each time a tile is placed.\n  - Charge: %d\n  - Income: %d\n  - Current cost: %d", refreshInfo.total, income, refreshInfo.cost))
+		end
 	end
 	if not canAfford then
-		love.graphics.setColor(0.45, 0.65, 0.72, 1)
+		love.graphics.setColor(0.5*0.75, 0.7*0.75, 0.8*0.75, 1)
 	else
 		love.graphics.setColor(0.5, 0.7, 0.8, 1)
 	end
 	love.graphics.setLineWidth(4)
-	love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 16)
+	love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 32)
 	
 	if not canAfford then
 		local prop = affordProp
 		love.graphics.setColor(0.5, 0.5, 0.5, 1)
-		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, prop * (Global.SHOP_SIZE * 2 + buttonExtra*2), Global.SHOP_SIZE, 8, 8, 16)
+		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, prop * (Global.SHOP_SIZE * 2 + buttonExtra*2), Global.SHOP_SIZE, 8, 8, 32)
 	end
 	
 	if self.hoveredItem == GameHandler.GetShopSlots() + 1 and not self.shopBlockedTimer then
@@ -439,7 +444,7 @@ local function DrawRefreshButton()
 		love.graphics.setColor(0, 0, 0, 0.8)
 	end
 	love.graphics.setLineWidth(8)
-	love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 16)
+	love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 32)
 		
 	Font.SetSize(1)
 	love.graphics.setColor(0, 0, 0, 0.8)
