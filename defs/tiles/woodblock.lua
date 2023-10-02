@@ -9,7 +9,7 @@ local data = {
 	
 	canBuildOn = {"grass", "desert"},
 	mustBuildNear = {"forest"},
-	drawWiggle = 0.25,
+	drawWiggle = 0.12,
 	
 	population = 1,
 	popType = "wood",
@@ -21,7 +21,7 @@ local data = {
 	
 	needResource = {
 		worker = {
-			workTime = 10,
+			workTime = 9,
 			idleTimeout = 1,
 			searchRadius = Global.MEDIUM_WALK_RANGE,
 			homeWaitTime = 1,

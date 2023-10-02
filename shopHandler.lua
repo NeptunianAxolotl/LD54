@@ -334,11 +334,11 @@ function api.Draw(drawQueue)
 			
 			for j = 1, #nearbyInfo[i] do
 				local info = nearbyInfo[i][j]
-				love.graphics.setLineWidth(6)
+				love.graphics.setLineWidth(10)
 				if info.valid then
 					--love.graphics.setColor(0.6, 0.6, 0.6, 0.2)
 				else
-					love.graphics.setColor(1, 0.1, 0.1, 0.2)
+					love.graphics.setColor(209/255, 66/255, 33/255, 0.5)
 					love.graphics.line(pos[1], pos[2], info.pos[1], info.pos[2])
 				end
 			end

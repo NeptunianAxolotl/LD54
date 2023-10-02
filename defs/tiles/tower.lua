@@ -8,7 +8,7 @@ local data = {
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	
-	tooltip = "Tower\nTrains two scouts, plus one per wall. Tools improve scout power (+1). Requires stone to maintain.",
+	tooltip = "Tower\nTrains two scouts, each wall trains one. Tools improve scout power (+1). Requires stone to maintain.",
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"quarry", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},
@@ -21,7 +21,7 @@ local data = {
 	drawWiggle = 0,
 	collectableResourceType = "army",
 	collectableResourceTypeFunc = function (self)
-		return (self.GetActive() and (self.IsResourceActive("tool") and 3 or 2)) or 0
+		return (self.GetActive() and (self.IsResourceActive("tool") and 4 or 2)) or 0
 	end,
 	
 	needResource = {
