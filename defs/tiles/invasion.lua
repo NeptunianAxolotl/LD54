@@ -30,11 +30,11 @@ local data = {
 		pos = util.Add(pos, {-450, -180})
 		love.graphics.setColor(0, 0, 0, 1)
 		local nearbyArmy = GetNearbyArmySize(self)
-		love.graphics.printf("Scouts " .. nearbyArmy .. "/" .. self.armySize, pos[1] + 290, pos[2], 900, "left")
+		love.graphics.printf("Scouts " .. nearbyArmy .. "/" .. self.armySize, pos[1] + 290, pos[2] - 13, 900, "left")
 		
 		if nearbyArmy < self.armySize then
 			Font.SetSize(1)
-			love.graphics.printf("Add Barracks to explore", pos[1] + 290, pos[2] + 80, 350, "left")
+			love.graphics.printf("Add Barracks to explore the darkness", pos[1] + 290, pos[2] + 55, 350, "left")
 			return
 		end
 		
@@ -46,9 +46,9 @@ local data = {
 		
 		local hover = TerrainHandler.GetHoveredTile()
 		if hover and hover.pos[1] == self.pos[1] and hover.pos[2] == self.pos[2] then
-			love.graphics.setColor(unpack(Global.HOVER_HIGHLIGHT))
+			love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
 		else
-			love.graphics.setColor(unpack(Global.BUTTON_BORDER))
+			love.graphics.setColor(unpack(Global.PUSH_BUTTON_BORDER))
 		end
 		love.graphics.setLineWidth(8)
 		love.graphics.rectangle("line", bx, by, width, height, 8, 8, 32)

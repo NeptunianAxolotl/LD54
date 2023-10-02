@@ -3,13 +3,15 @@ local globals = {
 	BACK_COL = {36/255, 77/255, 135/255},
 	TILE_COL = {124/255, 149/255, 61/255},
 	BACK_COL_EDITOR = {1.2*10/255, 1.2*84/255, 1.2*156/255},
-	PANEL_COL = {197/255, 136/255, 71/255},
-	BUTTON_OUTLINE_COL = {99/255, 68/255, 36/255},	
-	BUTTON_HIGHLIGHT_COL = {240/255, 179/255, 86/255},
 	
-	HOVER_HIGHLIGHT = {0.5,0.5,0,1.0},
-	BUTTON_BORDER = {0,0,0,1.0},
-	BUTTON_BACK = {0.5, 0.7, 0.8, 1},
+	PANEL_COL = {197/255, 136/255, 71/255},
+	
+	HOVER_HIGHLIGHT = {240/255, 179/255, 86/255},
+	BUTTON_BORDER = {99/255, 68/255, 36/255},
+	
+	PUSH_BUTTON_BORDER = {124/255, 149/255, 61/255},
+	BUTTON_HIGHLIGHT = {198/255, 206/255, 105/255},
+	BUTTON_BACK = {175/255, 185/255, 92/255},
 	
 	GREY = {0.7, 0.7, 0.7},
 	WHITE = {1, 1, 1},
@@ -78,6 +80,7 @@ local globals = {
 	REFRESH_TIMER = 0.05,
 	TOOLTIP_FADE_RATE = 4,
 	TOOLTIP_FADE_DELAY = 0.12,
+	END_GAME_FADE_RATE = 2.6,
 	
 	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "tileDeck", "tiles", "terrain", "doodads", "invasionMask"},
 }

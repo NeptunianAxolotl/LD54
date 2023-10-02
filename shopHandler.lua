@@ -406,9 +406,9 @@ local function DrawTileArea()
 		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
 		
 		if self.hoveredItem == i then
-			love.graphics.setColor(0.35, 1, 0.35, 0.8)
+			love.graphics.setColor(unpack(Global.HOVER_HIGHLIGHT))
 		else
-			love.graphics.setColor(0, 0, 0, 0.8)
+			love.graphics.setColor(unpack(Global.BUTTON_BORDER))
 		end
 		love.graphics.setLineWidth(8)
 		love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
@@ -482,9 +482,9 @@ local function DrawGameEndArea()
 	
 	
 	if self.hoveredEndLevelAction then
-		love.graphics.setColor(unpack(Global.HOVER_HIGHLIGHT))
+		love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
 	else
-		love.graphics.setColor(unpack(Global.BUTTON_BORDER))
+		love.graphics.setColor(unpack(Global.PUSH_BUTTON_BORDER))
 	end
 	love.graphics.setLineWidth(8)
 	love.graphics.rectangle("line", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
@@ -519,7 +519,7 @@ local function DrawRefreshButton()
 			self.hoveredItem = GameHandler.GetShopSlots() + 1
 		else
 			local income = BuildingHandler.CountResourceType("chapel")
-			api.SetTooltip(string.format("Chapels add to refresh charge each time a tile is placed.\n  - Charge: %d\n  - Income: %d\n  - Current cost: %d", refreshInfo.total, income, refreshInfo.cost))
+			api.SetTooltip(string.format("Chapels partially charge refresh after placing a tile.\n  - Charge: %d\n  - Income: %d\n  - Current cost: %d", refreshInfo.total, income, refreshInfo.cost))
 		end
 	end
 	if not canAfford then
@@ -537,9 +537,9 @@ local function DrawRefreshButton()
 	end
 	
 	if self.hoveredItem == GameHandler.GetShopSlots() + 1 and not self.shopBlockedTimer then
-		love.graphics.setColor(unpack(Global.HOVER_HIGHLIGHT))
+		love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
 	else
-		love.graphics.setColor(unpack(Global.BUTTON_BORDER))
+		love.graphics.setColor(unpack(Global.PUSH_BUTTON_BORDER))
 	end
 	love.graphics.setLineWidth(8)
 	love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE, 8, 8, 32)
@@ -571,7 +571,7 @@ function api.DrawInterface()
 	
 	love.graphics.setColor(Global.PANEL_COL[1], Global.PANEL_COL[2], Global.PANEL_COL[3], 0.98)
 	love.graphics.rectangle("fill", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000)
-	love.graphics.setColor(0, 0, 0, 1)
+	love.graphics.setColor(unpack(Global.BUTTON_BORDER))
 	love.graphics.setLineWidth(12)
 	love.graphics.rectangle("line", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000, 8, 8, 16)
 	

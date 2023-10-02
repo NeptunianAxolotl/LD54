@@ -8,15 +8,12 @@ local data = {
 	},
 	tileDeck = {
 		[2] = {
-			woodcutter = 1,
-			farm = 5,
-			town = 4,
-			sawmill = 1,
-		},
-		[1] = {
 			town = 1,
 			farm = 1,
-			barracks = 5,
+			woodcutter = 1,
+		},
+		[1] = {
+			barracks = 1,
 		},
 	},
 	tiles = {
@@ -55,7 +52,7 @@ local data = {
 			},
 			extraData = {
 				invasionIndex = 1,
-				armySize = 2,
+				armySize = 1,
 			},
 			def = "invasion",
 		},
