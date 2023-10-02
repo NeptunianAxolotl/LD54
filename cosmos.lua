@@ -2,6 +2,7 @@
 local World = require("world")
 SoundHandler = require("soundHandler")
 MusicHandler = require("musicHandler")
+BGM = require("dynamicBGMHandler")
 
 local LevelDefs = util.LoadDefDirectory("defs/levels")
 
@@ -131,6 +132,7 @@ function api.Update(dt, realDt)
 	MusicHandler.Update(realDt)
 	SoundHandler.Update(realDt)
 	CameraHandler.Update(realDt)
+  BGM.Update(realDt)
 	World.Update(dt)
 end
 
