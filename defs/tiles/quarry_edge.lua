@@ -21,7 +21,7 @@ local data = {
 	
 	needResource = {
 		worker = {
-			workTime = 4,
+			workTime = 6,
 			idleTimeout = 0,
 			searchRadius = Global.SHORT_WALK_RANGE,
 			homeWaitTime = 1,
