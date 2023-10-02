@@ -230,7 +230,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 			ClickShopButton(i)
 		end
 	end
-	if key == "e" then
+	if key == "e" and GameHandler.CanAfford("refresh") then
 		ClickShopButton(GameHandler.GetShopSlots() + 1)
 	end
 end
@@ -503,6 +503,7 @@ end
 local function DrawRefreshButton()
 	local mousePos = self.world.GetMousePositionInterface()
 	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
+	local shopItemsY = 160
 	local shopItemsY = 160
 	local buttonExtra = 20
 

@@ -138,6 +138,10 @@ function api.KeyPressed(key, scancode, isRepeat)
 	elseif key == "m" then
 		self.brushMode = 4
 		self.brushType = "invadeArea"
+		
+		
+	elseif key == "q" then
+		self.brushType = "printCoord"
 	end
 	return true
 end
@@ -172,7 +176,11 @@ function api.MousePressed(x, y, button)
 	end
 	
 	if button == 1 then
-		if self.brushType == "doodad" then
+		if self.brushType == "printCoord" then
+			local pos = TerrainHandler.WorldToContinuousGrid(self.world.GetMousePosition())
+			local text = string.format("%.2f, %.2f", pos[1], pos[2])
+			EffectsHandler.SpawnEffect("error_popup", {700, 200}, {text = text, velocity = {0, 0}})
+		elseif self.brushType == "doodad" then
 			self.attachedDooddad = DoodadHandler.AddDoodad(self.brushMode, TerrainHandler.WorldToContinuousGrid(self.world.GetMousePosition()))
 		elseif self.brushType == "tile" then
 			TerrainHandler.AddTile(self.brushMode, TerrainHandler.WorldToGrid(self.world.GetMousePosition()), self.brushData)
@@ -229,6 +237,8 @@ Right click to remove thing
 of matching type (terrain,
 invasion mask, structure)
 
+- WSAD move camera
+- Q: print the coordinates to the screen.
 - Ctrl+S: Save to scratchLevel.lua
 - Ctrl+K: Save to file name
 - Ctrl+L: Load from file name

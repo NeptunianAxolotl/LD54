@@ -8,7 +8,7 @@ local data = {
 	cannotPairWith = {"fountain"},
 	spawnTilePositions = {{0, 0}},
 	
-	tooltip = "Fountain\nUpgrades nearby houses, allowing them to house two people. Requires stone to maintain.",
+	tooltip = "Fountain\nUpgrades nearby houses, allowing them to house two people. Requires stone to maintain, but no workers.",
 	
 	doesUpgrade = "fountain",
 	
