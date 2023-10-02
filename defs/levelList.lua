@@ -1,6 +1,7 @@
 
-local levels = {
+local levelList = {
 	"level1",
+	"level2",
 }
 
-return levels
+return levelList

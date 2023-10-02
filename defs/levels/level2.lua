@@ -3,97 +3,37 @@ local data = {
 	width = 20,
 	height = 20,
 	cameraPos = {
-		[1] = 11.5,
 		[2] = 9.5,
+		[1] = 11.5,
 	},
 	tileDeck = {
-		[2] = {
-			woodcutter = 1,
-			fishery = 4,
-			town = 4,
-			sawmill = 1,
-		},
 		[1] = {
 			town = 1,
 			barracks = 5,
+		},
+		[2] = {
+			woodcutter = 1,
+			sawmill = 1,
+			town = 4,
+			fishery = 4,
 		},
 	},
 	tiles = {
 		[1] = {
 			def = "town",
 			pos = {
-				[1] = 9,
-				[2] = 9,
+				[1] = 14,
+				[2] = 6,
 			},
 		},
 		[2] = {
 			def = "fishery",
 			pos = {
-				[1] = 9,
-				[2] = 8,
+				[1] = 14,
+				[2] = 5,
 			},
 		},
 		[3] = {
-			def = "woodcutter",
-			pos = {
-				[1] = 10,
-				[2] = 9,
-			},
-		},
-		[4] = {
-			def = "sawmill",
-			pos = {
-				[1] = 11,
-				[2] = 9,
-			},
-		},
-		[5] = {
-			pos = {
-				[1] = 12,
-				[2] = 12,
-			},
-			extraData = {
-				invasionIndex = 1,
-				armySize = 2,
-			},
-			def = "invasion",
-		},
-		[6] = {
-			def = "farm",
-			pos = {
-				[1] = 13,
-				[2] = 7,
-			},
-		},
-		[7] = {
-			def = "town",
-			pos = {
-				[1] = 13,
-				[2] = 6,
-			},
-		},
-		[8] = {
-			def = "fishery",
-			pos = {
-				[1] = 13,
-				[2] = 5,
-			},
-		},
-		[9] = {
-			def = "town",
-			pos = {
-				[1] = 14,
-				[2] = 6,
-			},
-		},
-		[10] = {
-			def = "fishery",
-			pos = {
-				[1] = 14,
-				[2] = 5,
-			},
-		},
-		[11] = {
 			def = "fishery",
 			pos = {
 				[1] = 15,

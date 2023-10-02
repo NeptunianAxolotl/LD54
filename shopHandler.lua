@@ -298,7 +298,7 @@ function api.MousePressed(x, y, button)
 	if self.hoveredEndLevelAction == "retry" then
 		self.world.Restart()
 	elseif self.hoveredEndLevelAction == "next" then
-		--self.world.RestartWorld()
+		self.world.GetCosmos().SwitchLevel(true)
 	end
 	if GameHandler.InSoftLossState() then
 		return false
