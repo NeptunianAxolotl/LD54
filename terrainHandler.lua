@@ -128,7 +128,7 @@ end
 
 local function HoverOverTile()
 	self.hoveredTile = false
-	if ShopHandler.MouseIsOverInterface() or ShopHandler.PlacingTile() then
+	if ShopHandler.MouseIsOverInterface() then
 		return false
 	end
 	local gridPos = api.WorldToGrid(self.world.GetMousePosition())
