@@ -21,7 +21,7 @@ local globals = {
 	RED = {1, 0.3, 0.3},
 	
 	MASTER_VOLUME = 0.75,
-	MUSIC_VOLUME = 0.25,
+	MUSIC_VOLUME = 0.22,
 	DEFAULT_MUSIC_DURATION = 174.69,
 	CROSSFADE_TIME = 0,
 	

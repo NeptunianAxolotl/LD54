@@ -14,6 +14,7 @@ local data = {
 			town = 6,
 			quarry = 1,
 			mine = 1,
+			mill = 1,
 			fishery = 3,
 			tower = 1,
 			farm = 2,
