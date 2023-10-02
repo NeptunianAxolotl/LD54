@@ -2,6 +2,7 @@ local data = {
 	humanName = "test",
 	width = 25,
 	height = 25,
+    customVictoryText = "You've explored the entire archipelago!  Time to sit down and figure out how to report back that none of these islands are more than a short stroll wide.",
 	lastLevel = true,
 	cameraPos = {
 		[1] = 14,
