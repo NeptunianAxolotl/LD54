@@ -1,7 +1,7 @@
 
 local World = require("world")
 SoundHandler = require("soundHandler")
-MusicHandler = require("musicHandler")
+--MusicHandler = require("musicHandler")
 BGM = require("dynamicBGMHandler")
 
 local LevelDefs = util.LoadDefDirectory("defs/levels")
@@ -20,7 +20,7 @@ local api = {}
 function api.ToggleMusic()
 	self.musicEnabled = not self.musicEnabled
 	if not self.musicEnabled then
-		MusicHandler.StopCurrentTrack()
+		--MusicHandler.StopCurrentTrack()
 	end
 end
 
@@ -125,7 +125,7 @@ end
 
 function api.Update(dt, realDt)
 	self.realTime = self.realTime + realDt
-	MusicHandler.Update(realDt)
+	--MusicHandler.Update(realDt)
 	SoundHandler.Update(realDt)
 	CameraHandler.Update(realDt)
   BGM.Update(realDt)
@@ -139,7 +139,7 @@ function api.Initialize()
 		musicEnabled = true,
 	}
 	self.curLevelData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
-	MusicHandler.Initialize(api)
+	--MusicHandler.Initialize(api)
 	SoundHandler.Initialize(api)
 	World.Initialize(api, self.curLevelData)
 end
