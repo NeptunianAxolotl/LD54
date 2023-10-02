@@ -10,7 +10,7 @@ local data = {
 	animationOffset = {0, -113},
 	
 	inShop = true,
-	cannotPairWith = {"mill", "sawmill"},
+	cannotPairWith = {"blacksmith", "mill", "sawmill"},
 	spawnTilePositions = {{0, 0}},
 	
 	tooltip = "Windmill\nImproves the production of nearby farms. Requires planks to maintain, but no workers.",

@@ -2,43 +2,43 @@ local data = {
 	humanName = "Atoll",
 	width = 20,
 	height = 20,
-    customVictoryText = "You've explored the entire island.  Very picturesque, though you're not sure where the serfs are supposed to fit.",
 	cameraPos = {
-		[1] = 14,
 		[2] = 7,
+		[1] = 14,
 	},
+	customVictoryText = "You've explored the entire island.  Very picturesque, though you're not sure where the serfs are supposed to fit.",
 	tileDeck = {
-		[2] = {
-			woodcutter = 2,
-			barracks = 1,
-			town = 4,
-			quarry = 1,
-			farm = 2,
-			fishery = 1,
-			tower = 1,
-			mine = 1,
-		},
 		[1] = {
+			blacksmith = 3,
 			woodcutter = 3,
+			fishery = 3,
+			tavern = 3,
+			farm = 6,
+			town = 8,
+			fountain = 1,
+			barracks = 3,
+			alchemist = 1,
+			mine = 3,
 			quarry = 3,
 			sawmill = 3,
-			farm = 6,
-			fountain = 1,
-			fishery = 3,
-			barracks = 3,
-			town = 8,
-			mine = 3,
-			alchemist = 1,
 			tower = 3,
-			tavern = 3,
-			blacksmith = 3,
+		},
+		[2] = {
+			mine = 1,
+			tower = 1,
+			barracks = 1,
+			fishery = 1,
+			woodcutter = 2,
+			quarry = 1,
+			farm = 2,
+			town = 4,
 		},
 	},
 	tiles = {
 		[1] = {
 			extraData = {
-				invasionIndex = 3,
 				armySize = 5,
+				invasionIndex = 3,
 			},
 			pos = {
 				[1] = 3,
@@ -48,8 +48,8 @@ local data = {
 		},
 		[2] = {
 			extraData = {
-				invasionIndex = 1,
 				armySize = 10,
+				invasionIndex = 1,
 			},
 			pos = {
 				[1] = 4,
@@ -59,8 +59,8 @@ local data = {
 		},
 		[3] = {
 			extraData = {
-				invasionIndex = 2,
 				armySize = 10,
+				invasionIndex = 2,
 			},
 			pos = {
 				[1] = 13,
@@ -69,73 +69,71 @@ local data = {
 			def = "invasion",
 		},
 		[4] = {
-			def = "farm",
 			pos = {
 				[1] = 13,
 				[2] = 7,
 			},
+			def = "farm",
 		},
 		[5] = {
-			def = "farm",
 			pos = {
 				[1] = 13,
 				[2] = 6,
 			},
+			def = "farm",
 		},
 		[6] = {
-			def = "town",
 			pos = {
 				[1] = 14,
 				[2] = 7,
 			},
+			def = "town",
 		},
 		[7] = {
-			def = "farm",
 			pos = {
 				[1] = 15,
 				[2] = 8,
 			},
+			def = "farm",
 		},
 		[8] = {
-			def = "town",
 			pos = {
 				[1] = 15,
 				[2] = 7,
 			},
+			def = "town",
 		},
 		[9] = {
-			def = "town",
 			pos = {
 				[1] = 15,
 				[2] = 6,
 			},
+			def = "town",
 		},
 		[10] = {
-			def = "fishery",
 			pos = {
 				[1] = 15,
 				[2] = 3,
 			},
+			def = "fishery",
 		},
 		[11] = {
-			def = "farm",
 			pos = {
 				[1] = 16,
 				[2] = 8,
 			},
+			def = "farm",
 		},
 		[12] = {
-			def = "fishery",
 			pos = {
 				[1] = 18,
 				[2] = 5,
 			},
+			def = "fishery",
 		},
 	},
 	terrain = {
 		[1] = {
-			[1] = "water",
-			[2] = "water",
 			[3] = "water",
 			[4] = "water",
 			[5] = "water",
@@ -156,7 +154,6 @@ local data = {
 			[20] = "water",
 		},
 		[2] = {
-			[1] = "water",
 			[2] = "water",
 			[3] = "water",
 			[4] = "grass",
@@ -569,8 +566,6 @@ local data = {
 		},
 		[1] = {
 			[0] = 1,
-			[1] = 1,
-			[2] = 1,
 			[3] = 1,
 			[4] = 1,
 			[5] = 1,
@@ -588,11 +583,9 @@ local data = {
 			[17] = 3,
 			[18] = 3,
 			[19] = 3,
-			[20] = 3,
 		},
 		[2] = {
 			[0] = 1,
-			[1] = 1,
 			[2] = 1,
 			[3] = 1,
 			[4] = 1,

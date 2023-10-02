@@ -21,7 +21,7 @@ local globals = {
 	RED = {1, 0.3, 0.3},
 	
 	MASTER_VOLUME = 0.75,
-	MUSIC_VOLUME = 0.25,
+	MUSIC_VOLUME = 0.22,
 	DEFAULT_MUSIC_DURATION = 174.69,
 	CROSSFADE_TIME = 0,
 	
@@ -56,11 +56,11 @@ local globals = {
 	RESOURCE_MOVE_SPEED = 0.9,
 	
 	EXPLODE_COST = 4,
-	EXPLODE_COST_INC = 1,
+	EXPLODE_COST_INC = 0.5,
 	EXPLODE_CHARGES = 3,
 	
 	REFRESH_COST = 1,
-	REFRESH_COST_INC = 1,
+	REFRESH_COST_INC = 0.5,
 	REFRESH_CHARGES = 3,
 	
 	WEAPON_ARMY_MULT = 2,
@@ -74,7 +74,7 @@ local globals = {
 	SHOP_SLOTS = 3,
 	
 	SHOW_REFRESH_DEBUG_MODE = false,
-	DEBUG_MODE_START_LEVEL = 6,
+	DEBUG_MODE_START_LEVEL = false,
 	
 	DESTROY_NAME = "explosion",
 	SHOP_WIDTH = 450,
@@ -87,7 +87,7 @@ local globals = {
 	TOOLTIP_FADE_DELAY = 0.11,
 	END_GAME_FADE_RATE = 2.8,
 	
-	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "tileDeck", "hints", "tiles", "terrain", "doodads", "invasionMask"},
+	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "customVictoryText", "tileDeck", "hints", "tiles", "terrain", "doodads", "invasionMask"},
 }
 
 return globals

@@ -3,39 +3,39 @@ local data = {
 	width = 24,
 	height = 32,
 	cameraPos = {
-		[1] = 10,
 		[2] = 10,
+		[1] = 10,
 	},
 	tileDeck = {
-		[2] = {
-			tower = 5,
-			quarry = 1,
-			fishery = 3,
-			sawmill = 2,
-			blacksmith = 1,
-			farm = 5,
-			barracks = 3,
-			town = 9,
-			fountain = 1,
-			woodcutter = 4,
-			tavern = 1,
-			mine = 4,
-			mill = 1,
-		},
 		[1] = {
-			tower = 5,
-			quarry = 2,
-			fishery = 4,
-			mine = 4,
-			blacksmith = 1,
-			farm = 4,
-			barracks = 2,
-			town = 7,
-			fountain = 2,
-			woodcutter = 3,
 			tavern = 1,
-			sawmill = 1,
+			farm = 4,
+			mine = 4,
+			fountain = 2,
+			tower = 5,
 			mill = 1,
+			quarry = 2,
+			sawmill = 1,
+			fishery = 4,
+			blacksmith = 1,
+			woodcutter = 3,
+			town = 7,
+			barracks = 2,
+		},
+		[2] = {
+			tavern = 1,
+			farm = 5,
+			sawmill = 2,
+			fountain = 1,
+			tower = 5,
+			mill = 1,
+			quarry = 1,
+			mine = 4,
+			fishery = 3,
+			blacksmith = 1,
+			woodcutter = 4,
+			town = 9,
+			barracks = 3,
 		},
 	},
 	tiles = {
@@ -68,15 +68,15 @@ local data = {
 			},
 		},
 		[5] = {
+			def = "invasion",
 			extraData = {
-				invasionIndex = 2,
 				armySize = 5,
+				invasionIndex = 2,
 			},
 			pos = {
 				[1] = 9,
 				[2] = 17,
 			},
-			def = "invasion",
 		},
 		[6] = {
 			def = "farm",
@@ -135,42 +135,40 @@ local data = {
 			},
 		},
 		[14] = {
+			def = "invasion",
 			extraData = {
+				armySize = 20,
 				invasionIndex = 4,
-				armySize = 15,
 			},
 			pos = {
 				[1] = 13,
 				[2] = 28,
 			},
-			def = "invasion",
 		},
 		[15] = {
+			def = "invasion",
 			extraData = {
-				invasionIndex = 3,
 				armySize = 10,
+				invasionIndex = 3,
 			},
 			pos = {
 				[1] = 13,
 				[2] = 21,
 			},
-			def = "invasion",
 		},
 		[16] = {
+			def = "invasion",
 			extraData = {
-				invasionIndex = 1,
 				armySize = 5,
+				invasionIndex = 1,
 			},
 			pos = {
 				[1] = 16,
 				[2] = 10,
 			},
-			def = "invasion",
 		},
 	},
 	terrain = {
-		[1] = {
-		},
 		[2] = {
 			[8] = "water",
 			[9] = "water",
@@ -687,11 +685,9 @@ local data = {
 		},
 		[23] = {
 			[11] = "water",
-			[12] = "water",
 			[13] = "water",
 			[15] = "water",
-		},
-		[24] = {
+			[12] = "water",
 		},
 	},
 	doodads = {
@@ -700,9 +696,9 @@ local data = {
 		[1] = {
 		},
 		[2] = {
+			[19] = 2,
 			[21] = 2,
 			[20] = 2,
-			[19] = 2,
 			[18] = 2,
 		},
 		[3] = {
@@ -872,7 +868,7 @@ local data = {
 			[22] = 3,
 			[23] = 3,
 			[24] = 3,
-			[25] = 3,
+			[25] = 4,
 			[26] = 4,
 			[27] = 4,
 			[28] = 4,
@@ -898,7 +894,7 @@ local data = {
 			[22] = 3,
 			[23] = 3,
 			[24] = 3,
-			[25] = 3,
+			[25] = 4,
 			[26] = 4,
 			[27] = 4,
 			[28] = 4,
@@ -1105,8 +1101,8 @@ local data = {
 			[22] = 3,
 		},
 		[24] = {
-			[13] = 1,
 			[14] = 1,
+			[13] = 1,
 		},
 	},
 }

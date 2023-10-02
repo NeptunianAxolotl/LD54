@@ -5,7 +5,7 @@ local data = {
 	groundImage = "workshop_ground",
 	building = "sawmill",
 	inShop = true,
-	cannotPairWith = {"mill", "sawmill", "woodcutter"},
+	cannotPairWith = {"blacksmith", "mill", "sawmill"},
 	spawnTilePositions = {{0, 0}},
 	
 	tooltip = "Sawmill\nProcesses logs into planks to maintain a variety of wooden structures.",

@@ -163,17 +163,18 @@ local function NewGuy(self, building)
 	-- Updating
 	
 	function self.Update(dt)
-		if self.homeBuilding.residentSpeedFunc then
-			dt = dt*self.homeBuilding.residentSpeedFunc(self.homeBuilding, self)
-		end
 		if self.beerBuffTimer then
-			self.beerBuffTimer = self.beerBuffTimer - dt -- Note that heated homes make beer buff run out faster.
+			self.beerBuffTimer = self.beerBuffTimer - dt
 			if self.beerBuffTimer < 0 then
 				self.beerBuffTimer = false
 				self.searchRangeBuff = false
 			else
 				dt = dt*Global.BEER_BUFF_MULT
 			end
+		end
+		-- Note that heated homes do not affect beer timer
+		if self.homeBuilding.residentSpeedFunc then
+			dt = dt*self.homeBuilding.residentSpeedFunc(self.homeBuilding, self)
 		end
 		
 		HandleGoHome(self, dt)

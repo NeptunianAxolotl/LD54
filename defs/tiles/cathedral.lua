@@ -29,11 +29,11 @@ local data = {
 			dependOnActivation = "stone",
 		},
 		stone = {
-			workTime = 2,
-			idleTimeout = 6,
+			workTime = 1,
+			idleTimeout = 8,
 			searchRadius = Global.LONG_WALK_RANGE,
 			homeWaitTime = 1,
-			needDelay = 4,
+			needDelay = 5,
 		},
 	},
 }

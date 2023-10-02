@@ -5,7 +5,7 @@ local data = {
 	groundImage = "workshop_ground",
 	building = "woodcutter",
 	inShop = true,
-	cannotPairWith = {"sawmill"},
+	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	
 	tooltip = "Woodcutter\nProduces logs for construction and heating homes, boosting speed and productivity by 50%. Requires workers and trees.",

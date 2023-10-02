@@ -56,6 +56,21 @@ musicFadeRequest = {
   {1,0.01,1}  -- Trumpet
   }
 
+local volMult = {
+	--[1] = 1,
+	--[2] = 0.3,
+	--[3] = 1,
+	--[4] = 1,
+	--[5] = 1,
+	--[6] = 0.5,
+	--[7] = 0.8,
+	--[8] = 0.7,
+	--[9] = 0.6,
+	--[10] = 0.4,
+	[9] = 0.3,
+	[10] = 0.3,
+}
+
 -- All tracks have an "all-others" track, and possibly a RIPIENO track, a SOLO track and a HYMNAL track.
 
 local musicBankRipieno = {}
@@ -202,7 +217,7 @@ function api.Update(dt)
   
     -- Start playing the active tracks.
     for i=1,#activeBank do
-      activeBank[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume)
+      activeBank[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume * (volMult[i] or 1))
       activeBank[i]:play()
     end
    oldActiveMusic = activeBank
@@ -212,7 +227,7 @@ end
 function api.SetMusicEnabled(enabled)
 	globalVolume = (enabled and 1) or 0
     for i=1,#oldActiveMusic do
-      oldActiveMusic[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume)
+      oldActiveMusic[i]:setVolume(musicFadeRequest[i][3] * Global.MUSIC_VOLUME * Global.MASTER_VOLUME * globalVolume * (volMult[i] or 1))
     end
 end
 
