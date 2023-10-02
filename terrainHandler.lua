@@ -52,7 +52,11 @@ function api.SetTerrainType(terrain, pos)
 	self.terrainType[x] = self.terrainType[x] or {}
 	self.terrainType[x][y] = terrain
 	self.terrainDraw[x] = self.terrainDraw[x] or {}
-	self.terrainDraw[x][y] = TerrainDefs[terrain].image
+	if TerrainDefs[terrain].randomiseImage then
+		self.terrainDraw[x][y] = util.SampleList(TerrainDefs[terrain].randomiseImage)
+	else
+		self.terrainDraw[x][y] = TerrainDefs[terrain].image
+	end
 end
 
 function api.RemoveTerrain(pos)
