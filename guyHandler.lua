@@ -22,6 +22,10 @@ function api.DeleteAllFlaggedBuildings()
 	IterableMap.ApplySelf(self.guyList, "DeleteFlaggedBuildings")
 end
 
+function api.DeleteAllFlaggedGuys()
+	IterableMap.ApplySelf(self.guyList, "DeleteGuyIfFlagged")
+end
+
 local function ClosestToWithDistSq(guy, maxDistSq, fromPos, resource)
 	if guy.def.resourceType ~= resource then
 		return false

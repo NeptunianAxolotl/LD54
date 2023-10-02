@@ -2,17 +2,24 @@ local TileUtils = require("utilities/tileUtils")
 
 local data = {
 	image = "house_single",
+	upgradeImage = "house_double",
 	building = "town",
 	inShop = true,
 	cannotPairWith = {},
 	spawnTilePositions = {{0.15, -0.15}, {-0.15, 0.15}},
 	
 	canBuildOn = {"grass", "desert"},
+	upgradeBuilding = "fountain",
+	upgradeDistance = 1.49,
 	
 	population = 1,
 	popType = "worker",
 	bonusOnEdges = true,
 	drawWiggle = 0.18,
+	
+	UpgradeChangeFunc = function (self, newState)
+		self.SetPopulation(newState and 2 or 1)
+	end,
 	
 	needResource = {
 		wood = {

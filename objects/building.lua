@@ -193,9 +193,32 @@ local function NewBuilding(self, building)
 		local newUpgrade = BuildingHandler.HasNearbyActiveBuilding(self.pos, upgradeSource, self.def.upgradeDistance)
 		if newUpgrade and not self.upgradeState then
 			self.upgradeState = true
+			if self.def.UpgradeChangeFunc then
+				self.def.UpgradeChangeFunc(self, self.upgradeState)
+			end
 		elseif not newUpgrade and self.upgradeState then
 			self.upgradeState = false
+			if self.def.UpgradeChangeFunc then
+				self.def.UpgradeChangeFunc(self, self.upgradeState)
+			end
 		end
+	end
+	
+	function self.SetPopulation(newPopulation)
+		self.currentPop = self.currentPop or self.def.population
+		print(newPopulation, self.currentPop)
+		if newPopulation > self.currentPop then
+			for i = self.currentPop + 1, newPopulation do
+				self.guys[#self.guys + 1] = GuyHandler.AddGuy(self.def.popType, self.pos, {homeBuilding = self})
+			end
+		elseif newPopulation < self.currentPop then
+			for i = newPopulation + 1, self.currentPop do
+				self.guys[i].FlagGuyForDeletion()
+				self.guys[i] = nil
+			end
+			GuyHandler.DeleteAllFlaggedGuys()
+		end
+		self.currentPop = newPopulation
 	end
 	
 	function self.HasUpgrade()

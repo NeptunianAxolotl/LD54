@@ -111,6 +111,23 @@ local function NewGuy(self, building)
 		end
 	end
 	
+	function self.FlagGuyForDeletion()
+		self.flaggedForDeletion = true
+	end
+	
+	function self.DeleteGuyIfFlagged()
+		if not self.flaggedForDeletion then
+			return false
+		end
+		if self.assignedBuilding then
+			RemoveFromAssignedBuilding(self)
+		end
+		self.homeBuilding = false
+		self.toDestroy = true
+		self.flaggedForDeletion = false
+		return true
+	end
+	
 	function self.DeleteFlaggedBuildings()
 		if self.homeBuilding and self.homeBuilding.DeleteIfFlagged() then
 			if self.assignedBuilding then
