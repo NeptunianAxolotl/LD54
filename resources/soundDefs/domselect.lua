@@ -1,4 +1,4 @@
 return {
-	file = "effects/domplacetile.mp3",
+	file = "effects/domclick.mp3",
 	volMult = 0.2,
 }
