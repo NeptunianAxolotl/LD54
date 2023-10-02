@@ -585,7 +585,7 @@ function api.DrawInterface()
 	local shopItemsY = 160
 	local buttonExtra = 20
 	
-	love.graphics.setColor(Global.PANEL_COL[1], Global.PANEL_COL[2], Global.PANEL_COL[3], 0.98)
+	love.graphics.setColor(Global.PANEL_COL[1], Global.PANEL_COL[2], Global.PANEL_COL[3], 1)
 	love.graphics.rectangle("fill", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000)
 	love.graphics.setColor(unpack(Global.BUTTON_BORDER))
 	love.graphics.setLineWidth(12)

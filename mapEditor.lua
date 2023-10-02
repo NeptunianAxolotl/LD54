@@ -79,7 +79,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.brushType = "doodad"
 	elseif key == "0" then
 		self.brushMode = "coast_12"
-		self.brushType = "doodad"		
+		self.brushType = "doodad"
 		
 	elseif key == "z" then
 		self.brushMode = "town"

@@ -45,7 +45,7 @@ local data = {
 		if MapEditor.InEditMode() then
 			Font.SetSize(0)
 			love.graphics.setColor(1, 0.2, 0.2, 1)
-			love.graphics.printf("INDEX " .. self.invasionIndex, pos[1] - 240, pos[2] - 80, 600, "center")
+			love.graphics.printf("INDEX " .. (self.invasionIndex or "??"), pos[1] - 240, pos[2] - 80, 600, "center")
 		end
 		
 		Font.SetSize(1)
