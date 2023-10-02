@@ -9,6 +9,7 @@ local levelList = {
 	"blahlevel3",
 	"blahlevel4",
 	"blahlevel5",
+	"blahlevel6",
 	"testLevel3",
 }
 
