@@ -53,7 +53,21 @@ function api.KeyPressed(key, scancode, isRepeat)
 	elseif key == "t" then
 		self.brushMode = "coast_3"
 		self.brushType = "doodad"
-		
+	elseif key == "y" then
+		self.brushMode = "coast_4"
+		self.brushType = "doodad"
+	elseif key == "u" then
+		self.brushMode = "coast_5"
+		self.brushType = "doodad"
+	elseif key == "i" then
+		self.brushMode = "coast_6"
+		self.brushType = "doodad"
+	elseif key == "o" then
+		self.brushMode = "coast_7"
+		self.brushType = "doodad"
+	elseif key == "p" then
+		self.brushMode = "coast_8"
+		self.brushType = "doodad"	
 		
 		
 	elseif key == "z" then
