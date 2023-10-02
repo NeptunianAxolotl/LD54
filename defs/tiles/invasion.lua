@@ -7,7 +7,7 @@ local data = {
 	drawWiggle = 0,
 	
 	onClick = function (self)
-		local nearbyArmy = BuildingHandler.CountResourceType("army", self.pos, Global.INVASION_RANGE)
+		local nearbyArmy = math.floor(BuildingHandler.CountResourceType("army", self.pos, Global.INVASION_RANGE) * GameHandler.GetArmyMultiplier())
 		if nearbyArmy < self.armySize then
 			return
 		end
@@ -19,7 +19,7 @@ local data = {
 		Font.SetSize(-1)
 		pos = util.Add(pos, {-450, -160})
 		love.graphics.setColor(0, 0, 0, 1)
-		local nearbyArmy = BuildingHandler.CountResourceType("army", self.pos, Global.INVASION_RANGE)
+		local nearbyArmy = math.floor(BuildingHandler.CountResourceType("army", self.pos, Global.INVASION_RANGE) * GameHandler.GetArmyMultiplier())
 		love.graphics.printf(nearbyArmy .. "/" .. self.armySize, pos[1], pos[2], 900, "center")
 	end,
 }

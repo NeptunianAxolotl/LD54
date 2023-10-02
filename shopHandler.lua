@@ -149,7 +149,11 @@ function api.SetTooltip(newTooltip)
 	self.tooltip = newTooltip
 end
 
-function api.SetTooltipToTile(tileName)
+function api.SetTooltipToTile(tileName, tileData)
+	if TileDefs[tileName].TooltipFunc then
+		self.tooltip = TileDefs[tileName].TooltipFunc(tileData)
+		return
+	end
 	self.tooltip = TileDefs[tileName].tooltip or ("Tile name " .. tileName .. " missing tooltip")
 end
 
@@ -167,11 +171,20 @@ function api.Update(dt)
 	
 	if self.tooltip then
 		self.tooltipFade = math.min(1, self.tooltipFade + Global.TOOLTIP_FADE_RATE*dt)
+		self.tooltipFadeDelay = Global.TOOLTIP_FADE_DELAY
 		self.oldTooltip = self.tooltip
 	else
-		self.tooltipFade = math.max(0, self.tooltipFade - Global.TOOLTIP_FADE_RATE*dt)
-		if self.tooltipFade <= 0 then
-			self.oldTooltip = false
+		if self.tooltipFadeDelay then
+			self.tooltipFadeDelay = self.tooltipFadeDelay - dt
+			if self.tooltipFadeDelay < 0 then
+				self.tooltipFadeDelay = false
+			end
+		end
+		if not self.tooltipFadeDelay then
+			self.tooltipFade = math.max(0, self.tooltipFade - Global.TOOLTIP_FADE_RATE*dt)
+			if self.tooltipFade <= 0 then
+				self.oldTooltip = false
+			end
 		end
 	end
 	self.tooltip = false

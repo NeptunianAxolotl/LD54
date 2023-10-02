@@ -171,12 +171,17 @@ function api.DescribeNearBuildings(gridPos, needBuildingNearby, otherTileName)
 	if needBuildingNearby then
 		for i = 1, #needBuildingNearby do
 			local near = needBuildingNearby[i]
+			local wantToBeFar = near[3]
 			if not (otherTileName and otherTileName == near[1]) then
 				local nearby, dist = BuildingHandler.GetNearestBuilding(gridPos, near[1])
 				if nearby then
+					local valid = (dist <= near[2])
+					if wantToBeFar then
+						valid = not valid
+					end
 					nearInfo[#nearInfo + 1] = {
 						pos = api.GridToWorld(nearby.GetPos()),
-						valid = (dist <= near[2])
+						valid = valid
 					}
 				end
 			end
@@ -208,7 +213,12 @@ function api.TerrainMatches(pos, buildOn, buildNear, needBuildingNearby, otherTi
 	if needBuildingNearby then
 		for i = 1, #needBuildingNearby do
 			local near = needBuildingNearby[i]
-			if not (otherTileName and otherTileName == near[1]) and (not BuildingHandler.IsBuildingNear(pos, near[1], near[2])) then
+			local wantToBeFar = near[3]
+			local farAway = not (otherTileName and otherTileName == near[1]) and (not BuildingHandler.IsBuildingNear(pos, near[1], near[2]))
+			if wantToBeFar and not farAway then
+				return false
+			end
+			if (not wantToBeFar) and farAway then
 				return false
 			end
 		end

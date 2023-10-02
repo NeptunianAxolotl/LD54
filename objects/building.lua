@@ -217,7 +217,6 @@ local function NewBuilding(self, building)
 	
 	function self.SetPopulation(newPopulation)
 		self.currentPop = self.currentPop or self.def.population
-		print(newPopulation, self.currentPop)
 		if newPopulation > self.currentPop then
 			for i = self.currentPop + 1, newPopulation do
 				self.guys[#self.guys + 1] = GuyHandler.AddGuy(self.def.popType, self.pos, {homeBuilding = self})

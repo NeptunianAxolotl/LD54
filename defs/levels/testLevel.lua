@@ -411,6 +411,7 @@ local data = {
 			alchemist = 4,
 			town = 6,
 			sawmill = 3,
+			cathedral = 19,
 		},
 		[1] = {
 			mill = 2,
@@ -427,6 +428,7 @@ local data = {
 			alchemist = 4,
 			town = 6,
 			sawmill = 3,
+			cathedral = 19,
 		},
 	},
 	doodads = {
