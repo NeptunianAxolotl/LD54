@@ -3,7 +3,7 @@ local names = util.GetDefDirList("resources/images/tiles", "png")
 local data = {}
 
 local altScale = {
-	fishery = 0.5,
+	darkness = 2,
 	woodblock = 0.4,
 }
 

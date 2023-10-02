@@ -29,7 +29,7 @@ local globals = {
 	CAMERA_SPEED = 2000,
 	WAVE_PERIOD = 0.5,
 	
-	STARVE_GROW_RATE = 0.1,
+	STARVE_GROW_RATE = 0.02,
 	STARVE_SHRINK_RATE = 0.6,
 	
 	TAVERN_FOOD_COST = 6,
@@ -58,10 +58,10 @@ local globals = {
 	BEER_RANGE_BUFF = 1,
 	
 	DECK_SIZE_MULT = 1,
-	INIT_LEVEL = "testLevel",
 	SHOP_SLOTS = 3,
 	
 	SHOW_REFRESH_DEBUG_MODE = true,
+	INIT_LEVEL = "level1",
 	
 	DESTROY_NAME = "explosion",
 	SHOP_WIDTH = 450,

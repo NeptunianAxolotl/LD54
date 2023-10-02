@@ -338,11 +338,16 @@ end
 					Resources.DrawImage(self.terrainDraw[x][y], pos[1], pos[2])
 				end			end		end	end})
 	drawQueue:push({y=-70; f=function()
+		local alpha = MapEditor.InEditMode() and 0.5 or 0.99
 		for x = 1, LevelHandler.Width() do
 			for y = LevelHandler.Height(), 1, -1 do
 				if self.invasionMask[x] and self.invasionMask[x][y] then
 					local pos = api.GridToWorld({x, y})
-					Resources.DrawImage("invasion_area" .. self.invasionMask[x][y], pos[1], pos[2])
+					if MapEditor.InEditMode() then
+						Resources.DrawImage("invasion_area" .. self.invasionMask[x][y], pos[1], pos[2], 0, alpha)
+					else
+						Resources.DrawImage("darkness", pos[1], pos[2], 0, alpha)
+					end
 				end
 			end
 		end

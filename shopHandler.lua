@@ -328,14 +328,14 @@ local function DrawFoodArea()
 	local starvation = GameHandler.GetStarvation()
 	
 	Resources.DrawImage("dial_base", shopItemsX, dialY)
-	Resources.DrawImage("dial", shopItemsX, dialY, math.pi*(self.dialPosition - 0.5) + 0.1*math.random()*(starvation + (starvation > 0 and 0.2 or 0)))
+	Resources.DrawImage("dial", shopItemsX, dialY, math.pi*(self.dialPosition - 0.5) + 0.3*math.random()*(math.pow(starvation + (starvation > 0 and 0.2 or 0), 1.6)))
 	
 	Font.SetSize(3)
 	love.graphics.setColor(0, 0, 0, 1)
 	
-	love.graphics.printf("Food Production: " .. foodInfo.income, textX + math.random()*starvation*3, textY + math.random()*starvation*3, 400, "left")
+	love.graphics.printf("Food Production: " .. foodInfo.income, textX + math.random()*math.pow(starvation, 1.8)*10, textY + math.random()*starvation*3, 400, "left")
 	textY = textY + textSpacing
-	love.graphics.printf("Food Consumption: " .. foodInfo.expense, textX + math.random()*starvation*3, textY + math.random()*starvation*3, 400, "left")
+	love.graphics.printf("Food Consumption: " .. foodInfo.expense, textX + math.random()*math.pow(starvation, 1.8)*10, textY + math.random()*starvation*3, 400, "left")
 	
 	local explosion = GameHandler.GetStockInfo("explosion")
 	love.graphics.printf("Explode " .. explosion.cost .. " / " .. explosion.total, 20, 100, 400, "left")
