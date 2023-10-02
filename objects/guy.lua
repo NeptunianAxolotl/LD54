@@ -7,7 +7,7 @@ local function BecomeIdleWorkCheck(self)
 	if not self.IsAvailible() then
 		return
 	end
-	local building = BuildingHandler.GetClosestFreeBuilding(self.homeBuilding.pos, self.def.resourceType)
+	local building = BuildingHandler.GetClosestFreeBuilding(self, self.homeBuilding.pos, self.def.resourceType, self.searchRangeBuff)
 	if building then
 		building.AssignGuyToBuilding(self)
 	--elseif self.def.globalStockWhenIdle and self.IsAvailible() then
@@ -86,6 +86,19 @@ local function NewGuy(self, building)
 		return self.pos
 	end
 	
+	function self.GetRangeBuff()
+		return self.searchRangeBuff or 0
+	end
+	
+	function self.IsAlreadyOnTheBeers()
+		return self.beerBuffTimer and true or false
+	end
+	
+	function self.GetOnTheBeers()
+		self.beerBuffTimer = Global.BEER_BUFF_TIME
+		self.searchRangeBuff = Global.BEER_RANGE_BUFF
+	end
+	
 	function self.IsAvailible()
 		if not self.homeBuilding.HasStockpileToActivateGuy(self.def.resourceType) then
 			return false
@@ -153,6 +166,16 @@ local function NewGuy(self, building)
 		if self.homeBuilding.residentSpeedFunc then
 			dt = dt*self.homeBuilding.residentSpeedFunc(self.homeBuilding, self)
 		end
+		if self.beerBuffTimer then
+			self.beerBuffTimer = self.beerBuffTimer - dt -- Note that heated homes make beer buff run out faster.
+			if self.beerBuffTimer < 0 then
+				self.beerBuffTimer = false
+				self.searchRangeBuff = false
+			else
+				dt = dt*Global.BEER_BUFF_MULT
+			end
+		end
+		
 		HandleGoHome(self, dt)
 		HandleAssignedBuilding(self, dt)
 		

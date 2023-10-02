@@ -32,7 +32,7 @@ local data = {
 	},
 	residentSpeedFunc = function (self, guy)
 		if self.GetActive() then
-			return 1.6 * Global.WORKER_SPEED
+			return 1.5 * Global.WORKER_SPEED
 		end
 		return 1 * Global.WORKER_SPEED
 	end

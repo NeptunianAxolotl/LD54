@@ -53,15 +53,50 @@ function api.KeyPressed(key, scancode, isRepeat)
 		
 		
 	elseif key == "z" then
-		self.brushMode = "farm"
-		self.brushType = "tile"
-	elseif key == "x" then
 		self.brushMode = "town"
 		self.brushType = "tile"
+	elseif key == "x" then
+		self.brushMode = "farm"
+		self.brushType = "tile"
 	elseif key == "c" then
+		self.brushMode = "fishery"
+		self.brushType = "tile"
+		
+	--elseif key == "kp0" then
+	--	self.brushMode = "woodcutter"
+	--	self.brushType = "tile"
+		
+	elseif key == "kp1" then
 		self.brushMode = "woodcutter"
 		self.brushType = "tile"
-	elseif key == "p" then
+	elseif key == "kp2" then
+		self.brushMode = "sawmill"
+		self.brushType = "tile"
+	elseif key == "kp3" then
+		self.brushMode = "tavern"
+		self.brushType = "tile"
+		
+	elseif key == "kp4" then
+		self.brushMode = "mine"
+		self.brushType = "tile"
+	elseif key == "kp5" then
+		self.brushMode = "blacksmith"
+		self.brushType = "tile"
+	elseif key == "kp6" then
+		self.brushMode = "quarry"
+		self.brushType = "tile"
+		
+	elseif key == "kp7" then
+		self.brushMode = "mill"
+		self.brushType = "tile"
+	elseif key == "kp8" then
+		self.brushMode = "barracks"
+		self.brushType = "tile"
+	elseif key == "kp9" then
+		self.brushMode = "tower"
+		self.brushType = "tile"
+		
+	elseif key == "kp-" then
 		self.brushMode = "plenty"
 		self.brushType = "tile"
 		

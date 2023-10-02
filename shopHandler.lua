@@ -36,10 +36,13 @@ local function DominionMatchesPrevious(domino, otherDominos, dominoIndex)
 	return false
 end
 
-local function GenerateDomino(otherDominos, dominoIndex)
+local function GenerateDomino(otherDominos, dominoIndex, prevMatchAllowed)
 	local first = DeckHandler.GetNextDraw(self.decks[1], 1)[1]
 	local second = DeckHandler.GetNextDraw(self.decks[2], 1, TileDefs[first].cannotPairWith_map)[1]
 	local domino = {first, second}
+	if prevMatchAllowed or true then
+		return domino
+	end
 	local tries = 0
 	while DominionMatchesPrevious(domino, otherDominos, dominoIndex) do 
 		domino[1] = DeckHandler.GetNextDraw(self.decks[1], 1)[1]
@@ -59,7 +62,7 @@ local function UpdateItems(refreshAll)
 			local domino = GenerateDomino(self.items, i)
 			local tries = 0
 			while not TerrainHandler.DominoCanBePlacedAtAll(domino) do
-				domino = GenerateDomino(self.items, i)
+				domino = GenerateDomino(self.items, i, tries > 0.5*Global.DOMINO_GENERATION_TRIES)
 				tries = tries + 1
 				if tries > Global.DOMINO_GENERATION_TRIES then
 					self.world.SetGameOver(false, "Ran out of space")

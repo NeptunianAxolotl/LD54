@@ -1,5 +1,13 @@
 local data = {
+	width = 20,
+	height = 20,
+	doodads = {
+	},
 	humanName = "test",
+	cameraPos = {
+		[2] = 10,
+		[1] = 10,
+	},
 	terrain = {
 		[4] = {
 			[6] = "grass",
@@ -170,17 +178,17 @@ local data = {
 		},
 		[17] = {
 			[20] = "mountain",
-			[18] = "grass",
-			[17] = "mountain",
 			[19] = "grass",
+			[17] = "mountain",
+			[18] = "grass",
 			[10] = "grass",
 			[9] = "grass",
 		},
 		[18] = {
 			[17] = "mountain",
-			[18] = "grass",
-			[20] = "mountain",
 			[19] = "grass",
+			[20] = "mountain",
+			[18] = "grass",
 		},
 		[19] = {
 			[17] = "mountain",
@@ -191,97 +199,61 @@ local data = {
 	},
 	tiles = {
 		[1] = {
-			def = "town",
-			pos = {
-				[1] = 8,
-				[2] = 12,
-			},
-		},
-		[2] = {
-			def = "town",
-			pos = {
-				[1] = 8,
-				[2] = 11,
-			},
-		},
-		[3] = {
-			def = "town",
-			pos = {
-				[1] = 8,
-				[2] = 10,
-			},
-		},
-		[4] = {
-			def = "town",
-			pos = {
-				[1] = 8,
-				[2] = 9,
-			},
-		},
-		[5] = {
-			def = "plenty",
 			pos = {
 				[1] = 17,
 				[2] = 19,
 			},
-		},
-		[6] = {
 			def = "plenty",
+		},
+		[2] = {
 			pos = {
 				[1] = 17,
 				[2] = 18,
 			},
-		},
-		[7] = {
 			def = "plenty",
+		},
+		[3] = {
 			pos = {
 				[1] = 18,
 				[2] = 18,
 			},
-		},
-	},
-	doodads = {
-	},
-	cameraPos = {
-		[1] = 10,
-		[2] = 10,
-	},
-	tileDeck = {
-		[2] = {
-			fishery = 6,
-			tower = 10,
-			fountain = 9,
-			farm = 7,
-			woodcutter = 4,
-			quarry = 4,
-			tavern = 9,
-			blacksmith = 4,
-			sawmill = 3,
-			town = 6,
-			mine = 4,
-			barracks = 5,
-			mill = 2,
-		},
-		[1] = {
-			fishery = 6,
-			tower = 10,
-			fountain = 9,
-			farm = 7,
-			woodcutter = 4,
-			quarry = 4,
-			tavern = 9,
-			blacksmith = 4,
-			sawmill = 3,
-			town = 6,
-			mine = 4,
-			barracks = 5,
-			mill = 2,
+			def = "plenty",
 		},
 	},
 	invasionMask = {
 	},
-	width = 20,
-	height = 20,
+	tileDeck = {
+		[1] = {
+			quarry = 4,
+			blacksmith = 4,
+			sawmill = 3,
+			woodcutter = 4,
+			mine = 4,
+			tavern = 9,
+			fishery = 6,
+			mill = 2,
+			town = 6,
+			barracks = 5,
+			fountain = 9,
+			tower = 10,
+			farm = 7,
+		},
+		[2] = {
+			quarry = 4,
+			blacksmith = 4,
+			sawmill = 3,
+			woodcutter = 4,
+			mine = 4,
+			tavern = 9,
+			fishery = 6,
+			mill = 2,
+			town = 6,
+			barracks = 5,
+			fountain = 9,
+			tower = 10,
+			farm = 7,
+		},
+	},
 }
 
 return data

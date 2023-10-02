@@ -26,19 +26,6 @@ function api.DeleteAllFlaggedGuys()
 	IterableMap.ApplySelf(self.guyList, "DeleteGuyIfFlagged")
 end
 
-local function ClosestToWithDistSq(guy, maxDistSq, fromPos, resource)
-	if guy.def.resourceType ~= resource then
-		return false
-	end
-	if not guy.IsAvailible() then
-		return false
-	end
-	local distSq = util.DistSq(guy.homeBuilding.GetPos(), fromPos)
-	if maxDistSq and distSq > maxDistSq then
-		return false
-	end
-	return distSq
-end
 
 local function CountResourceType(self, resource)
 	if self.def.collectableResourceType ~= resource then
@@ -51,8 +38,27 @@ function api.CountResourceType(resource)
 	return IterableMap.FilterCount(self.guyList, CountResourceType, resource)
 end
 
-function api.GetClosestIdleGuy(pos, maxDist, resource)
-	local other = IterableMap.GetMinimum(self.guyList, ClosestToWithDistSq, maxDist and maxDist*maxDist, pos, resource)
+local function ClosestToWithDistSq(guy, building, maxDist, fromPos, resource)
+	if guy.def.resourceType ~= resource then
+		return false
+	end
+	if not guy.IsAvailible() then
+		return false
+	end
+	if building.def.CanVisitFunction then
+		if not building.def.CanVisitFunction(building, guy) then
+			return
+		end
+	end
+	local distSq = util.DistSq(guy.homeBuilding.GetPos(), fromPos)
+	if maxDist and distSq > (maxDist + guy.GetRangeBuff()) * (maxDist + guy.GetRangeBuff()) then
+		return false
+	end
+	return distSq
+end
+
+function api.GetClosestIdleGuy(building, pos, maxDist, resource)
+	local other = IterableMap.GetMinimum(self.guyList, ClosestToWithDistSq, building, maxDist, pos, resource)
 	return other
 end
 

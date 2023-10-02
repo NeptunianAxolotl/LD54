@@ -31,16 +31,7 @@ end
 function api.DeleteAllFlaggedBuildings()
 	IterableMap.ApplySelf(self.buildingList, "DeleteIfFlagged")
 end
-local function ClosestToWithDistSq(building, fromPos, resource)
-	if not building.WantsWorkerOrResource(resource) then
-		return false
-	end
-	local distSq = util.DistSq(building.GetPos(), fromPos)
-	if not building.DistSqWithinWorkRange(distSq, resource) then
-		return false
-	end
-	return distSq
-end
+
 
 local function CountNearbyOrGlobalResourceType(self, resource, fromPos, nearDist)
 	if self.def.collectableResourceType ~= resource then
@@ -61,8 +52,24 @@ function api.CountResourceType(resource, pos, nearDist)
 	return IterableMap.FilterCount(self.buildingList, CountNearbyOrGlobalResourceType, resource, pos, nearDist)
 end
 
-function api.GetClosestFreeBuilding(pos, resource)
-	local other = IterableMap.GetMinimum(self.buildingList, ClosestToWithDistSq, pos, resource)
+local function ClosestToWithDistSq(building, guy, fromPos, resource, rangeBuff)
+	if not building.WantsWorkerOrResource(resource) then
+		return false
+	end
+	if building.def.CanVisitFunction then
+		if not building.def.CanVisitFunction(building, guy) then
+			return
+		end
+	end
+	local distSq = util.DistSq(building.GetPos(), fromPos)
+	if not building.DistSqWithinWorkRange(distSq, resource, rangeBuff) then
+		return false
+	end
+	return distSq
+end
+
+function api.GetClosestFreeBuilding(guy, pos, resource, rangeBuff)
+	local other = IterableMap.GetMinimum(self.buildingList, ClosestToWithDistSq, guy, pos, resource, rangeBuff)
 	return other
 end
 

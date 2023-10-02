@@ -15,6 +15,8 @@ local data = {
 	setBonusFlip = true,
 	bonusBuilding = "quarry_edge",
 	bonusBuildingMiddle = "quarry_middle",
+	
+	needBuildingNearby = {{"blacksmith", Global.LONG_WALK_RANGE}},
 	drawWiggle = 0,
 	drawFlip = 1,
 	depthNudge = -20,

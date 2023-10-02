@@ -12,7 +12,7 @@ end
 local function LookForWorkersCheck(self, resource)
 	local resDef = self.def.needResource[resource]
 	while self.WantsWorkerOrResource(resource) do
-		local closestGuy = GuyHandler.GetClosestIdleGuy(self.pos, resDef.searchRadius, resource)
+		local closestGuy = GuyHandler.GetClosestIdleGuy(self, self.pos, resDef.searchRadius, resource)
 		if closestGuy then
 			self.AssignGuyToBuilding(closestGuy)
 		else
@@ -77,6 +77,10 @@ local function NewBuilding(self, building)
 			end
 		end
 		
+		if finished and self.def.VisitFunction then
+			self.def.VisitFunction(self, guy)
+		end
+		
 		if resDef.needDelay then
 			resState.needTimer = resDef.needDelay
 		end
@@ -128,8 +132,8 @@ local function NewBuilding(self, building)
 		return (resDef.count or 1) > (IterableMap.Count(resState.activeWorkers) + IterableMap.Count(resState.pendingWorkers))
 	end
 	
-	function self.DistSqWithinWorkRange(distSq, resource)
-		local radius = self.def.needResource[resource].searchRadius
+	function self.DistSqWithinWorkRange(distSq, resource, rangeBuff)
+		local radius = self.def.needResource[resource].searchRadius + (rangeBuff or 0)
 		if not radius then
 			return true
 		end
