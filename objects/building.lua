@@ -218,7 +218,7 @@ local function NewBuilding(self, building)
 	-- Init
 	
 	self.drawPos = TerrainHandler.GridToWorld(util.RandomPointInRectangle(self.pos, self.def.drawWiggle or 0.1, self.def.drawWiggle or 0.1))
-	self.drawScale = {((math.random() > 0.5 and 1) or -1)*LevelHandler.TileScale(), LevelHandler.TileScale()}
+	self.drawScale = {((self.drawFlip or self.def.drawFlip or (math.random() > 0.5 and 1) or -1))*LevelHandler.TileScale(), LevelHandler.TileScale()}
 	
 	if self.def.needResource then
 		InitWork(self)

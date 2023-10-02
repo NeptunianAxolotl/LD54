@@ -3,7 +3,7 @@ local Font = require("include/font")
 
 local TileDefs = util.LoadDefDirectory("defs/tiles", "defName")
 
-local function CheckAddBonus(self, direction, extraParents)
+local function CheckAddBonus(self, direction, extraParents, rotation)
 	local other = TerrainHandler.GetTile(self.pos, direction)
 	if other and other.def.building == self.def.building then
 		local parents = {self, other}
@@ -15,7 +15,15 @@ local function CheckAddBonus(self, direction, extraParents)
 				end
 			end
 		end
-		BuildingHandler.AddBuilding(parents, self.def.bonusBuilding or self.def.building, util.Add(self.pos, util.Mult(0.5, direction)))
+		local extraData = {}
+		if rotation and self.def.setBonusFlip then
+			extraData.drawFlip = 1 - 2*(rotation%2)
+		end
+		local buildingType = self.def.bonusBuilding or self.def.building
+		if not rotation and self.def.bonusBuildingMiddle then
+			buildingType = self.def.bonusBuildingMiddle
+		end
+		BuildingHandler.AddBuilding(parents, buildingType, util.Add(self.pos, util.Mult(0.5, direction)), extraData)
 		return true
 	end
 	return false
@@ -24,7 +32,7 @@ end
 local function GenerateBonusBuildings(self)
 	local hasBonus = {}
 	for i = 0, 3 do
-		if CheckAddBonus(self, util.CardinalToVector(i)) then
+		if CheckAddBonus(self, util.CardinalToVector(i), false, i) then
 			hasBonus[i] = true
 		end
 	end

@@ -1,8 +1,8 @@
 local TileUtils = require("utilities/tileUtils")
 
 local data = {
-	image = "quarry",
-	building = "quarry",
+	image = "quarry_centre",
+	building = "quarry_middle",
 	inShop = true,
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
@@ -13,11 +13,8 @@ local data = {
 	popType = "stone",
 	bonusOnEdges = true,
 	setBonusFlip = true,
-	bonusBuilding = "quarry_edge",
-	bonusBuildingMiddle = "quarry_middle",
 	drawWiggle = 0,
-	drawFlip = 1,
-	depthNudge = -20,
+	depthNudge = -16,
 	
 	guyActivationResources = {
 		worker = 1,
