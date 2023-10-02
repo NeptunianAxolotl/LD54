@@ -62,7 +62,7 @@ local function UpdateItems(refreshAll)
 			local domino = GenerateDomino(self.items, i)
 			local tries = 0
 			while not TerrainHandler.DominoCanBePlacedAtAll(domino) do
-				domino = GenerateDomino(self.items, i, tries > 0.5*Global.DOMINO_GENERATION_TRIES)
+				domino = GenerateDomino(self.items, i, tries > Global.DOMINIO_DUPLICATE_RELAX * Global.DOMINO_GENERATION_TRIES)
 				tries = tries + 1
 				if tries > Global.DOMINO_GENERATION_TRIES then
 					self.world.SetGameOver(false, "Ran out of space")
