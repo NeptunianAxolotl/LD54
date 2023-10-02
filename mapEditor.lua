@@ -91,9 +91,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.brushMode = "fishery"
 		self.brushType = "tile"
 		
-	--elseif key == "kp0" then
-	--	self.brushMode = "woodcutter"
-	--	self.brushType = "tile"
+	elseif key == "kp0" then
+		self.brushMode = "fountain"
+		self.brushType = "tile"
 		
 	elseif key == "kp1" then
 		self.brushMode = "woodcutter"
