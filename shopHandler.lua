@@ -448,7 +448,7 @@ local function DrawGameEndArea()
 	local buttonName = ""
 	local action = ""
 	if GameHandler.InVictoryState() then
-		text = "Every corner of the land has been explored. On to the next one."
+		text = "Every corner of the land has been explored."
 		buttonName = "Next Island"
 		action = "next"
 	elseif GameHandler.HaveStarved() then
@@ -481,7 +481,6 @@ local function DrawGameEndArea()
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("fill", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
 	
-	
 	if self.hoveredEndLevelAction then
 		love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
 	else
@@ -497,7 +496,7 @@ local function DrawGameEndArea()
 	Font.SetSize(2)
 	love.graphics.setColor(0, 0, 0, (self.endGameFadeTimer or 0))
 	
-	love.graphics.printf(text, textX, textY, 320, "left")
+	love.graphics.printf(text, textX, textY, 360, "left")
 end
 
 local function DrawRefreshButton()

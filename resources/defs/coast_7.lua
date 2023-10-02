@@ -1,6 +1,6 @@
 return {
 	name = "coast2",
-	file = "resources/images/doodads/coast_1.png",
+	file = "resources/images/doodads/coast_2.png",
 	form = "image",
 	xScale = 0.5,
 	yScale = -0.5,
