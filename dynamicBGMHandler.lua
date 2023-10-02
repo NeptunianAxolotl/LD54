@@ -105,11 +105,11 @@ print(#musicBankRipieno,#musicBankHymnal,#musicBankSolo,#musicBankOthers)
 
 local soloWeights = {
   -- 1. High woodwinds (oboe & cor anglais)
-  3,
+  1,
   -- 4/5. Descant and Alto recorder jointly
-  4,
+  0,
   -- 9/10. French Horn and Trumpet jointly
-  3,
+  0,
   -- Another quasi-solo phase exists called HYMNAL, however ALL instruments play alternate samples during this phase.
   1
 }
