@@ -66,8 +66,9 @@ end
 
 local function UpdateItems()
 	local shopSlots = GameHandler.GetShopSlots()
+	local canAffordExplosion = GameHandler.CanAfford("explosion")
 	for i = 1, shopSlots do
-		if i == shopSlots and GameHandler.CanAfford("explosion") then
+		if i == shopSlots and canAffordExplosion then
 			self.items[i] = {Global.DESTROY_NAME, Global.DESTROY_NAME}
 		else
 			local domino = GenerateDomino(self.items, i)
@@ -76,7 +77,9 @@ local function UpdateItems()
 				domino = GenerateDomino(self.items, i, tries > Global.DOMINIO_DUPLICATE_RELAX * Global.DOMINO_GENERATION_TRIES)
 				tries = tries + 1
 				if tries > Global.DOMINO_GENERATION_TRIES then
-					self.outOfSpaceRetryTimer = 10
+					if not canAffordExplosion then
+						self.outOfSpaceRetryTimer = 10
+					end
 					break
 				end
 			end

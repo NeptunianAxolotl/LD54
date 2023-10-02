@@ -18,9 +18,9 @@ local data = {
 	},
 	hints = {
 		{
-			text = "- Select tiles with Left Click\n- Place tiles with Left Click\n- Rotate with Right Click or Space\n\nPush back the darkness!\n- Workers activate buildings and need food and shelter\n- Outposts recruit scouts",
+			text = "- Select tiles with Left Click\n- Place tiles with Left Click\n- Rotate with Right Click or Space\n\nPush back the darkness!\n- Workers activate buildings and need food and shelter\n- Outposts recruit scouts. Make sure you have enough workers.",
 			pos = {15, 10},
-			size = {2.2, 1.5},
+			size = {2.2, 1.7},
 		},
 	},
 	tiles = {

@@ -6,14 +6,13 @@ end
 
 local function GetColor(self, wantBack, hover)
 	local flipIt = self.animDt > self.def.animDtMax/2
+	if (not wantBack) and hover then
+		return Global.BUTTON_HIGHLIGHT
+	end
 	if wantBack == not flipIt then
 		return Global.BUTTON_BACK
 	else
-		if hover then
-			return Global.BUTTON_HIGHLIGHT
-		else
-			return Global.PUSH_BUTTON_BORDER
-		end
+		return Global.PUSH_BUTTON_BORDER
 	end
 end
 
