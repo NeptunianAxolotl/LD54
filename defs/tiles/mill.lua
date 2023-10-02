@@ -5,6 +5,7 @@ local data = {
 	groundImage = "stone_ground",
 	building = "mill",
 	animationImage = "turbine",
+	shopImage = "mill_together",
 	animationRate = 2,
 	animationOffset = {0, -113},
 	

@@ -26,8 +26,8 @@ local data = {
 	},
 	hints = {
 		[1] = {
-			text = "- Move the camera with the arrow keys or WSAD.\n- Press Ctrl+R to restart at any time.\n- Press Ctrl+N/P skip to the next or previous level.",
-			size = {3.2, 0.6},
+			text = "- Move the camera with the arrow keys or WSAD.\n- Press Ctrl+R to restart at any time.\n- Press Ctrl+N/P skip to the next or previous level.\n\nOutposts are dismantled when there are no unscouted lands nearby.",
+			size = {3.2, 1.1},
 			pos = {
 				[1] = 13.8,
 				[2] = 15.6,
@@ -41,7 +41,7 @@ local data = {
 				invasionIndex = 2,
 			},
 			pos = {
-				[1] = 4,
+				[1] = 6,
 				[2] = 11,
 			},
 			def = "invasion",

@@ -314,6 +314,17 @@ function api.Draw(drawQueue)
 	if GameHandler.InSoftLossState() then
 		return false
 	end
+	
+	local drawHeld = (
+		self.heldTile and (
+			api.MouseIsOverInterface()
+			or
+			not TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
+		)
+	)
+	if drawHeld then
+		return
+	end
 	local dominoPos = TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
 	
 	if not dominoPos then
@@ -330,7 +341,7 @@ function api.Draw(drawQueue)
 				validPlacement = nearbyInfo[i] and nearbyInfo[i][1] and nearbyInfo[i][1].valid
 			end
 			
-			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1, validPlacement and Global.WHITE or Global.RED)
+			Resources.DrawImage(TileDefs[self.heldTile[i]].shopImage or TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1, validPlacement and Global.WHITE or Global.RED)
 			
 			for j = 1, #nearbyInfo[i] do
 				local info = nearbyInfo[i][j]
@@ -416,7 +427,7 @@ local function DrawTileArea()
 		
 		for j = 1, 2 do
 			if self.items[i] then
-				Resources.DrawImage(TileDefs[self.items[i][j]].image, shopItemsX + (j*2 - 3)*Global.SHOP_SIZE/2, y + Global.SHOP_SIZE*0.5, 0, 1, Global.SHOP_IMAGE_SCALE)
+				Resources.DrawImage(TileDefs[self.items[i][j]].shopImage or TileDefs[self.items[i][j]].image, shopItemsX + (j*2 - 3)*Global.SHOP_SIZE/2, y + Global.SHOP_SIZE*0.5, 0, 1, Global.SHOP_IMAGE_SCALE)
 			end
 		end
 	end
@@ -434,7 +445,7 @@ local function DrawHeldTile()
 	if drawHeld then
 		for i = 1, 2 do
 			local pos = util.Add(mousePos, TerrainHandler.ToIsometricBasis(util.CardinalToVector(self.tileRotation, (i - 1) * Global.GRID_SIZE*0.4)))
-			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 0.5)
+			Resources.DrawImage(TileDefs[self.heldTile[i]].shopImage or TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 0.5)
 		end
 	end
 end
