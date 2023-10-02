@@ -4,12 +4,27 @@ local function GetNearbyArmySize(self)
 	return math.floor(BuildingHandler.CountResourceType("army", self.pos, Global.INVASION_RANGE) * GameHandler.GetArmyMultiplier())
 end
 
+local function GetColor(self, wantBack, hover)
+	local flipIt = self.animDt > self.def.animDtMax/2
+	if wantBack == not flipIt then
+		return Global.BUTTON_BACK
+	else
+		if hover then
+			return Global.BUTTON_HIGHLIGHT
+		else
+			return Global.PUSH_BUTTON_BORDER
+		end
+	end
+end
+
 local data = {
 	image = "invasion",
 	building = "invasion",
 	spawnTilePositions = {{0, 0}},
 	drawWiggle = 0,
 	drawFlip = 1,
+	wantAnimDt = true,
+	animDtMax = 1.3,
 	
 	tooltip = "Unknown Lands\nBuild outposts and towers to mount an expedition to reveal more land.",
 	
@@ -50,16 +65,13 @@ local data = {
 		
 		local bx, by, width, height = pos[1] + 280, pos[2] + 120, 350, 140
 		
-		love.graphics.setColor(unpack(Global.BUTTON_BACK))
+		local hover = TerrainHandler.GetHoveredTile()
+		hover = hover and hover.pos[1] == self.pos[1] and hover.pos[2] == self.pos[2]
+		love.graphics.setColor(unpack(GetColor(self, true, hover)))
 		love.graphics.setLineWidth(4)
 		love.graphics.rectangle("fill", bx, by, width, height, 8, 8, 32)
 		
-		local hover = TerrainHandler.GetHoveredTile()
-		if hover and hover.pos[1] == self.pos[1] and hover.pos[2] == self.pos[2] then
-			love.graphics.setColor(unpack(Global.BUTTON_HIGHLIGHT))
-		else
-			love.graphics.setColor(unpack(Global.PUSH_BUTTON_BORDER))
-		end
+		love.graphics.setColor(unpack(GetColor(self, false, hover)))
 		love.graphics.setLineWidth(8)
 		love.graphics.rectangle("line", bx, by, width, height, 8, 8, 32)
 		

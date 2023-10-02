@@ -250,7 +250,7 @@ local function NewBuilding(self, building)
 	
 	-- Init
 	
-	if self.def.animationImage then
+	if self.def.animationImage or self.def.wantAnimDt then
 		self.animDt = 0
 	end
 	
@@ -271,7 +271,7 @@ local function NewBuilding(self, building)
 	-- Updating
 	function self.Update(dt)
 		if self.animDt then
-			self.animDt = (self.animDt + dt*self.def.animationRate)%(2*math.pi)
+			self.animDt = (self.animDt + dt*(self.def.animationRate or 1))%(self.def.animDtMax or 2*math.pi)
 		end
 		for i = 1, #self.def.needResourceList do
 			local resource = self.def.needResourceList[i]
