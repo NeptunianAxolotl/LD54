@@ -131,6 +131,19 @@ local function ClickShopButton(item)
 	return true
 end
 
+local function UpdateFoodDial(dt)
+	local foodInfo = GameHandler.GetFoodInfo()
+	local starvation = GameHandler.GetStarvation()
+	
+	local wantedPosition = 0.5
+	if foodInfo.expense > 0 then
+		wantedPosition = (foodInfo.income / foodInfo.expense - 1) + 0.25
+		wantedPosition = math.max(0, math.min(1, wantedPosition))
+	end
+	local smooth = 0.96
+	self.dialPosition = smooth*self.dialPosition + (1 - smooth)*wantedPosition
+end
+
 function api.Update(dt)
 	if MapEditor.InEditMode() then
 		self.mapRules = false -- Remove hints etc
@@ -141,6 +154,7 @@ function api.Update(dt)
 			self.shopBlockedTimer = false
 		end
 	end
+	UpdateFoodDial(dt)
 end
 
 function api.AddResource(resource, count)
@@ -261,54 +275,49 @@ function api.Draw(drawQueue)
 	end})
 end
 
-function api.DrawInterface()
+local function DrawFoodArea()
 	local mousePos = self.world.GetMousePositionInterface()
-	self.hoveredItem = false
-	
-	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
+	Font.SetSize(1)
+	local shopItemsX = Global.VIEW_WIDTH - Global.SHOP_WIDTH*0.5
 	local shopItemsY = 160
-	local buttonExtra = 20
 	
-	love.graphics.setColor(Global.PANEL_COL[1], Global.PANEL_COL[2], Global.PANEL_COL[3], 0.98)
-	love.graphics.rectangle("fill", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000)
-	love.graphics.setColor(0, 0, 0, 1)
-	love.graphics.setLineWidth(12)
-	love.graphics.rectangle("line", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000, 8, 8, 16)
+	local textX = Global.VIEW_WIDTH - Global.SHOP_WIDTH + 60
+	local textY = 265
+	local textSpacing = 40
+	local dialY = 230
 	
-	--love.graphics.rectangle("line", 0, 0, 1920, 1080, 8, 8, 16)
-	
-	love.graphics.setColor(0, 0, 0, 1)
-	Font.SetSize(1)
-	love.graphics.printf(LevelHandler.GetLevelData().humanName, shopItemsX - Global.SHOP_WIDTH*0.45, shopItemsY - 140, Global.SHOP_WIDTH*0.9, "center")
-	
-	--if LevelHandler.GetOrderMult() > 1 then
-	--	local mult = util.Round((LevelHandler.GetOrderMult() - 1) * 100)
-	--	Font.SetSize(2)
-	--	love.graphics.printf("But " .. mult .. "% Harder", shopItemsX - Global.SHOP_WIDTH*0.45, shopItemsY - 68, Global.SHOP_WIDTH*0.9, "center")
-	--end
-	
-	if MapEditor.InEditMode() then
-		return
-	end
-	
-	local food = GameHandler.GetNetFood()
-	Font.SetSize(1)
-	
+	local foodInfo = GameHandler.GetFoodInfo()
 	local starvation = GameHandler.GetStarvation()
-	love.graphics.printf("Food " .. food, 20 + math.random()*starvation*500, 20 + math.random()*starvation*350, 400, "left")
+	
+	Resources.DrawImage("dial_base", shopItemsX, dialY)
+	Resources.DrawImage("dial", shopItemsX, dialY, math.pi*(self.dialPosition - 0.5) + 0.1*math.random()*(starvation + (starvation > 0 and 0.2 or 0)))
+	
+	Font.SetSize(3)
+	love.graphics.setColor(0, 0, 0, 1)
+	
+	love.graphics.printf("Food Production: " .. foodInfo.income, textX + math.random()*starvation*3, textY + math.random()*starvation*3, 400, "left")
+	textY = textY + textSpacing
+	love.graphics.printf("Food Consumption: " .. foodInfo.expense, textX + math.random()*starvation*3, textY + math.random()*starvation*3, 400, "left")
 	
 	local explosion = GameHandler.GetStockInfo("explosion")
 	love.graphics.printf("Explode " .. explosion.cost .. " / " .. explosion.total, 20, 100, 400, "left")
 	
+	local refreshAmount = GameHandler.GetStockInfo("refresh")
+	love.graphics.printf("Refresh " .. refreshAmount.cost .. " / " .. refreshAmount.total, 20, 180, 400, "left")
+	
 	if self.world.GetGameOver() then
+		Font.SetSize(1)
 		love.graphics.printf("Game Over", 20, 80, 400, "left")
 		local _, _, _, lossType = self.world.GetGameOver()
 		love.graphics.printf(lossType, 20, 140, 400, "left")
 	end
-	
-	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
-	
-	--love.graphics.printf("Selection", shopItemsX - 200, shopItemsY + 20, 400, "center")
+end
+
+local function DrawTileArea()
+	local mousePos = self.world.GetMousePositionInterface()
+	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
+	local shopItemsY = 280
+	local buttonExtra = 20
 	
 	for i = 1, GameHandler.GetShopSlots() do
 		local y = shopItemsY + Global.SHOP_SPACING * i
@@ -335,6 +344,10 @@ function api.DrawInterface()
 		love.graphics.rectangle("line", shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE, 8, 8, 16)
 	end
 	
+end
+
+local function DrawHeldTile()
+	local mousePos = self.world.GetMousePositionInterface()
 	local drawHeld = (
 		self.heldTile and (
 			api.MouseIsOverInterface()
@@ -348,8 +361,15 @@ function api.DrawInterface()
 			Resources.DrawImage(TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 0.5)
 		end
 	end
-	
-	if not Global.CAN_REFRESH then
+end
+
+local function DrawRefreshButton()
+	local mousePos = self.world.GetMousePositionInterface()
+	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
+	local shopItemsY = 160
+	local buttonExtra = 20
+
+	if not GameHandler.CanAfford("refresh") then
 		return
 	end
 	
@@ -382,7 +402,46 @@ function api.DrawInterface()
 	Font.SetSize(1)
 	love.graphics.setColor(0, 0, 0, 0.8)
 	love.graphics.printf("Refresh", shopItemsX - Global.SHOP_SIZE - 20, y - Global.SHOP_SIZE + 14, Global.SHOP_SIZE * 2 + 35, "center")
+end
+
+function api.DrawInterface()
+	self.hoveredItem = false
 	
+	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
+	local shopItemsY = 160
+	local buttonExtra = 20
+	
+	love.graphics.setColor(Global.PANEL_COL[1], Global.PANEL_COL[2], Global.PANEL_COL[3], 0.98)
+	love.graphics.rectangle("fill", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000)
+	love.graphics.setColor(0, 0, 0, 1)
+	love.graphics.setLineWidth(12)
+	love.graphics.rectangle("line", Global.VIEW_WIDTH - Global.SHOP_WIDTH, -1000, Global.SHOP_WIDTH * 2, Global.VIEW_HEIGHT + 2000, 8, 8, 16)
+	
+	--love.graphics.rectangle("line", 0, 0, 1920, 1080, 8, 8, 16)
+	
+	--love.graphics.setColor(0, 0, 0, 1)
+	--Font.SetSize(1)
+	--love.graphics.printf(LevelHandler.GetLevelData().humanName, shopItemsX - Global.SHOP_WIDTH*0.45, shopItemsY - 140, Global.SHOP_WIDTH*0.9, "center")
+	
+	--if LevelHandler.GetOrderMult() > 1 then
+	--	local mult = util.Round((LevelHandler.GetOrderMult() - 1) * 100)
+	--	Font.SetSize(2)
+	--	love.graphics.printf("But " .. mult .. "% Harder", shopItemsX - Global.SHOP_WIDTH*0.45, shopItemsY - 68, Global.SHOP_WIDTH*0.9, "center")
+	--end
+	
+	if MapEditor.InEditMode() then
+		return
+	end
+	
+	DrawFoodArea()
+	DrawTileArea()
+	DrawRefreshButton()
+	DrawHeldTile()
+	
+	
+	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
+	
+	--love.graphics.printf("Selection", shopItemsX - 200, shopItemsY + 20, 400, "center")
 end
 
 function api.Initialize(world)
@@ -396,7 +455,8 @@ function api.Initialize(world)
 		resources = {
 			plank = 0,
 		},
-		shopBlockedTimer = false
+		shopBlockedTimer = false,
+		dialPosition = 0.5,
 	}
 	self.heldTile = false
 	self.tileRotation = 0

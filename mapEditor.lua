@@ -98,6 +98,12 @@ function api.KeyPressed(key, scancode, isRepeat)
 	elseif key == "kp+" then
 		self.brushMode = "alchemist"
 		self.brushType = "tile"
+	elseif key == "kp*" then
+		self.brushMode = "chapel"
+		self.brushType = "tile"
+	elseif key == "kp/" then
+		self.brushMode = "cathedral"
+		self.brushType = "tile"
 		
 	elseif key == "kp-" then
 		self.brushMode = "plenty"

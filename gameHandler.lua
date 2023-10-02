@@ -31,12 +31,12 @@ function api.IsStockActive(name)
 end
 
 function api.CanAfford(name)
-	return self.stockpile[name].cost <= self.stockpile[name].total
+	return math.floor(self.stockpile[name].cost) <= self.stockpile[name].total
 end
 
 function api.BuyNext(name)
 	local stock = self.stockpile[name]
-	stock.total = stock.total - stock.cost
+	stock.total = stock.total - math.floor(stock.cost)
 	stock.cost = stock.cost + stock.costInc
 end
 
@@ -85,6 +85,12 @@ function api.DoTurnTick()
 	
 	api.AddResource("explosion", BuildingHandler.CountResourceType("alchemist"))
 	api.AddResource("refresh", BuildingHandler.CountResourceType("chapel"))
+end
+
+function api.GetFoodInfo()
+	local income = BuildingHandler.CountResourceType("food")
+	local expense = GuyHandler.CountResourceType("hunger") + BuildingHandler.CountResourceType("tavern")*Global.TAVERN_FOOD_COST
+	return {income = income, expense = expense}
 end
 
 function api.GetNetFood()

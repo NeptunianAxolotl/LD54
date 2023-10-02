@@ -1,9 +1,9 @@
 local data = {
-	cameraPos = {
-		[2] = 10,
-		[1] = 10,
-	},
 	humanName = "test",
+	cameraPos = {
+		[1] = 10,
+		[2] = 10,
+	},
 	width = 20,
 	height = 20,
 	tiles = {
@@ -23,285 +23,369 @@ local data = {
 		},
 		[3] = {
 			pos = {
-				[1] = 8,
-				[2] = 14,
+				[1] = 7,
+				[2] = 9,
 			},
-			def = "tavern",
+			def = "town",
 		},
 		[4] = {
 			pos = {
-				[1] = 8,
-				[2] = 13,
+				[1] = 7,
+				[2] = 8,
 			},
-			def = "farm",
+			def = "town",
 		},
 		[5] = {
 			pos = {
-				[1] = 8,
-				[2] = 12,
+				[1] = 7,
+				[2] = 7,
 			},
 			def = "town",
 		},
 		[6] = {
 			pos = {
 				[1] = 8,
+				[2] = 14,
+			},
+			def = "tavern",
+		},
+		[7] = {
+			pos = {
+				[1] = 8,
+				[2] = 13,
+			},
+			def = "farm",
+		},
+		[8] = {
+			pos = {
+				[1] = 8,
+				[2] = 12,
+			},
+			def = "town",
+		},
+		[9] = {
+			pos = {
+				[1] = 8,
 				[2] = 11,
 			},
 			def = "town",
 		},
-		[7] = {
+		[10] = {
 			pos = {
 				[1] = 8,
 				[2] = 10,
 			},
 			def = "town",
 		},
-		[8] = {
+		[11] = {
 			pos = {
 				[1] = 8,
 				[2] = 9,
 			},
 			def = "town",
 		},
-		[9] = {
+		[12] = {
+			pos = {
+				[1] = 8,
+				[2] = 8,
+			},
+			def = "mine",
+		},
+		[13] = {
+			pos = {
+				[1] = 8,
+				[2] = 7,
+			},
+			def = "woodcutter",
+		},
+		[14] = {
 			pos = {
 				[1] = 9,
 				[2] = 13,
 			},
 			def = "farm",
 		},
-		[10] = {
-			pos = {
-				[1] = 10,
-				[2] = 13,
-			},
-			def = "town",
-		},
-		[11] = {
-			pos = {
-				[1] = 10,
-				[2] = 10,
-			},
-			def = "woodcutter",
-		},
-		[12] = {
-			pos = {
-				[1] = 10,
-				[2] = 9,
-			},
-			def = "woodcutter",
-		},
-		[13] = {
-			pos = {
-				[1] = 11,
-				[2] = 14,
-			},
-			def = "farm",
-		},
-		[14] = {
-			pos = {
-				[1] = 11,
-				[2] = 12,
-			},
-			def = "town",
-		},
 		[15] = {
 			pos = {
-				[1] = 11,
-				[2] = 11,
+				[1] = 9,
+				[2] = 9,
 			},
-			def = "tavern",
+			def = "blacksmith",
 		},
 		[16] = {
 			pos = {
-				[1] = 11,
-				[2] = 10,
+				[1] = 9,
+				[2] = 8,
 			},
-			def = "sawmill",
+			def = "blacksmith",
 		},
 		[17] = {
 			pos = {
-				[1] = 11,
-				[2] = 9,
+				[1] = 9,
+				[2] = 7,
 			},
 			def = "sawmill",
 		},
 		[18] = {
 			pos = {
+				[1] = 10,
+				[2] = 13,
+			},
+			def = "town",
+		},
+		[19] = {
+			pos = {
+				[1] = 10,
+				[2] = 10,
+			},
+			def = "woodcutter",
+		},
+		[20] = {
+			pos = {
+				[1] = 10,
+				[2] = 9,
+			},
+			def = "woodcutter",
+		},
+		[21] = {
+			pos = {
+				[1] = 10,
+				[2] = 8,
+			},
+			def = "quarry",
+		},
+		[22] = {
+			pos = {
+				[1] = 10,
+				[2] = 7,
+			},
+			def = "chapel",
+		},
+		[23] = {
+			pos = {
+				[1] = 11,
+				[2] = 14,
+			},
+			def = "farm",
+		},
+		[24] = {
+			pos = {
+				[1] = 11,
+				[2] = 12,
+			},
+			def = "town",
+		},
+		[25] = {
+			pos = {
+				[1] = 11,
+				[2] = 11,
+			},
+			def = "tavern",
+		},
+		[26] = {
+			pos = {
+				[1] = 11,
+				[2] = 10,
+			},
+			def = "sawmill",
+		},
+		[27] = {
+			pos = {
+				[1] = 11,
+				[2] = 9,
+			},
+			def = "sawmill",
+		},
+		[28] = {
+			pos = {
+				[1] = 11,
+				[2] = 8,
+			},
+			def = "quarry",
+		},
+		[29] = {
+			pos = {
+				[1] = 11,
+				[2] = 7,
+			},
+			def = "chapel",
+		},
+		[30] = {
+			pos = {
 				[1] = 12,
 				[2] = 14,
 			},
 			def = "farm",
 		},
-		[19] = {
+		[31] = {
 			pos = {
 				[1] = 12,
 				[2] = 13,
 			},
 			def = "town",
 		},
-		[20] = {
+		[32] = {
 			pos = {
 				[1] = 12,
 				[2] = 12,
 			},
 			def = "alchemist",
 		},
-		[21] = {
+		[33] = {
 			pos = {
 				[1] = 12,
 				[2] = 11,
 			},
 			def = "mine",
 		},
-		[22] = {
+		[34] = {
 			pos = {
 				[1] = 12,
 				[2] = 10,
 			},
 			def = "mine",
 		},
-		[23] = {
+		[35] = {
 			pos = {
 				[1] = 13,
 				[2] = 15,
 			},
 			def = "alchemist",
 		},
-		[24] = {
+		[36] = {
 			pos = {
 				[1] = 13,
 				[2] = 13,
 			},
 			def = "town",
 		},
-		[25] = {
+		[37] = {
 			pos = {
 				[1] = 13,
 				[2] = 12,
 			},
 			def = "town",
 		},
-		[26] = {
+		[38] = {
 			pos = {
 				[1] = 13,
 				[2] = 11,
 			},
 			def = "town",
 		},
-		[27] = {
+		[39] = {
 			pos = {
 				[1] = 13,
 				[2] = 10,
 			},
 			def = "town",
 		},
-		[28] = {
+		[40] = {
 			pos = {
 				[1] = 14,
 				[2] = 15,
 			},
 			def = "blacksmith",
 		},
-		[29] = {
+		[41] = {
 			pos = {
 				[1] = 14,
 				[2] = 13,
 			},
 			def = "town",
 		},
-		[30] = {
+		[42] = {
 			pos = {
 				[1] = 14,
 				[2] = 12,
 			},
 			def = "town",
 		},
-		[31] = {
+		[43] = {
 			pos = {
 				[1] = 14,
 				[2] = 11,
 			},
 			def = "town",
 		},
-		[32] = {
+		[44] = {
 			pos = {
 				[1] = 14,
 				[2] = 10,
 			},
 			def = "town",
 		},
-		[33] = {
+		[45] = {
 			pos = {
 				[1] = 15,
 				[2] = 13,
 			},
 			def = "farm",
 		},
-		[34] = {
+		[46] = {
 			pos = {
 				[1] = 15,
 				[2] = 12,
 			},
 			def = "town",
 		},
-		[35] = {
+		[47] = {
 			pos = {
 				[1] = 15,
 				[2] = 11,
 			},
 			def = "alchemist",
 		},
-		[36] = {
+		[48] = {
 			pos = {
 				[1] = 15,
 				[2] = 9,
 			},
 			def = "town",
 		},
-		[37] = {
+		[49] = {
 			pos = {
 				[1] = 16,
 				[2] = 13,
 			},
 			def = "tavern",
 		},
-		[38] = {
+		[50] = {
 			pos = {
 				[1] = 16,
 				[2] = 12,
 			},
 			def = "alchemist",
 		},
-		[39] = {
+		[51] = {
 			pos = {
 				[1] = 16,
 				[2] = 11,
 			},
 			def = "blacksmith",
 		},
-		[40] = {
+		[52] = {
 			pos = {
 				[1] = 16,
 				[2] = 9,
 			},
 			def = "farm",
 		},
-		[41] = {
+		[53] = {
 			pos = {
 				[1] = 17,
 				[2] = 19,
 			},
 			def = "plenty",
 		},
-		[42] = {
+		[54] = {
 			pos = {
 				[1] = 17,
 				[2] = 18,
 			},
 			def = "plenty",
 		},
-		[43] = {
+		[55] = {
 			pos = {
 				[1] = 18,
 				[2] = 18,
@@ -312,37 +396,37 @@ local data = {
 	invasionMask = {
 	},
 	tileDeck = {
-		[1] = {
-			sawmill = 3,
-			fishery = 6,
-			tower = 10,
-			alchemist = 4,
-			quarry = 4,
-			mine = 4,
-			farm = 7,
-			woodcutter = 4,
-			blacksmith = 4,
-			tavern = 9,
-			town = 6,
-			mill = 2,
-			barracks = 5,
-			fountain = 9,
-		},
 		[2] = {
-			sawmill = 3,
-			fishery = 6,
-			tower = 10,
-			alchemist = 4,
-			quarry = 4,
-			mine = 4,
-			farm = 7,
-			woodcutter = 4,
-			blacksmith = 4,
-			tavern = 9,
-			town = 6,
 			mill = 2,
-			barracks = 5,
+			mine = 4,
+			quarry = 4,
+			tower = 10,
+			fishery = 6,
+			blacksmith = 4,
 			fountain = 9,
+			woodcutter = 4,
+			farm = 7,
+			tavern = 9,
+			barracks = 5,
+			alchemist = 4,
+			town = 6,
+			sawmill = 3,
+		},
+		[1] = {
+			mill = 2,
+			mine = 4,
+			quarry = 4,
+			tower = 10,
+			fishery = 6,
+			blacksmith = 4,
+			fountain = 9,
+			woodcutter = 4,
+			farm = 7,
+			tavern = 9,
+			barracks = 5,
+			alchemist = 4,
+			town = 6,
+			sawmill = 3,
 		},
 	},
 	doodads = {

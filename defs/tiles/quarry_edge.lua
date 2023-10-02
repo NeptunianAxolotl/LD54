@@ -26,7 +26,7 @@ local data = {
 			searchRadius = Global.SHORT_WALK_RANGE,
 			homeWaitTime = 1,
 			maximumStockpile = 3,
-			stockpilePerJob = 2,
+			stockpilePerJob = 1,
 			jobActivationResources = {
 				tool = 1,
 			},
