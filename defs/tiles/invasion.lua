@@ -24,6 +24,7 @@ local data = {
 	drawFlip = 1,
 	wantAnimDt = true,
 	animDtMax = 1.3,
+	depthNudge = 30,
 	
 	tooltip = "Unknown Lands\nBuild outposts and towers to mount an expedition to reveal more land.",
 	

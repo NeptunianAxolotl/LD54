@@ -45,29 +45,29 @@ function api.KeyPressed(key, scancode, isRepeat)
 		
 		
 	elseif key == "e" then
-		self.brushMode = "coast_1"
+		self.brushMode = "coast_test"
 		self.brushType = "doodad"
 	elseif key == "r" then
-		self.brushMode = "coast_2"
+		self.brushMode = "coast_small"
 		self.brushType = "doodad"
 	elseif key == "t" then
-		self.brushMode = "coast_3"
+		self.brushMode = "coast_test_flip"
 		self.brushType = "doodad"
 	elseif key == "y" then
-		self.brushMode = "coast_4"
+		self.brushMode = "coast_small_flip"
 		self.brushType = "doodad"
 	elseif key == "u" then
-		self.brushMode = "coast_5"
+		self.brushMode = "coast_test_flip_up"
 		self.brushType = "doodad"
 	elseif key == "i" then
-		self.brushMode = "coast_6"
+		self.brushMode = "coast_small_flip_up"
 		self.brushType = "doodad"
 	elseif key == "o" then
-		self.brushMode = "coast_7"
+		self.brushMode = "coast_test_up"
 		self.brushType = "doodad"
 	elseif key == "p" then
-		self.brushMode = "coast_8"
-		self.brushType = "doodad"	
+		self.brushMode = "coast_small_up"
+		self.brushType = "doodad"
 	elseif key == "7" then
 		self.brushMode = "coast_9"
 		self.brushType = "doodad"
