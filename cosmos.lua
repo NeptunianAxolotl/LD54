@@ -42,8 +42,8 @@ end
 
 function api.SwitchLevel(goNext)
 	self.inbuiltLevelIndex = math.max(1, math.min(#LevelOrder, self.inbuiltLevelIndex + (goNext and 1 or -1)))
-	local leveData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
-	World.Initialize(api, leveData)
+	self.curLevelData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
+	World.Initialize(api, self.curLevelData)
 end
 
 function api.TestSwitchLevel(goNext)
@@ -136,10 +136,10 @@ function api.Initialize()
 		inbuiltLevelIndex = 1,
 		musicEnabled = true,
 	}
-	local leveData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
+	self.curLevelData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
 	MusicHandler.Initialize(api)
 	SoundHandler.Initialize(api)
-	World.Initialize(api, leveData)
+	World.Initialize(api, self.curLevelData)
 end
 
 return api
