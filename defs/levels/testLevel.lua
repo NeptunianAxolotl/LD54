@@ -1,4 +1,42 @@
 local data = {
+	tileDeck = {
+		[1] = {
+			woodcutter = 4,
+			quarry = 4,
+			tavern = 9,
+			blacksmith = 4,
+			sawmill = 3,
+			mine = 4,
+			barracks = 5,
+			mill = 2,
+			fishery = 6,
+			tower = 10,
+			town = 6,
+			farm = 7,
+			fountain = 9,
+		},
+		[2] = {
+			woodcutter = 4,
+			quarry = 4,
+			tavern = 9,
+			blacksmith = 4,
+			sawmill = 3,
+			mine = 4,
+			barracks = 5,
+			mill = 2,
+			fishery = 6,
+			tower = 10,
+			town = 6,
+			farm = 7,
+			fountain = 9,
+		},
+	},
+	width = 20,
+	height = 20,
+	cameraPos = {
+		[2] = 10,
+		[1] = 10,
+	},
 	humanName = "test",
 	terrain = {
 		[4] = {
@@ -189,99 +227,138 @@ local data = {
 			[19] = "mountain",
 		},
 	},
+	invasionMask = {
+	},
+	doodads = {
+	},
 	tiles = {
 		[1] = {
-			def = "town",
+			pos = {
+				[1] = 7,
+				[2] = 14,
+			},
+			def = "sawmill",
+		},
+		[2] = {
+			pos = {
+				[1] = 7,
+				[2] = 13,
+			},
+			def = "tavern",
+		},
+		[3] = {
+			pos = {
+				[1] = 8,
+				[2] = 14,
+			},
+			def = "tavern",
+		},
+		[4] = {
+			pos = {
+				[1] = 8,
+				[2] = 13,
+			},
+			def = "farm",
+		},
+		[5] = {
 			pos = {
 				[1] = 8,
 				[2] = 12,
 			},
-		},
-		[2] = {
 			def = "town",
+		},
+		[6] = {
 			pos = {
 				[1] = 8,
 				[2] = 11,
 			},
-		},
-		[3] = {
 			def = "town",
+		},
+		[7] = {
 			pos = {
 				[1] = 8,
 				[2] = 10,
 			},
-		},
-		[4] = {
 			def = "town",
+		},
+		[8] = {
 			pos = {
 				[1] = 8,
 				[2] = 9,
 			},
+			def = "town",
 		},
-		[5] = {
-			def = "plenty",
+		[9] = {
+			pos = {
+				[1] = 9,
+				[2] = 13,
+			},
+			def = "farm",
+		},
+		[10] = {
+			pos = {
+				[1] = 10,
+				[2] = 13,
+			},
+			def = "town",
+		},
+		[11] = {
+			pos = {
+				[1] = 10,
+				[2] = 10,
+			},
+			def = "woodcutter",
+		},
+		[12] = {
+			pos = {
+				[1] = 10,
+				[2] = 9,
+			},
+			def = "woodcutter",
+		},
+		[13] = {
+			pos = {
+				[1] = 11,
+				[2] = 11,
+			},
+			def = "tavern",
+		},
+		[14] = {
+			pos = {
+				[1] = 11,
+				[2] = 10,
+			},
+			def = "sawmill",
+		},
+		[15] = {
+			pos = {
+				[1] = 11,
+				[2] = 9,
+			},
+			def = "sawmill",
+		},
+		[16] = {
 			pos = {
 				[1] = 17,
 				[2] = 19,
 			},
-		},
-		[6] = {
 			def = "plenty",
+		},
+		[17] = {
 			pos = {
 				[1] = 17,
 				[2] = 18,
 			},
-		},
-		[7] = {
 			def = "plenty",
+		},
+		[18] = {
 			pos = {
 				[1] = 18,
 				[2] = 18,
 			},
+			def = "plenty",
 		},
 	},
-	doodads = {
-	},
-	cameraPos = {
-		[1] = 10,
-		[2] = 10,
-	},
-	tileDeck = {
-		[2] = {
-			fishery = 6,
-			tower = 10,
-			fountain = 9,
-			farm = 7,
-			woodcutter = 4,
-			quarry = 4,
-			tavern = 9,
-			blacksmith = 4,
-			sawmill = 3,
-			town = 6,
-			mine = 4,
-			barracks = 5,
-			mill = 2,
-		},
-		[1] = {
-			fishery = 6,
-			tower = 10,
-			fountain = 9,
-			farm = 7,
-			woodcutter = 4,
-			quarry = 4,
-			tavern = 9,
-			blacksmith = 4,
-			sawmill = 3,
-			town = 6,
-			mine = 4,
-			barracks = 5,
-			mill = 2,
-		},
-	},
-	invasionMask = {
-	},
-	width = 20,
-	height = 20,
 }
 
 return data

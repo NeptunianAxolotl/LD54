@@ -56,6 +56,7 @@ local function GenerateDomino(otherDominos, dominoIndex, prevMatchAllowed)
 end
 
 local function UpdateItems(refreshAll)
+	GameHandler.UpdateShopSlots()
 	local shopSlots = GameHandler.GetShopSlots()
 	for i = 1, shopSlots do
 		if refreshAll or (not self.items[i]) then
@@ -96,13 +97,16 @@ local function ClickShopButton(item)
 	if not item then
 		return false
 	end
-	if item == Global.SHOP_SLOTS + 1 then
+	if item == GameHandler.GetShopSlots() + 1 then
 		if self.shopBlockedTimer then
 			return
 		end
 		self.shopBlockedTimer = Global.REFRESH_TIMER
 		self.heldTile = false
 		UpdateItems(true)
+		return
+	end
+	if item > GameHandler.GetShopSlots() + 1 then
 		return
 	end
 	if self.heldTile then
@@ -147,13 +151,13 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.tileRotation = (self.tileRotation + 1)%4
 		--SoundHandler.PlaySound("spin")
 	end
-	for i = 1, Global.SHOP_SLOTS do
+	for i = 1, GameHandler.GetShopSlots() do
 		if key == tostring(i) then
 			ClickShopButton(i)
 		end
 	end
 	if key == "e" then
-		ClickShopButton(Global.SHOP_SLOTS + 1)
+		ClickShopButton(GameHandler.GetShopSlots() + 1)
 	end
 end
 
@@ -250,7 +254,7 @@ function api.DrawInterface()
 		return
 	end
 	
-	local food = BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger")
+	local food = GameHandler.GetNetFood()
 	Font.SetSize(1)
 	
 	local starvation = GameHandler.GetStarvation()
@@ -266,7 +270,7 @@ function api.DrawInterface()
 	
 	--love.graphics.printf("Selection", shopItemsX - 200, shopItemsY + 20, 400, "center")
 	
-	for i = 1, Global.SHOP_SLOTS do
+	for i = 1, GameHandler.GetShopSlots() do
 		local y = shopItemsY + Global.SHOP_SPACING * i
 		if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE) then
 			self.hoveredItem = i
@@ -311,7 +315,7 @@ function api.DrawInterface()
 	
 	local y = shopItemsY + Global.VIEW_HEIGHT - Global.SHOP_SPACING - Global.SHOP_SIZE
 	if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, Global.SHOP_SIZE * 2 + buttonExtra*2, Global.SHOP_SIZE) then
-		self.hoveredItem = Global.SHOP_SLOTS + 1
+		self.hoveredItem = GameHandler.GetShopSlots() + 1
 	end
 	if self.shopBlockedTimer then
 		love.graphics.setColor(0.45, 0.65, 0.72, 1)
@@ -327,7 +331,7 @@ function api.DrawInterface()
 		love.graphics.rectangle("fill", shopItemsX - Global.SHOP_SIZE - buttonExtra, y - Global.SHOP_SIZE, prop * (Global.SHOP_SIZE * 2 + buttonExtra*2), Global.SHOP_SIZE, 8, 8, 16)
 	end
 	
-	if self.hoveredItem == Global.SHOP_SLOTS + 1 and not self.shopBlockedTimer then
+	if self.hoveredItem == GameHandler.GetShopSlots() + 1 and not self.shopBlockedTimer then
 		love.graphics.setColor(0.35, 1, 0.35, 0.8)
 	else
 		love.graphics.setColor(0, 0, 0, 0.8)

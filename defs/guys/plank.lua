@@ -1,6 +1,6 @@
 local data = {
 	image = "plank",
-	speed = 0.8,
+	speed = Global.RESOURCE_MOVE_SPEED,
 	resourceType = "plank",
 	hideWhenInactive = true,
 	resourceAmount = 28,

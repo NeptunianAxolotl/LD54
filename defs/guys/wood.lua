@@ -1,6 +1,6 @@
 local data = {
 	image = "wood",
-	speed = 0.8,
+	speed = Global.RESOURCE_MOVE_SPEED,
 	resourceType = "wood",
 	hideWhenInactive = true,
 }

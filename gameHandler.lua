@@ -31,8 +31,23 @@ function api.GetViewRestriction()
 	return pointsToView
 end
 
+function api.UpdateShopSlots()
+	local baseSlots = Global.SHOP_SLOTS
+	
+	if BuildingHandler.CountResourceType("tavern") > 0 then
+		baseSlots = baseSlots + 1
+	end
+	self.shopSlots = baseSlots
+end
+
+function api.GetNetFood()
+	local food = BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger") - BuildingHandler.CountResourceType("tavern")*Global.TAVERN_FOOD_COST
+	
+	return food
+end
+
 function api.GetShopSlots()
-	return Global.SHOP_SLOTS
+	return self.shopSlots
 end
 
 function api.GetStarvation()
@@ -44,7 +59,7 @@ end
 --------------------------------------------------
 
 local function UpdateStarvation(dt)
-	local food = BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger")
+	local food = api.GetNetFood()
 	
 	if food < 0 then
 		self.stavation = self.stavation + dt*Global.STARVE_GROW_RATE
@@ -72,6 +87,7 @@ function api.Initialize(parentWorld)
 	self = {
 		stavation = 0,
 		world = parentWorld,
+		shopSlots = Global.SHOP_SLOTS,
 	}
 end
 
