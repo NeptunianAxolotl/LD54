@@ -12,7 +12,6 @@ local levelList = {
 	"blahlevel5",
 	"blahlevel6",
 	"blahlevel7",
-	--"testLevel3",
 }
 
 return levelList
