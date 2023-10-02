@@ -1,4 +1,4 @@
 return {
 	file = "effects/domvictoryfinal.mp3",
-	volMult = 0.055,
+	volMult = 0.05,
 }
