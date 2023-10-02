@@ -144,21 +144,22 @@ local soloMaps = {
 }
 
 function selectFromWeights(weights)
-    local sum = 0
-    for i=1,#weights do
-     sum = sum + weights[i]   
-    end
-    
-    local num = math.random(0,sum)
-    
-    local runningTotal = 0
-    
-    for i=1,#weights do
-      if num >= runningTotal and num < runningTotal + weights[i] then
-        return i
-      end
-    end
-    return -1 -- should be impossible!
+    return math.random(1,3)
+    --local sum = 0
+    --for i=1,#weights do
+    -- sum = sum + weights[i]   
+    --end
+    --
+    --local num = math.random(0,sum)
+    --
+    --local runningTotal = 0
+    --
+    --for i=1,#weights do
+    --  if num >= runningTotal and num < runningTotal + weights[i] then
+    --    return i
+    --  end
+    --end
+    --return 1 -- should be impossible, but get out of jail
 end
 
 -- Song phase is:
@@ -191,7 +192,7 @@ function api.Update(dt)
   
   -- If net food is positive, prefer the oboe solo.  Otherwise, prefer Hymnal.
   if (BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger") - BuildingHandler.CountResourceType("tavern")*Global.TAVERN_FOOD_COST > 0) then
-    soloWeights = {4,4,4,0}
+    soloWeights = {0,4,4,0}
   else  
     soloWeights = {0,0,0,4}
   end
@@ -201,6 +202,7 @@ function api.Update(dt)
   if(remainingTime <= 0) then
     remainingTime = loopTime -- Reset the loop timer.
     if(ripienoNext) then
+      
       -- Unswap any solo tracks.
       if(nextPhase ~= nil) then
         swapTracksBetweenBanks(musicBankSolo,musicBankOthers,soloMaps[nextPhase])
@@ -208,6 +210,8 @@ function api.Update(dt)
       
       -- Determine the next solo phase based on current weights.
       nextPhase = selectFromWeights(soloWeights)
+      if (BuildingHandler.CountResourceType("food") - GuyHandler.CountResourceType("hunger") - BuildingHandler.CountResourceType("tavern")*Global.TAVERN_FOOD_COST < 0) then
+        nextPhase = 4 end
       ripienoNext = false
       -- Activate ripieno.
       activeBank = musicBankRipieno
