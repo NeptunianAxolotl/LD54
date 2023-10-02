@@ -3,19 +3,19 @@ local data = {
 	width = 20,
 	height = 20,
 	cameraPos = {
-		[1] = 11.5,
 		[2] = 9.5,
+		[1] = 11.5,
 	},
 	tileDeck = {
+		[1] = {
+			town = 1,
+			barracks = 5,
+		},
 		[2] = {
 			woodcutter = 1,
+			sawmill = 1,
 			town = 4,
 			fishery = 3,
-		},
-		[1] = {
-			barracks = 5,
-			woodcutter = 1,
-			sawmill = 1,
 		},
 	},
 	tiles = {
@@ -34,15 +34,15 @@ local data = {
 			},
 		},
 		[3] = {
-			def = "invasion",
+			extraData = {
+				armySize = 2,
+				invasionIndex = 1,
+			},
 			pos = {
 				[1] = 12,
 				[2] = 12,
 			},
-			extraData = {
-				invasionIndex = 1,
-				armySize = 2,
-			},
+			def = "invasion",
 		},
 		[4] = {
 			def = "farm",
@@ -209,7 +209,7 @@ local data = {
 			[6] = "grass",
 			[7] = "grass",
 			[8] = "grass",
-			[9] = "grass",
+			[9] = "water",
 			[10] = "grass",
 			[11] = "grass",
 			[12] = "forest",
@@ -225,7 +225,7 @@ local data = {
 			[7] = "forest",
 			[8] = "grass",
 			[9] = "grass",
-			[10] = "grass",
+			[10] = "forest",
 			[11] = "grass",
 			[12] = "grass",
 			[13] = "water",
@@ -240,7 +240,7 @@ local data = {
 			[7] = "forest",
 			[8] = "forest",
 			[9] = "forest",
-			[10] = "grass",
+			[10] = "forest",
 			[11] = "water",
 			[12] = "water",
 			[13] = "water",

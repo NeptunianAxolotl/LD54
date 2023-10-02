@@ -337,11 +337,11 @@ local function DrawFoodArea()
 	textY = textY + textSpacing
 	love.graphics.printf("Food Consumption: " .. foodInfo.expense, textX + math.random()*math.pow(starvation, 1.8)*10, textY + math.random()*starvation*3, 400, "left")
 	
-	local explosion = GameHandler.GetStockInfo("explosion")
-	love.graphics.printf("Explode " .. explosion.cost .. " / " .. explosion.total, 20, 100, 400, "left")
-	
-	local refreshAmount = GameHandler.GetStockInfo("refresh")
-	love.graphics.printf("Refresh " .. refreshAmount.cost .. " / " .. refreshAmount.total, 20, 180, 400, "left")
+	--local explosion = GameHandler.GetStockInfo("explosion")
+	--love.graphics.printf("Explode " .. explosion.cost .. " / " .. explosion.total, 20, 100, 400, "left")
+	--
+	--local refreshAmount = GameHandler.GetStockInfo("refresh")
+	--love.graphics.printf("Refresh " .. refreshAmount.cost .. " / " .. refreshAmount.total, 20, 180, 400, "left")
 	
 	if self.world.GetGameOver() then
 		Font.SetSize(1)
