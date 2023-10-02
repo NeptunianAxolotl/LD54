@@ -3,109 +3,120 @@ local data = {
 	width = 17,
 	height = 17,
 	cameraPos = {
-		[2] = 7,
 		[1] = 12,
+		[2] = 7,
 	},
 	customVictoryText = "You've explored the entire island!  Shame you cluttered it up so badly in the process.",
 	tileDeck = {
-		[1] = {
-			quarry = 2,
-			farm = 2,
-			mine = 1,
-			fishery = 2,
-			woodcutter = 3,
-			barracks = 1,
-			town = 5,
-		},
 		[2] = {
-			tavern = 1,
-			farm = 2,
 			sawmill = 2,
-			fountain = 1,
-			tower = 1,
-			mill = 1,
-			quarry = 2,
-			mine = 2,
+			fishery = 2,
 			barracks = 1,
-			blacksmith = 1,
 			woodcutter = 3,
+			quarry = 2,
 			town = 5,
+			blacksmith = 1,
+			tower = 1,
+			farm = 2,
+			fountain = 1,
+			mill = 1,
+			tavern = 1,
+			mine = 2,
+		},
+		[1] = {
+			mine = 1,
+			town = 5,
+			farm = 2,
+			woodcutter = 3,
+			barracks = 1,
+			quarry = 2,
 			fishery = 2,
 		},
 	},
 	tiles = {
 		[1] = {
+			pos = {
+				[1] = 2,
+				[2] = 3,
+			},
 			def = "invasion",
 			extraData = {
 				armySize = 15,
 				invasionIndex = 4,
 			},
-			pos = {
-				[1] = 2,
-				[2] = 3,
-			},
 		},
 		[2] = {
+			pos = {
+				[1] = 5,
+				[2] = 14,
+			},
 			def = "invasion",
 			extraData = {
 				armySize = 5,
 				invasionIndex = 2,
 			},
-			pos = {
-				[1] = 5,
-				[2] = 14,
-			},
 		},
 		[3] = {
+			pos = {
+				[1] = 5,
+				[2] = 7,
+			},
 			def = "invasion",
 			extraData = {
 				armySize = 9,
 				invasionIndex = 3,
 			},
-			pos = {
-				[1] = 5,
-				[2] = 7,
-			},
 		},
 		[4] = {
+			pos = {
+				[1] = 12,
+				[2] = 11,
+			},
 			def = "invasion",
 			extraData = {
 				armySize = 1,
 				invasionIndex = 1,
 			},
-			pos = {
-				[1] = 12,
-				[2] = 11,
-			},
 		},
 		[5] = {
-			def = "farm",
 			pos = {
 				[1] = 13,
 				[2] = 5,
 			},
+			def = "farm",
 		},
 		[6] = {
-			def = "town",
 			pos = {
 				[1] = 14,
 				[2] = 5,
 			},
+			def = "town",
 		},
 		[7] = {
-			def = "fishery",
 			pos = {
 				[1] = 15,
 				[2] = 5,
 			},
+			def = "fishery",
 		},
 	},
 	terrain = {
 		[1] = {
+			[2] = "water",
+			[3] = "water",
+			[4] = "water",
+			[5] = "water",
+			[6] = "water",
+			[9] = "water",
+			[10] = "water",
+			[11] = "water",
 			[12] = "water",
 			[13] = "water",
+			[14] = "water",
 		},
 		[2] = {
+			[1] = "water",
+			[2] = "water",
 			[3] = "mountain",
 			[4] = "mountain",
 			[5] = "mountain",
@@ -119,8 +130,10 @@ local data = {
 			[13] = "desert",
 			[14] = "water",
 			[15] = "water",
+			[16] = "water",
 		},
 		[3] = {
+			[1] = "water",
 			[2] = "mountain",
 			[3] = "grass",
 			[4] = "grass",
@@ -138,6 +151,7 @@ local data = {
 			[16] = "water",
 		},
 		[4] = {
+			[1] = "water",
 			[2] = "mountain",
 			[3] = "grass",
 			[4] = "grass",
@@ -153,8 +167,10 @@ local data = {
 			[14] = "desert",
 			[15] = "water",
 			[16] = "water",
+			[17] = "water",
 		},
 		[5] = {
+			[1] = "water",
 			[2] = "water",
 			[3] = "grass",
 			[4] = "mountain",
@@ -173,6 +189,7 @@ local data = {
 			[17] = "water",
 		},
 		[6] = {
+			[1] = "water",
 			[2] = "water",
 			[3] = "grass",
 			[4] = "grass",
@@ -191,6 +208,7 @@ local data = {
 			[17] = "water",
 		},
 		[7] = {
+			[1] = "water",
 			[2] = "mountain",
 			[3] = "grass",
 			[4] = "grass",
@@ -206,8 +224,10 @@ local data = {
 			[14] = "desert",
 			[15] = "desert",
 			[16] = "water",
+			[17] = "water",
 		},
 		[8] = {
+			[1] = "water",
 			[2] = "mountain",
 			[3] = "grass",
 			[4] = "grass",
@@ -225,6 +245,8 @@ local data = {
 			[16] = "water",
 		},
 		[9] = {
+			[1] = "water",
+			[2] = "water",
 			[3] = "mountain",
 			[4] = "mountain",
 			[5] = "mountain",
@@ -241,6 +263,8 @@ local data = {
 			[16] = "water",
 		},
 		[10] = {
+			[2] = "water",
+			[3] = "water",
 			[4] = "water",
 			[5] = "water",
 			[6] = "forest",
@@ -317,27 +341,705 @@ local data = {
 			[13] = "desert",
 			[14] = "desert",
 			[15] = "water",
+			[16] = "water",
 		},
 		[15] = {
+			[3] = "water",
 			[4] = "water",
 			[5] = "grass",
 			[6] = "water",
 			[7] = "water",
 			[8] = "water",
 			[9] = "water",
+			[10] = "water",
 			[11] = "water",
 			[12] = "desert",
 			[13] = "water",
 			[14] = "water",
+			[15] = "water",
 		},
 		[16] = {
-			[11] = "water",
 			[4] = "water",
 			[5] = "water",
+			[6] = "water",
+			[11] = "water",
 			[12] = "water",
+			[13] = "water",
 		},
 	},
 	doodads = {
+		[1] = {
+			pos = {
+				[1] = 8.8000742594401,
+				[2] = 2.4711112976074,
+			},
+			doodadType = "coast_small",
+		},
+		[2] = {
+			pos = {
+				[1] = 8.5584983825684,
+				[2] = 2.2295354207357,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[3] = {
+			pos = {
+				[1] = 8.5151379903158,
+				[2] = 2.1613985697428,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[4] = {
+			pos = {
+				[1] = 7.7904109954834,
+				[2] = 1.486224492391,
+			},
+			doodadType = "coast_small",
+		},
+		[5] = {
+			pos = {
+				[1] = 7.2453165054321,
+				[2] = 1.4614483515422,
+			},
+			doodadType = "coast_small",
+		},
+		[6] = {
+			pos = {
+				[1] = 6.7064170837402,
+				[2] = 1.4924189249674,
+			},
+			doodadType = "coast_small",
+		},
+		[7] = {
+			pos = {
+				[1] = 6.458646774292,
+				[2] = 1.7154127756755,
+			},
+			doodadType = "coast_small_up",
+		},
+		[8] = {
+			pos = {
+				[1] = 5.7525018056234,
+				[2] = 2.4463342030843,
+			},
+			doodadType = "coast_small",
+		},
+		[9] = {
+			pos = {
+				[1] = 5.3808466593424,
+				[2] = 2.4215571085612,
+			},
+			doodadType = "coast_test",
+		},
+		[10] = {
+			pos = {
+				[1] = 4.5446227391561,
+				[2] = 2.204758644104,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[11] = {
+			pos = {
+				[1] = 3.8508669535319,
+				[2] = 1.4862251281738,
+			},
+			doodadType = "coast_small",
+		},
+		[12] = {
+			pos = {
+				[1] = 3.2871894836426,
+				[2] = 1.4676424662272,
+			},
+			doodadType = "coast_test",
+		},
+		[13] = {
+			pos = {
+				[1] = 2.4039057095846,
+				[2] = 1.8031048774719,
+			},
+			doodadType = "coast_small_up",
+		},
+		[14] = {
+			pos = {
+				[1] = 1.7039550145467,
+				[2] = 2.4658899307251,
+			},
+			doodadType = "coast_small",
+		},
+		[15] = {
+			pos = {
+				[1] = 1.4376022020976,
+				[2] = 2.7198541959127,
+			},
+			doodadType = "coast_small_up",
+		},
+		[16] = {
+			pos = {
+				[1] = 1.4499905904134,
+				[2] = 4.1197547912598,
+			},
+			doodadType = "coast_test_up",
+		},
+		[17] = {
+			pos = {
+				[1] = 1.4561850229899,
+				[2] = 4.8444830576579,
+			},
+			doodadType = "coast_small_up",
+		},
+		[18] = {
+			pos = {
+				[1] = 2.1623299916585,
+				[2] = 5.5754044850667,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[19] = {
+			pos = {
+				[1] = 2.3903640111287,
+				[2] = 5.8088477452596,
+			},
+			doodadType = "coast_behind",
+		},
+		[20] = {
+			pos = {
+				[1] = 2.3903643290202,
+				[2] = 6.750373840332,
+			},
+			doodadType = "coast_behind",
+		},
+		[21] = {
+			pos = {
+				[1] = 2.3841698964437,
+				[2] = 6.8928419748942,
+			},
+			doodadType = "coast_behind",
+		},
+		[22] = {
+			pos = {
+				[1] = 3.0841204325358,
+				[2] = 7.6175689697266,
+			},
+			doodadType = "coast_behind_flip",
+		},
+		[23] = {
+			pos = {
+				[1] = 3.2203934987386,
+				[2] = 7.6051807403564,
+			},
+			doodadType = "coast_behind_flip",
+		},
+		[24] = {
+			pos = {
+				[1] = 3.4248040517171,
+				[2] = 8.4042390187581,
+			},
+			doodadType = "coast_test_up",
+		},
+		[25] = {
+			pos = {
+				[1] = 3.4248046875,
+				[2] = 8.7758941650391,
+			},
+			doodadType = "coast_small_up",
+		},
+		[26] = {
+			pos = {
+				[1] = 3.4186102549235,
+				[2] = 8.7696997324626,
+			},
+			doodadType = "coast_small_up",
+		},
+		[27] = {
+			pos = {
+				[1] = 2.749631245931,
+				[2] = 9.4139022827148,
+			},
+			doodadType = "coast_small",
+		},
+		[28] = {
+			pos = {
+				[1] = 2.2974497477214,
+				[2] = 9.4324849446615,
+			},
+			doodadType = "coast_test",
+		},
+		[29] = {
+			pos = {
+				[1] = 1.4550317128499,
+				[2] = 9.7545859018962,
+			},
+			doodadType = "coast_small_up",
+		},
+		[30] = {
+			pos = {
+				[1] = 1.4488379160563,
+				[2] = 9.8722769419352,
+			},
+			doodadType = "coast_small_up",
+		},
+		[31] = {
+			pos = {
+				[1] = 2.1611766815186,
+				[2] = 10.535061518351,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[32] = {
+			pos = {
+				[1] = 2.2045367558797,
+				[2] = 10.553644498189,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[33] = {
+			pos = {
+				[1] = 2.4213352203369,
+				[2] = 10.79522005717,
+			},
+			doodadType = "coast_small_up",
+		},
+		[34] = {
+			pos = {
+				[1] = 1.752355893453,
+				[2] = 11.464199384054,
+			},
+			doodadType = "coast_small",
+		},
+		[35] = {
+			pos = {
+				[1] = 1.5045862197876,
+				[2] = 11.736746788025,
+			},
+			doodadType = "coast_small_up",
+		},
+		[36] = {
+			pos = {
+				[1] = 1.4612261454264,
+				[2] = 12.808352152507,
+			},
+			doodadType = "coast_test_up",
+		},
+		[37] = {
+			pos = {
+				[1] = 2.1983420054118,
+				[2] = 13.595022201538,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[38] = {
+			pos = {
+				[1] = 2.4523067474365,
+				[2] = 13.824209213257,
+			},
+			doodadType = "coast_small_up",
+		},
+		[39] = {
+			pos = {
+				[1] = 2.4646949768066,
+				[2] = 14.728570302327,
+			},
+			doodadType = "coast_test_up",
+		},
+		[40] = {
+			pos = {
+				[1] = 3.1665954589844,
+				[2] = 15.533622741699,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[41] = {
+			pos = {
+				[1] = 3.3028691609701,
+				[2] = 15.546011606852,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[42] = {
+			pos = {
+				[1] = 3.5568332672119,
+				[2] = 15.254882176717,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[43] = {
+			pos = {
+				[1] = 4.2258129119873,
+				[2] = 14.585902531942,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[44] = {
+			pos = {
+				[1] = 4.4611943562826,
+				[2] = 15.41593170166,
+			},
+			doodadType = "coast_test_up",
+		},
+		[45] = {
+			pos = {
+				[1] = 4.4550005594889,
+				[2] = 15.855724334717,
+			},
+			doodadType = "coast_small_up",
+		},
+		[46] = {
+			pos = {
+				[1] = 5.1673386891683,
+				[2] = 16.543286005656,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[47] = {
+			pos = {
+				[1] = 5.7000439961751,
+				[2] = 16.530897776286,
+			},
+			doodadType = "coast_test_flip_up",
+		},
+		[48] = {
+			pos = {
+				[1] = 6.5734335581462,
+				[2] = 16.214990615845,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[49] = {
+			pos = {
+				[1] = 7.3972695668538,
+				[2] = 15.552206039429,
+			},
+			doodadType = "coast_test_flip_up",
+		},
+		[50] = {
+			pos = {
+				[1] = 8.9817078908285,
+				[2] = 15.547141393026,
+			},
+			doodadType = "coast_test_flip_up",
+		},
+		[51] = {
+			pos = {
+				[1] = 10.405675252279,
+				[2] = 15.5478515625,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[52] = {
+			pos = {
+				[1] = 11.328619003296,
+				[2] = 15.554045995076,
+			},
+			doodadType = "coast_test_flip_up",
+		},
+		[53] = {
+			pos = {
+				[1] = 12.709937413534,
+				[2] = 15.523074467977,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[54] = {
+			pos = {
+				[1] = 13.27361424764,
+				[2] = 15.541657765706,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[55] = {
+			pos = {
+				[1] = 13.515190760295,
+				[2] = 15.287693659465,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[56] = {
+			pos = {
+				[1] = 14.1717821757,
+				[2] = 14.581549326579,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[57] = {
+			pos = {
+				[1] = 14.512465159098,
+				[2] = 13.732936859131,
+			},
+			doodadType = "coast_test_flip",
+		},
+		[58] = {
+			pos = {
+				[1] = 14.512463887533,
+				[2] = 13.212618509928,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[59] = {
+			pos = {
+				[1] = 15.20002746582,
+				[2] = 12.562222798665,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[60] = {
+			pos = {
+				[1] = 15.348688761393,
+				[2] = 12.537445068359,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[61] = {
+			pos = {
+				[1] = 15.565487543742,
+				[2] = 12.283480962118,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[62] = {
+			pos = {
+				[1] = 15.559292475382,
+				[2] = 12.128624598185,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[63] = {
+			pos = {
+				[1] = 14.878588994344,
+				[2] = 11.434206008911,
+			},
+			doodadType = "coast_small",
+		},
+		[64] = {
+			pos = {
+				[1] = 14.835229237874,
+				[2] = 11.440400441488,
+			},
+			doodadType = "coast_small",
+		},
+		[65] = {
+			pos = {
+				[1] = 14.599847157796,
+				[2] = 11.20501836141,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[66] = {
+			pos = {
+				[1] = 13.92467435201,
+				[2] = 10.455513636271,
+			},
+			doodadType = "coast_small",
+		},
+		[67] = {
+			pos = {
+				[1] = 13.763624191284,
+				[2] = 10.467902501424,
+			},
+			doodadType = "coast_small",
+		},
+		[68] = {
+			pos = {
+				[1] = 13.546825408936,
+				[2] = 10.226327260335,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[69] = {
+			pos = {
+				[1] = 14.252969741821,
+				[2] = 9.56973584493,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[70] = {
+			pos = {
+				[1] = 14.544099807739,
+				[2] = 9.3405488332113,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[71] = {
+			pos = {
+				[1] = 14.581265131632,
+				[2] = 7.9902019500732,
+			},
+			doodadType = "coast_test_flip",
+		},
+		[72] = {
+			pos = {
+				[1] = 14.582983970642,
+				[2] = 6.7679783503215,
+			},
+			doodadType = "coast_test_flip",
+		},
+		[73] = {
+			pos = {
+				[1] = 14.558208147685,
+				[2] = 6.2476619084676,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[74] = {
+			pos = {
+				[1] = 15.23957602183,
+				[2] = 5.5662940343221,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[75] = {
+			pos = {
+				[1] = 15.524511655172,
+				[2] = 5.3061361312866,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[76] = {
+			pos = {
+				[1] = 15.549288113912,
+				[2] = 5.132695833842,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[77] = {
+			pos = {
+				[1] = 14.818366686503,
+				[2] = 4.4513285954793,
+			},
+			doodadType = "coast_small",
+		},
+		[78] = {
+			pos = {
+				[1] = 14.564401944478,
+				[2] = 4.2221415837606,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[79] = {
+			pos = {
+				[1] = 13.907811800639,
+				[2] = 3.4912195205688,
+			},
+			doodadType = "coast_small",
+		},
+		[80] = {
+			pos = {
+				[1] = 12.860982577006,
+				[2] = 3.4850257237752,
+			},
+			doodadType = "coast_test",
+		},
+		[81] = {
+			pos = {
+				[1] = 11.498247464498,
+				[2] = 3.4850250879924,
+			},
+			doodadType = "coast_small",
+		},
+		[82] = {
+			pos = {
+				[1] = 10.767326037089,
+				[2] = 3.4478597640991,
+			},
+			doodadType = "coast_small",
+		},
+		[83] = {
+			pos = {
+				[1] = 10.442854245504,
+				[2] = 4.2898524602254,
+			},
+			doodadType = "coast_test_up",
+		},
+		[84] = {
+			pos = {
+				[1] = 10.430465380351,
+				[2] = 4.8225584030151,
+			},
+			doodadType = "coast_small_up",
+		},
+		[85] = {
+			pos = {
+				[1] = 9.7676808039347,
+				[2] = 5.4234011967977,
+			},
+			doodadType = "coast_small",
+		},
+		[86] = {
+			pos = {
+				[1] = 9.5384931564331,
+				[2] = 4.5995658238729,
+			},
+			doodadType = "coast_test_flip",
+		},
+		[87] = {
+			pos = {
+				[1] = 9.5384931564331,
+				[2] = 3.2863842646281,
+			},
+			doodadType = "coast_test_flip",
+		},
+		[88] = {
+			pos = {
+				[1] = 11.23232014974,
+				[2] = 11.573272705078,
+			},
+			doodadType = "coast_small_flip_up",
+		},
+		[89] = {
+			pos = {
+				[1] = 10.513786951701,
+				[2] = 12.291805903117,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[90] = {
+			pos = {
+				[1] = 11.405759175618,
+				[2] = 11.994481404622,
+			},
+			doodadType = "coast_small_up",
+		},
+		[91] = {
+			pos = {
+				[1] = 11.442924499512,
+				[2] = 11.78387705485,
+			},
+			doodadType = "coast_small_up",
+		},
+		[92] = {
+			pos = {
+				[1] = 10.534439404806,
+				[2] = 13.026850064596,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[93] = {
+			pos = {
+				[1] = 10.528246243795,
+				[2] = 13.24365011851,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[94] = {
+			pos = {
+				[1] = 10.528246243795,
+				[2] = 13.24365011851,
+			},
+			doodadType = "coast_small_flip",
+		},
+		[95] = {
+			pos = {
+				[1] = 11.414024035136,
+				[2] = 12.816246350606,
+			},
+			doodadType = "coast_behind",
+		},
+		[96] = {
+			pos = {
+				[1] = 10.745045661926,
+				[2] = 13.460449536641,
+			},
+			doodadType = "coast_small",
+		},
 	},
 	invasionMask = {
 		[0] = {
@@ -588,9 +1290,9 @@ local data = {
 			[16] = 1,
 		},
 		[17] = {
-			[10] = 1,
 			[11] = 1,
 			[13] = 1,
+			[10] = 1,
 			[14] = 1,
 		},
 		[18] = {
