@@ -44,10 +44,10 @@ function api.KeyPressed(key, scancode, isRepeat)
 		self.brushType = "terrain"
 		
 		
-	elseif key == "q" then
+	elseif key == "e" then
 		self.brushMode = "coast1"
 		self.brushType = "doodad"
-	elseif key == "e" then
+	elseif key == "r" then
 		self.brushMode = "coast2"
 		self.brushType = "doodad"
 		

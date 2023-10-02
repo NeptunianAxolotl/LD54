@@ -1,7 +1,7 @@
 
 return {
-	fontSize = 0,
-	interface = false,
+	fontSize = 2,
+	interface = true,
 	alphaScale = true,
 	duration = 3.5,
 	alphaBuffer = 0.35,
