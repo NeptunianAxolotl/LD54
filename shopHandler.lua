@@ -355,10 +355,12 @@ local function DrawTileArea()
 		
 		if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE * 2, Global.SHOP_SIZE) then
 			self.hoveredItem = i
-			if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE, Global.SHOP_SIZE) then
-				api.SetTooltipToTile(self.items[i][1])
-			else
-				api.SetTooltipToTile(self.items[i][2])
+			if self.items[i] then
+				if util.PosInRectangle(mousePos, shopItemsX - Global.SHOP_SIZE, y, Global.SHOP_SIZE, Global.SHOP_SIZE) then
+					api.SetTooltipToTile(self.items[i][1])
+				else
+					api.SetTooltipToTile(self.items[i][2])
+				end
 			end
 		end
 		
@@ -405,7 +407,7 @@ local function DrawRefreshButton()
 	local shopItemsY = 160
 	local buttonExtra = 20
 
-	if not GameHandler.CanAfford("refresh") and not GameHandler.IsStockActive("refresh") then
+	if not GameHandler.CanAfford("refresh") and not GameHandler.IsStockActive("refresh") and not Global.SHOW_REFRESH_DEBUG_MODE then
 		return
 	end
 	

@@ -55,7 +55,8 @@ local globals = {
 	DECK_SIZE_MULT = 1,
 	INIT_LEVEL = "testLevel",
 	SHOP_SLOTS = 3,
-	CAN_REFRESH = false,
+	
+	SHOW_REFRESH_DEBUG_MODE = true,
 	
 	DESTROY_NAME = "explosion",
 	SHOP_WIDTH = 450,
