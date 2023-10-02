@@ -15,7 +15,7 @@ local data = {
 	drawWiggle = 0,
 	collectableResourceType = "army",
 	collectableResourceTypeFunc = function (self)
-		return (self.GetActive() and (self.IsResourceActive("tool") and 3 or 2)) or 0
+		return (self.GetActive() and (self.IsResourceActive("tool") and 3 or 1)) or 0
 	end,
 	
 	needResource = {

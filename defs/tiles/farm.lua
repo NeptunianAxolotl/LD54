@@ -12,6 +12,7 @@ local data = {
 	upgradeBuilding = "mill",
 	upgradeDistance = 1.49,
 	
+	activeAtGameStart = true,
 	bonusOnEdges = true,
 	drawWiggle = 0,
 	depthNudge = -0.1,

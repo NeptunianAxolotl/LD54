@@ -23,7 +23,7 @@ local function LookForWorkersCheck(self, resource)
 		self.resourceState[resource].inactiveTimer = self.def.needResource[resource].idleTimeout
 	end
 	
-	if TerrainHandler.InitializeActive() then
+	if self.def.activeAtGameStart and TerrainHandler.InitializeActive() then
 		self.resourceState[resource].inactiveTimer = math.random()*self.def.needResource[resource].idleTimeout
 		self.resourceState[resource].active = true
 		CheckUpgrade(self, oldUpgradeState)
