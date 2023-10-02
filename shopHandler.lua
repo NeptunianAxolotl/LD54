@@ -125,6 +125,12 @@ local function ClickShopButton(item)
 	if item > GameHandler.GetShopSlots() + 1 then
 		return
 	end
+	
+	SoundHandler.PlaySound("domselect")
+	if self.alreadyPlayedLossSound then
+		self.alreadyPlayedLossSound = false
+	end
+	
 	if self.heldTile then
 		if self.items[item] and self.emptySlot then
 			self.items[self.emptySlot] = self.heldTile
@@ -228,11 +234,15 @@ end
 function api.KeyPressed(key, scancode, isRepeat)
 	if (key == "r" or key == "space") and not self.blockRotate then
 		self.tileRotation = (self.tileRotation + 1)%4
-		--SoundHandler.PlaySound("spin")
+		SoundHandler.PlaySound("domrotate")
 	end
 	for i = 1, GameHandler.GetShopSlots() do
 		if key == tostring(i) then
 			ClickShopButton(i)
+			SoundHandler.PlaySound("domselect")
+			if self.alreadyPlayedLossSound then
+				self.alreadyPlayedLossSound = false
+			end
 		end
 	end
 	if key == "e" and GameHandler.CanAfford("refresh") then
@@ -284,6 +294,7 @@ function api.MousePressed(x, y, button)
 		if self.heldTile[1] == Global.DESTROY_NAME and dominoPos then
 			if TryToExplodeDominio(dominoPos) then
 				UpdateItems(true)
+				SoundHandler.PlaySound("domclick")
 				GameHandler.PlaceExplosionUpdateShopSpots()
 				self.heldTile = false
 			end
@@ -291,12 +302,13 @@ function api.MousePressed(x, y, button)
 			TerrainHandler.AddDomino(self.heldTile, {dominoPos[1].pos, dominoPos[2].pos})
 			GameHandler.DoTurnTick()
 			UpdateItems()
+			SoundHandler.PlaySound("domclick")
 			self.heldTile = false
 		end
 	end
 	if button == 2 then
 		self.tileRotation = (self.tileRotation + 1)%4
-		--SoundHandler.PlaySound("spin")
+		SoundHandler.PlaySound("domrotate")
 	end
 	if button ~= 1 then
 		return false
@@ -619,6 +631,11 @@ function api.DrawInterface()
 	
 	DrawFoodArea()
 	local endLevelState = GameHandler.InSoftLossState() or GameHandler.InVictoryState()
+	if GameHandler.InSoftLossState() and not self.alreadyPlayedLossSound then
+		SoundHandler.PlaySound("domloss")
+		self.alreadyPlayedLossSound = true
+	end
+	
 	if endLevelState then
 		DrawGameEndArea()
 	else

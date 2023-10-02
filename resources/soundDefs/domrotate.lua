@@ -1,0 +1,1 @@
+return {	file = "effects/domrotate.mp3",	volMult = 0.8,}

@@ -37,6 +37,12 @@ local data = {
 		if nearbyArmy < self.armySize then
 			return
 		end
+		local invasionsLeft = BuildingHandler.CountResourceType("invasion")
+		if invasionsLeft > 1 then
+			SoundHandler.PlaySound("domexplore")
+		else
+			SoundHandler.PlaySound("domvictory")
+		end
 		TerrainHandler.SpawnInvasionRemoveWave(self.pos, self.invasionIndex)
 		TerrainHandler.RemoveTile(self.pos)
 		TerrainHandler.CheckOutRangedTilesForDestruction("invasion")
