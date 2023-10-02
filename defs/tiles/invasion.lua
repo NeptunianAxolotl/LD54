@@ -30,12 +30,13 @@ local data = {
 		pos = util.Add(pos, {-450, -180})
 		love.graphics.setColor(0, 0, 0, 1)
 		local nearbyArmy = GetNearbyArmySize(self)
-		love.graphics.printf("Scouts " .. nearbyArmy .. "/" .. self.armySize, pos[1] + 290, pos[2] - 13, 900, "left")
 		
 		if nearbyArmy < self.armySize then
 			Font.SetSize(1)
-			love.graphics.printf("Add Barracks to explore the darkness", pos[1] + 290, pos[2] + 55, 350, "left")
+			love.graphics.printf("Too few scouts for expedition\n - Needed: " .. self.armySize .. "\n - Have: " .. nearbyArmy, pos[1] + 280, pos[2] - 13, 380, "left")
 			return
+		else
+			love.graphics.printf("Scouts " .. nearbyArmy .. "/" .. self.armySize, pos[1] + 280, pos[2] - 13, 380, "left")
 		end
 		
 		local bx, by, width, height = pos[1] + 280, pos[2] + 120, 350, 140

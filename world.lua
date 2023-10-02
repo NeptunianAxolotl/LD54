@@ -243,6 +243,7 @@ function api.Draw()
 	BuildingHandler.Draw(drawQueue)
 	ShopHandler.Draw(drawQueue)
 	GuyHandler.Draw(drawQueue)
+	LevelHandler.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
 	while true do

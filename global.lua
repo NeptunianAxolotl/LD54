@@ -13,6 +13,9 @@ local globals = {
 	BUTTON_HIGHLIGHT = {198/255, 206/255, 105/255},
 	BUTTON_BACK = {175/255, 185/255, 92/255},
 	
+	HINT_BACK = {198/255, 206/255, 105/255},
+	HINT_OUTLINE = {74/255, 91/255, 32/255},
+	
 	GREY = {0.7, 0.7, 0.7},
 	WHITE = {1, 1, 1},
 	RED = {1, 0.3, 0.3},
@@ -82,7 +85,7 @@ local globals = {
 	TOOLTIP_FADE_DELAY = 0.12,
 	END_GAME_FADE_RATE = 2.6,
 	
-	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "tileDeck", "tiles", "terrain", "doodads", "invasionMask"},
+	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "tileDeck", "hints", "tiles", "terrain", "doodads", "invasionMask"},
 }
 
 return globals

@@ -109,6 +109,49 @@ function api.KeyPressed(key, scancode, isRepeat)
 	end
 end
 
+function api.Draw(drawQueue)
+	drawQueue:push({y=100000; f=function()
+		for i = 1, #self.levelData.hints do
+			local hint = self.levelData.hints[i]
+			local pos = TerrainHandler.GridToWorld(hint.pos)
+			local size = util.Mult(api.TileSize()*4, hint.size)
+			
+			print(hint.pos[1], hint.pos[2])
+			print(pos[1], pos[2])
+			if hint.arrowDest then
+				local arrowDest = TerrainHandler.GridToWorld(hint.arrowDest)
+				love.graphics.setColor(0, 0, 0, 1)
+				love.graphics.setLineWidth(12)
+				if hint.arrow == "right" then
+					love.graphics.line(pos[1] + size[1], pos[2] + size[2], arrowDest[1], arrowDest[2])
+				end
+				if hint.arrow == "left" then
+					love.graphics.line(pos[1], pos[2] + size[2], arrowDest[1], arrowDest[2])
+				end
+				if hint.arrow == "topRight" then
+					love.graphics.line(pos[1] + size[1], pos[2], arrowDest[1], arrowDest[2])
+				end
+				if hint.arrow == "midRight" then
+					love.graphics.line(pos[1] + size[1], pos[2] + size[2]*0.5, arrowDest[1], arrowDest[2])
+				end
+				if hint.arrow == "mid" then
+					love.graphics.line(pos[1] + size[1]*0.5, pos[2] + size[2], arrowDest[1], arrowDest[2])
+				end
+			end
+			
+			Font.SetSize(1)
+			love.graphics.setColor(unpack(Global.HINT_BACK))
+			love.graphics.setLineWidth(4)
+			love.graphics.rectangle("fill", pos[1], pos[2], size[1], size[2], 8, 8, 16)
+			love.graphics.setColor(unpack(Global.HINT_OUTLINE))
+			love.graphics.setLineWidth(12)
+			love.graphics.rectangle("line", pos[1], pos[2], size[1], size[2], 8, 8, 16)
+			love.graphics.setColor(0, 0, 0, 1)
+			love.graphics.printf(hint.text, pos[1] + 25, pos[2] + 10, size[1] - 50, "left")
+		end
+	end})
+end
+
 function api.DrawInterface()
 	local gameOver, gameWon, gameLost = self.world.GetGameOver()
 	local windowX, windowY = love.window.getMode()
