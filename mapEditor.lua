@@ -45,11 +45,15 @@ function api.KeyPressed(key, scancode, isRepeat)
 		
 		
 	elseif key == "e" then
-		self.brushMode = "coast1"
+		self.brushMode = "coast_1"
 		self.brushType = "doodad"
 	elseif key == "r" then
-		self.brushMode = "coast2"
+		self.brushMode = "coast_2"
 		self.brushType = "doodad"
+	elseif key == "t" then
+		self.brushMode = "coast_3"
+		self.brushType = "doodad"
+		
 		
 		
 	elseif key == "z" then
