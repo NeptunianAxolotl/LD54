@@ -72,6 +72,7 @@ local globals = {
 	REFRESH_TIMER = 0.05,
 	TOOLTIP_FADE_RATE = 4,
 	TOOLTIP_FADE_DELAY = 0.12,
+	END_GAME_FADE_RATE = 2.6,
 	
 	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "tileDeck", "tiles", "terrain", "doodads", "invasionMask"},
 }

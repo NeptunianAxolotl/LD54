@@ -131,6 +131,10 @@ function api.GetMaxSlotsSoFar()
 	return self.maxShopSlotsSoFar
 end
 
+function api.HaveStarved()
+	return self.stavation > 1
+end
+
 function api.GetStarvation()
 	return self.stavation
 end
@@ -138,6 +142,14 @@ end
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
+
+function api.InSoftLossState()
+	return ShopHandler.OutOfSpace() or api.HaveStarved()
+end
+
+function api.InVictoryState()
+	return BuildingHandler.CountResourceType("invasion") <= 0
+end
 
 local function UpdateStarvation(dt)
 	local food = api.GetNetFood()
@@ -150,9 +162,6 @@ local function UpdateStarvation(dt)
 	if self.stavation < 0 then
 		self.stavation = 0
 		return
-	end
-	if self.stavation > 1 then
-		self.world.SetGameOver(false, "Starvation")
 	end
 end
 

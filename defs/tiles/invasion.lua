@@ -11,6 +11,11 @@ local data = {
 	drawWiggle = 0,
 	drawFlip = 1,
 	
+	collectableResourceType = "invasion",
+	collectableResourceTypeFunc = function (self)
+		return 1
+	end,
+	
 	onClick = function (self)
 		local nearbyArmy = GetNearbyArmySize(self)
 		if nearbyArmy < self.armySize then

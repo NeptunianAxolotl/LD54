@@ -60,6 +60,10 @@ local function GenerateDomino(otherDominos, dominoIndex, prevMatchAllowed)
 	return domino
 end
 
+function api.OutOfSpace()
+	return self.outOfSpaceRetryTimer and true or false
+end
+
 local function UpdateItems()
 	local shopSlots = GameHandler.GetShopSlots()
 	for i = 1, shopSlots do
@@ -72,7 +76,7 @@ local function UpdateItems()
 				domino = GenerateDomino(self.items, i, tries > Global.DOMINIO_DUPLICATE_RELAX * Global.DOMINO_GENERATION_TRIES)
 				tries = tries + 1
 				if tries > Global.DOMINO_GENERATION_TRIES then
-					self.world.SetGameOver(false, "Ran out of space")
+					self.outOfSpaceRetryTimer = 10
 					break
 				end
 			end
@@ -174,6 +178,23 @@ function api.Update(dt)
 	end
 	UpdateFoodDial(dt)
 	
+	if GameHandler.InSoftLossState() or GameHandler.InVictoryState() then
+		self.endGameFadeTimer = math.min(1, (self.endGameFadeTimer or 0) + dt*Global.END_GAME_FADE_RATE)
+	elseif self.endGameFadeTimer then
+		self.endGameFadeTimer = self.endGameFadeTimer - dt*Global.END_GAME_FADE_RATE
+		if self.endGameFadeTimer < 0 then
+			self.endGameFadeTimer = false
+		end
+	end
+	
+	if self.outOfSpaceRetryTimer then
+		self.outOfSpaceRetryTimer = self.outOfSpaceRetryTimer - dt
+		if self.outOfSpaceRetryTimer < 0 then
+			self.outOfSpaceRetryTimer = false
+			UpdateItems()
+		end
+	end
+	
 	if self.tooltip then
 		self.tooltipFade = math.min(1, self.tooltipFade + Global.TOOLTIP_FADE_RATE*dt)
 		self.tooltipFadeDelay = Global.TOOLTIP_FADE_DELAY
@@ -274,12 +295,23 @@ function api.MousePressed(x, y, button)
 	if button ~= 1 then
 		return false
 	end
+	if self.hoveredEndLevelAction == "retry" then
+		self.world.Restart()
+	elseif self.hoveredEndLevelAction == "next" then
+		--self.world.RestartWorld()
+	end
+	if GameHandler.InSoftLossState() then
+		return false
+	end
 	return ClickShopButton(self.hoveredItem)
 end
 
 function api.Draw(drawQueue)
-	if (not self.heldTile) or self.world.GetGameOver() then
+	if (not self.heldTile) then
 		return
+	end
+	if GameHandler.InSoftLossState() then
+		return false
 	end
 	local dominoPos = TerrainHandler.GetValidWorldPlacement(self.world.GetMousePosition(), self.tileRotation, self.heldTile)
 	
@@ -336,19 +368,6 @@ local function DrawFoodArea()
 	love.graphics.printf("Food Production: " .. foodInfo.income, textX + math.random()*math.pow(starvation, 1.8)*10, textY + math.random()*starvation*3, 400, "left")
 	textY = textY + textSpacing
 	love.graphics.printf("Food Consumption: " .. foodInfo.expense, textX + math.random()*math.pow(starvation, 1.8)*10, textY + math.random()*starvation*3, 400, "left")
-	
-	--local explosion = GameHandler.GetStockInfo("explosion")
-	--love.graphics.printf("Explode " .. explosion.cost .. " / " .. explosion.total, 20, 100, 400, "left")
-	--
-	--local refreshAmount = GameHandler.GetStockInfo("refresh")
-	--love.graphics.printf("Refresh " .. refreshAmount.cost .. " / " .. refreshAmount.total, 20, 180, 400, "left")
-	
-	if self.world.GetGameOver() then
-		Font.SetSize(1)
-		love.graphics.printf("Game Over", 20, 80, 400, "left")
-		local _, _, _, lossType = self.world.GetGameOver()
-		love.graphics.printf(lossType, 20, 140, 400, "left")
-	end
 end
 
 local function DrawTileArea()
@@ -419,6 +438,67 @@ local function DrawHeldTile()
 	end
 end
 
+--------------------------------------------------
+-- Updating
+--------------------------------------------------
+
+local function DrawGameEndArea()
+	local text = ""
+	local buttonName = ""
+	local action = ""
+	if GameHandler.InVictoryState() then
+		text = "The land something etc"
+		buttonName = "Next Island"
+		action = "next"
+	elseif GameHandler.HaveStarved() then
+		text = "Your people have starved"
+		buttonName = "Retry Island"
+		action = "retry"
+	elseif api.OutOfSpace() then
+		text = "You have run out of space"
+		buttonName = "Retry Island"
+		action = "retry"
+	end
+	
+	local mousePos = self.world.GetMousePositionInterface()
+	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
+	local shopItemsY = 420
+	local buttonExtra = 20
+	
+	local buttonWidth = 310
+	local buttonX = shopItemsX - buttonWidth*0.5
+	local buttonY = shopItemsY
+	
+	local textX = math.floor(Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.88)
+	local textY = 520
+	
+	if util.PosInRectangle(mousePos, buttonX, buttonY, buttonWidth, Global.SHOP_SIZE) and (self.endGameFadeTimer or 0) > 0.8 then
+		self.hoveredEndLevelAction = action
+	end
+	
+	love.graphics.setColor(0.5, 0.7, 0.8, 1)
+	love.graphics.setLineWidth(4)
+	love.graphics.rectangle("fill", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
+	
+	
+	if self.hoveredEndLevelAction then
+		love.graphics.setColor(0.35, 1, 0.35, 0.8)
+	else
+		love.graphics.setColor(0, 0, 0, 0.8)
+	end
+	love.graphics.setLineWidth(8)
+	love.graphics.rectangle("line", buttonX, buttonY, buttonWidth, Global.SHOP_SIZE, 8, 8, 32)
+		
+	Font.SetSize(1)
+	love.graphics.setColor(0, 0, 0, 0.8)
+	love.graphics.printf(buttonName, buttonX, buttonY + 10, buttonWidth, "center")
+	
+	Font.SetSize(2)
+	love.graphics.setColor(0, 0, 0, (self.endGameFadeTimer or 0))
+	
+	love.graphics.printf(text, textX, textY, 320, "left")
+end
+
 local function DrawRefreshButton()
 	local mousePos = self.world.GetMousePositionInterface()
 	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
@@ -483,6 +563,7 @@ end
 
 function api.DrawInterface()
 	self.hoveredItem = false
+	self.hoveredEndLevelAction = false
 	
 	local shopItemsX = Global.VIEW_WIDTH -  Global.SHOP_WIDTH*0.5
 	local shopItemsY = 160
@@ -511,10 +592,19 @@ function api.DrawInterface()
 	end
 	
 	DrawFoodArea()
-	DrawTileArea()
-	DrawRefreshButton()
-	DrawHeldTile()
+	local endLevelState = GameHandler.InSoftLossState() or GameHandler.InVictoryState()
+	if endLevelState then
+		DrawGameEndArea()
+	else
+		DrawTileArea()
+	end
+	if not endLevelState then
+		DrawRefreshButton()
+	end
 	DrawTooltipArea()
+	if not endLevelState then
+		DrawHeldTile()
+	end
 	
 	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
 	
@@ -535,6 +625,7 @@ function api.Initialize(world)
 		shopBlockedTimer = false,
 		dialPosition = 0.5,
 		tooltipFade = 0,
+		outOfSpaceRetryTimer = false,
 	}
 	self.heldTile = false
 	self.tileRotation = 0

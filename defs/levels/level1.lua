@@ -15,7 +15,7 @@ local data = {
 			woodcutter = 1,
 			sawmill = 1,
 			town = 4,
-			fishery = 3,
+			fishery = 4,
 		},
 	},
 	tiles = {
