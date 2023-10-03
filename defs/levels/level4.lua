@@ -33,11 +33,11 @@ local data = {
 	},
 	hints = {
 		[1] = {
-			text = "Send tools from Blacksmiths to Outputs for a scouting boost.",
-			size = {1.58, 0.62},
+			text = "- A tile is only drawn if you have somewhere to place it.\n- Outposts cannot be placed too far from an explore marker.\n- Send tools from Blacksmiths to Outposts for a scouting boost.",
+			size = {2.2, 1.1},
 			pos = {
-				[1] = 6,
-				[2] = 20,
+				[1] = 5,
+				[2] = 21,
 			},
 		},
 	},
