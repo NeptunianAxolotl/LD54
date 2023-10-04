@@ -11,7 +11,7 @@ local data = {
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"mine", Global.LONG_WALK_RANGE}},
 	
-	tooltip = "Blacksmith\nProduces tools from ore. Tools improve scout power (+1) and are used to quarry stone.",
+	tooltip = "Blacksmith\nProduces tools from ore. Tools are used to double scout effectiveness, and are used to quarry stone.",
 	
 	population = 1,
 	popType = "tool",

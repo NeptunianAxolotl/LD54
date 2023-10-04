@@ -31,8 +31,8 @@ local data = {
 	hints = {
 		{
 			pos = {5, 21},
-			size = {2.2, 1.1},
-			text = "- A tile is only drawn if you have somewhere to place it.\n- Outposts cannot be placed too far from an explore marker.\n- Send tools from Blacksmiths to Outposts for a scouting boost.",
+			size = {2.2, 1.32},
+			text = "- A tile is only offered if you have somewhere to place it\n- Outposts must be built in range of exploration markers.\n- Improve scouts with tools.\n- Tools are made by Blacksmiths using ore from Mines.",
 		},
 	},
 	tiles = {
@@ -42,7 +42,7 @@ local data = {
 				armySize = 6,
 				invasionIndex = 2,
 			},
-			pos = {6, 12},
+			pos = {5, 11},
 		},
 		{
 			def = "farm",
@@ -57,12 +57,20 @@ local data = {
 			pos = {11, 23},
 		},
 		{
+			def = "barracks",
+			pos = {11, 16},
+		},
+		{
 			def = "town",
 			pos = {11, 6},
 		},
 		{
 			def = "fishery",
 			pos = {11, 5},
+		},
+		{
+			def = "barracks",
+			pos = {12, 16},
 		},
 	},
 	terrain = {
@@ -969,7 +977,7 @@ local data = {
 			[5] = 2,
 			[6] = 2,
 			[7] = 2,
-			[8] = 2,
+			[10] = 2,
 			[11] = 2,
 			[12] = 2,
 			[13] = 2,
