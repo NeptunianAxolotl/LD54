@@ -2,10 +2,7 @@ local data = {
 	humanName = "test",
 	width = 20,
 	height = 20,
-	cameraPos = {
-		11.5,
-		9.5,
-	},
+	cameraPos = {11.5, 9.5},
 	customVictoryText = "You've explored the entire island!\n\nIt's kind of small.",
 	tileDeck = {
 		{
