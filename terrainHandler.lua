@@ -2,6 +2,8 @@
 local Font = require("include/font")
 local TileDefs = util.AddKeyNameToMaps(util.LoadDefDirectory("defs/tiles"), "defName")
 local TerrainDefs = util.LoadDefDirectory("defs/terrain")local NewTile = require("objects/tile")
+local TileDrawConf = require("defs/tileDrawConf")
+
 local self = {}
 local api = {}
 function api.AddTile(tileName, pos, extraData)
@@ -92,12 +94,17 @@ function api.SpawnInvasionRemoveWave(pos, invasionIndex)
 	self.waveTimer = 0
 end
 
+
 function api.GetInvasionAt(pos, rotation)
 	if rotation then
 		pos = util.Add(pos, util.CardinalToVector(rotation))
 	end
 	local x, y = pos[1], pos[2]
 	return (self.invasionMask[x] and self.invasionMask[x][y]), pos
+end
+
+function api.GetInvasionAtCoords(x, y)
+	return (self.invasionMask[x] and self.invasionMask[x][y])
 end
 
 function api.GetTerrainAt(x, y)
@@ -358,21 +365,24 @@ end
 			end
 		end
 	end})
+	
 	for x = 1, LevelHandler.Width() do
 		for y = LevelHandler.Height(), 1, -1 do
-			if self.terrainDraw[x] and self.terrainDraw[x][y] and self.terrainDraw[x][y] == "mountain_1" then
-				drawQueue:push({y=-80 - (y - x)*0.01; f=function()
+			if self.terrainDraw[x] and self.terrainDraw[x][y] and TileDrawConf.redrawOverFog[self.terrainDraw[x][y]] then
+				local baseDepth = api.GetInvasionAtCoords(x, y) and -85 or -80
+				drawQueue:push({y=baseDepth - (y - x)*0.001; f=function()
 					local pos = api.GridToWorld({x, y})
-					Resources.DrawImage("mountain_top", pos[1], pos[2])
+					Resources.DrawImage(TileDrawConf.redrawOverFog[self.terrainDraw[x][y]], pos[1], pos[2])
 				end})
 			end
 		end
 	end
+	
 	drawQueue:push({y=-82; f=function()
 		local alpha = MapEditor.InEditMode() and 0.5 or 0.99
 		for x = 1, LevelHandler.Width() do
 			for y = LevelHandler.Height(), 1, -1 do
-				if self.invasionMask[x] and self.invasionMask[x][y] then
+				if api.GetInvasionAtCoords(x, y) then
 					local pos = api.GridToWorld({x, y})
 					if MapEditor.InEditMode() then
 						if not Global.EDIT_MODE_HIDE_FOG then
