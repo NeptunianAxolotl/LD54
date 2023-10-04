@@ -628,26 +628,29 @@ end
 
 local TableToStringHelper
 local function AddTableLine(nameRaw, value, newIndent, lineFunc)
-	local name = tostring(nameRaw)
-	if type(nameRaw) == "number" then
+	local name = nameRaw and tostring(nameRaw)
+	if name and type(nameRaw) == "number" then
 		name = "[" .. name .. "]"
 	end
+	local name = name and (name .. " = ") or ""
+	
 	local ty = type(value)
 	if ty == "userdata" then
 		lineFunc("warning, userdata")
 	end
+	
 	if ty == "table" then
-		lineFunc(newIndent .. name .. " = {")
+		lineFunc(newIndent .. name .. "{")
 		TableToStringHelper(value, newIndent, true, lineFunc)
 		lineFunc(newIndent .. "},")
 	elseif ty == "boolean" then
-		lineFunc(newIndent .. name .. " = " .. (value and "true," or "false,"))
+		lineFunc(newIndent .. name .. (value and "true," or "false,"))
 	elseif ty == "string" then
-		lineFunc(newIndent .. name .. [[ = "]] .. value .. [[",]])
+		lineFunc(newIndent .. name .. [["]] .. string.gsub(string.gsub(value, "\n", "\\n"), "\t", "\\t") .. [[",]])
 	elseif ty == "number" then
-		lineFunc(newIndent .. name .. " = " .. value .. ",")
+		lineFunc(newIndent .. name .. value .. ",")
 	else
-		lineFunc(newIndent .. name .. " = ", value)
+		lineFunc(newIndent .. name , value)
 	end
 end
 
@@ -655,7 +658,15 @@ function TableToStringHelper(data, indent, tableChecked, lineFunc, orderPreferen
 	indent = indent or ""
 	local newIndent = indent .. "	"
 	
-	local alreadyAdded = false
+	local alreadyAdded = {}
+	for i = 1, #data do
+		if not data[i] then
+			break
+		end
+		AddTableLine(false, data[i], newIndent, lineFunc)
+		alreadyAdded[i] = true
+	end
+	
 	if orderPreference then
 		alreadyAdded = {}
 		for i = 1, #orderPreference do
@@ -667,10 +678,17 @@ function TableToStringHelper(data, indent, tableChecked, lineFunc, orderPreferen
 		end
 	end
 	
+	local remainingKeys = {}
 	for nameRaw, value in pairs(data) do
 		if not (alreadyAdded and alreadyAdded[nameRaw]) then
-			AddTableLine(nameRaw, value, newIndent, lineFunc)
+			remainingKeys[#remainingKeys + 1] = nameRaw
 		end
+	end
+	
+	table.sort(remainingKeys)
+	for i = 1, #remainingKeys do
+		local nameRaw = remainingKeys[i]
+		AddTableLine(nameRaw, data[nameRaw], newIndent, lineFunc)
 	end
 end
 
