@@ -9,7 +9,7 @@ local function GetRequiredArmySize(self)
 	if self.armySizeDifficultyLimit and size > self.armySizeDifficultyLimit then
 		size = self.armySizeDifficultyLimit
 	end
-	return size
+	return size - (Global.DEBUG_ARMY_BOOST or 0)
 end
 
 local function GetColor(self, wantBack, hover)
@@ -42,21 +42,37 @@ local data = {
 	end,
 	
 	onClick = function (self)
-		local nearbyArmy = GetNearbyArmySize(self)
-		if nearbyArmy < GetRequiredArmySize(self) and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
+		if (self.nearbyArmy or 0) < GetRequiredArmySize(self) and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
 			return
 		end
 		local invasionsLeft = BuildingHandler.CountResourceType("invasion")
+		TerrainHandler.SpawnInvasionRemoveWave(self.pos, self.invasionIndex)
+		TerrainHandler.RemoveTile(self.pos)
+		TerrainHandler.CheckOutRangedTilesForDestruction("invasion")
+		
+		ShopHandler.LetGoOfTile()
 		if invasionsLeft > 1 then
 			SoundHandler.PlaySound("domexplore")
+			ShopHandler.RefreshUnplaceableInShop()
 		elseif LevelHandler.GetLevelData().lastLevel then
 			SoundHandler.PlaySound("domvictoryfinal")
 		else
 			SoundHandler.PlaySound("domvictory")
 		end
-		TerrainHandler.SpawnInvasionRemoveWave(self.pos, self.invasionIndex)
-		TerrainHandler.RemoveTile(self.pos)
-		TerrainHandler.CheckOutRangedTilesForDestruction("invasion")
+	end,
+	updateFunc = function(self, dt)
+		local nearbyArmy = GetNearbyArmySize(self)
+		if nearbyArmy == self.nearbyArmy then
+			return
+		end
+		if nearbyArmy < (self.nearbyArmy or 0) then
+			self.nearbyArmyTimeout = (self.nearbyArmyTimeout or 0) + dt
+			if self.nearbyArmyTimeout < Global.NEARBY_ARMY_GRACE_TIME then
+				return
+			end
+		end
+		self.nearbyArmy = nearbyArmy
+		self.nearbyArmyTimeout = 0
 	end,
 	drawFunc = function (self, pos)
 		if MapEditor.InEditMode() then
@@ -67,20 +83,17 @@ local data = {
 		
 		Font.SetSize(1)
 		pos = util.Add(pos, {-450, -180})
-		local nearbyArmy = GetNearbyArmySize(self)
-		
-		
 		love.graphics.setColor(0, 0, 0, 1)
-		if nearbyArmy < GetRequiredArmySize(self) and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
+		if (self.nearbyArmy or 0) < GetRequiredArmySize(self) and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
 			Font.SetSize(0)
-            love.graphics.printf(nearbyArmy .. "/" .. GetRequiredArmySize(self), pos[1] + 60, pos[2] + 10, 380, "right")
+            love.graphics.printf((self.nearbyArmy or 0) .. "/" .. GetRequiredArmySize(self), pos[1] + 60, pos[2] + 10, 380, "right")
             Font.SetSize(1)
             love.graphics.printf("scouts", pos[1] + 455, pos[2] + 25, 380, "left")
 			love.graphics.printf("Too few scouts for expedition.", pos[1] + 280, pos[2] + 100, 380, "left")
 			return
 		else
             Font.SetSize(0)
-            love.graphics.printf(nearbyArmy .. "/" .. GetRequiredArmySize(self), pos[1] + 60, pos[2] + 10, 380, "right")
+            love.graphics.printf((self.nearbyArmy or 0) .. "/" .. GetRequiredArmySize(self), pos[1] + 60, pos[2] + 10, 380, "right")
             Font.SetSize(1)
             love.graphics.printf("scouts", pos[1] + 455, pos[2] + 25, 380, "left")
 		end

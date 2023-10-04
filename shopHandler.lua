@@ -60,32 +60,59 @@ local function GenerateDomino(otherDominos, dominoIndex, prevMatchAllowed)
 	return domino
 end
 
+local function GetNewShopItem(index)
+	local domino = GenerateDomino(self.items, index)
+	local tries = 0
+	while not TerrainHandler.DominoCanBePlacedAtAll(domino) do
+		domino = GenerateDomino(self.items, index, tries > Global.DOMINIO_DUPLICATE_RELAX * Global.DOMINO_GENERATION_TRIES)
+		tries = tries + 1
+		if tries > Global.DOMINO_GENERATION_TRIES then
+			if not canAffordExplosion then
+				self.outOfSpaceRetryTimer = 10
+			end
+			return domino
+		end
+	end
+	return domino
+end
+
 function api.OutOfSpace()
 	return self.outOfSpaceRetryTimer and true or false
 end
 
-local function UpdateItems(onlyUpdateEmpty)
+local function UpdateItems(onlyUpdateEmpty, onlyUpdateUnplaceable)
 	local shopSlots = GameHandler.GetShopSlots()
 	local canAffordExplosion = GameHandler.CanAfford("explosion")
+	print('onlyUpdateUnplaceable', onlyUpdateUnplaceable)
 	for i = 1, shopSlots do
-		if (not onlyUpdateEmpty) or (not self.items[i]) then
+		if onlyUpdateUnplaceable then
+			if self.items[i] and self.items[i][1] ~= Global.DESTROY_NAME and not TerrainHandler.DominoCanBePlacedAtAll(self.items[i]) then
+				self.items[i] = GetNewShopItem(i)
+			end
+		elseif (not onlyUpdateEmpty) or (not self.items[i]) then
 			if i == shopSlots and canAffordExplosion then
 				self.items[i] = {Global.DESTROY_NAME, Global.DESTROY_NAME}
 			else
-				local domino = GenerateDomino(self.items, i)
-				local tries = 0
-				while not TerrainHandler.DominoCanBePlacedAtAll(domino) do
-					domino = GenerateDomino(self.items, i, tries > Global.DOMINIO_DUPLICATE_RELAX * Global.DOMINO_GENERATION_TRIES)
-					tries = tries + 1
-					if tries > Global.DOMINO_GENERATION_TRIES then
-						if not canAffordExplosion then
-							self.outOfSpaceRetryTimer = 10
-						end
-						break
-					end
-				end
-				self.items[i] = domino
+				self.items[i] = GetNewShopItem(i)
 			end
+		end
+	end
+end
+
+function api.RefreshUnplaceableInShop()
+	UpdateItems(false, true)
+end
+
+function api.LetGoOfTile()
+	if not self.heldTile then
+		return
+	end
+	local shopSlots = GameHandler.GetShopSlots()
+	for i = 1, shopSlots do
+		if not self.items[i] then
+			self.items[i] = self.heldTile
+			self.heldTile = false
+			return
 		end
 	end
 end
@@ -178,6 +205,7 @@ function api.SetTooltipToTile(tileName, tileData)
 end
 
 function api.Update(dt)
+	self.pulseTimer = (self.pulseTimer + dt)%(2*math.pi)
 	if MapEditor.InEditMode() then
 		self.mapRules = false -- Remove hints etc
 	end
@@ -294,6 +322,7 @@ function api.MousePressed(x, y, button)
 		if self.heldTile[1] == Global.DESTROY_NAME and dominoPos then
 			if TryToExplodeDominio(dominoPos) then
 				UpdateItems(true)
+				api.RefreshUnplaceableInShop()
 				SoundHandler.PlaySound("domclick")
 				GameHandler.PlaceExplosionUpdateShopSpots()
 				self.heldTile = false
@@ -350,15 +379,32 @@ function api.Draw(drawQueue)
 	
 	local nearbyInfo = TerrainHandler.DescribeNearDomino(dominoPos[1].pos, self.tileRotation, self.heldTile)
 	
+	local goodAlpha = (math.sin(self.pulseTimer*5) + 1)/2
+	local badAlpha = (math.sin(self.pulseTimer*8) + 1)/2
+	
 	drawQueue:push({y=1000; f=function()
 		for i = 1, 2 do
 			local pos = TerrainHandler.GridToWorld(dominoPos[i].pos)
+			local tileDef = TileDefs[self.heldTile[i]]
 			local validPlacement = dominoPos[i].valid
 			if self.heldTile[1] == Global.DESTROY_NAME then
 				validPlacement = nearbyInfo[i] and nearbyInfo[i][1] and nearbyInfo[i][1].valid
 			end
 			
-			Resources.DrawImage(TileDefs[self.heldTile[i]].shopImage or TileDefs[self.heldTile[i]].image, pos[1], pos[2], 0, 0.8, 1, validPlacement and Global.WHITE or Global.RED)
+			Resources.DrawImage(tileDef.shopImage or tileDef.image, pos[1], pos[2], 0, 0.8, 1, validPlacement and Global.WHITE or Global.RED)
+			if tileDef.placementDrawRange then
+				--love.graphics.setColor(209/255, 66/255, 33/255, 0.6)
+				--love.graphics.ellipse("line", pos[1], pos[2], tileDef.placementDrawRange*LevelHandler.TileSize()*2.6, tileDef.placementDrawRange*LevelHandler.TileSize()*1.3, 300)
+				
+				if tileDef.placementDrawHighlight then
+					local nearby = BuildingHandler.GetAllNearbyBuildings(dominoPos[i].pos, tileDef.placementDrawHighlight, tileDef.placementDrawRange)
+					love.graphics.setColor(37/255, 152/255, 219/255, 0.6 * goodAlpha + 0.2)
+					for i = 1, #nearby do
+						local nearPos = TerrainHandler.GridToWorld(nearby[i].GetPos())
+						love.graphics.line(pos[1], pos[2], nearPos[1], nearPos[2])
+					end
+				end
+			end
 			
 			for j = 1, #nearbyInfo[i] do
 				local info = nearbyInfo[i][j]
@@ -366,7 +412,7 @@ function api.Draw(drawQueue)
 				if info.valid then
 					--love.graphics.setColor(0.6, 0.6, 0.6, 0.2)
 				else
-					love.graphics.setColor(209/255, 66/255, 33/255, 0.5)
+					love.graphics.setColor(209/255, 66/255, 33/255, 0.6 * badAlpha + 0.2)
 					love.graphics.line(pos[1], pos[2], info.pos[1], info.pos[2])
 				end
 			end
@@ -678,6 +724,7 @@ function api.Initialize(world)
 		dialPosition = 0.5,
 		tooltipFade = 0,
 		outOfSpaceRetryTimer = false,
+		pulseTimer = 0,
 	}
 	self.heldTile = false
 	self.tileRotation = 0

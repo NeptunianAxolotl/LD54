@@ -6,7 +6,7 @@ local data = {
 		[2] = 14,
 		[1] = 14,
 	},
-	customVictoryText = "You've explored the entire archipelago!  Time to sit down and figure out how to report back that none of these islands are more than a short stroll wide.",
+	customVictoryText = "You've explored the entire archipelago!  Time to report back that none of these islands are more than a short stroll wide.\nPress Ctrl+H to restart with increased difficulty.",
 	tileDeck = {
 		[1] = {
 			tower = 4,

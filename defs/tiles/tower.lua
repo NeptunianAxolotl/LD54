@@ -7,6 +7,8 @@ local data = {
 	inShop = true,
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
+	placementDrawRange = Global.INVASION_RANGE,
+	placementDrawHighlight = "invasion",
 	
 	tooltip = "Tower\nTrains two scouts, each wall trains one. Tools improve scout power (+1). Requires stone to maintain.",
 	

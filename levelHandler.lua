@@ -239,7 +239,7 @@ function api.DrawInterface()
 			"Press a number key to select difficulty\n" ..
 			"1: Standard Mode - The default game\n" ..
 			"2: Winter Mode -  Workers move at 2/3 speed. Heating houses restores them to normal speed (implementing the original intended 50% speed boost).\n"..
-			"3: Ice Age Mode - Winter mode, plus 50% harder scout requirements.", 
+			"3: Ice Age Mode - Winter mode, plus 50% higher scouting thresholds.", 
 			overX + overWidth*0.05, overY + overHeight * 0.32 , overWidth*0.9, "left")
 	end
 	return drawWindow

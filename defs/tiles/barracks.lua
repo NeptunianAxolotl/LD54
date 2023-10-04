@@ -7,6 +7,8 @@ local data = {
 	inShop = true,
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
+	placementDrawRange = Global.INVASION_RANGE,
+	placementDrawHighlight = "invasion",
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},

@@ -235,6 +235,20 @@ function IterableMap.FilterCount(self, func, ...)
 	return count
 end
 
+function IterableMap.Filter(self, func, ...)
+	local i = 1
+	local toReturn = {}
+	while i <= self.indexMax do
+		local key = self.keyByIndex[i]
+		local result = func(self.dataByKey[key], ...)
+		if result then
+			toReturn[#toReturn + 1] = self.dataByKey[key]
+		end
+		i = i + 1
+	end
+	return toReturn
+end
+
 function IterableMap.IsEmpty(self)
 	return (self.indexMax == 0)
 end

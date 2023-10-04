@@ -32,7 +32,6 @@ function api.DeleteAllFlaggedBuildings()
 	IterableMap.ApplySelf(self.buildingList, "DeleteIfFlagged")
 end
 
-
 local function CountNearbyOrGlobalResourceType(self, resource, fromPos, nearDist)
 	if self.def.collectableResourceType ~= resource then
 		return false
@@ -81,7 +80,7 @@ local function ClosestTypeAndActive(building, fromPos, buildingType, nearDistSq)
 		return false
 	end
 	local distSq = util.DistSq(building.GetPos(), fromPos)
-	if nearDistSq < distSq then
+	if distSq > nearDistSq then
 		return false
 	end
 	return distSq
@@ -125,6 +124,22 @@ function api.IsBuildingNear(pos, buildingType, nearDist)
 		return false
 	end
 	return cache[x][y] <= nearDist
+end
+
+local function CheckNear(building, fromPos, buildingType, nearDistSq)
+	if buildingType ~= building.def.defName then
+		return false
+	end
+	local distSq = util.DistSq(building.GetPos(), fromPos)
+	if distSq > nearDistSq then
+		return false
+	end
+	return true
+end
+
+function api.GetAllNearbyBuildings(pos, buildingType, nearDist)
+	local nearby = IterableMap.Filter(self.buildingList, CheckNear, pos, buildingType, nearDist*nearDist)
+	return nearby
 end
 function api.Update(dt)	IterableMap.ApplySelf(self.buildingList, "Update", dt)endfunction api.Draw(drawQueue)	IterableMap.ApplySelf(self.buildingList, "Draw", drawQueue)end
 

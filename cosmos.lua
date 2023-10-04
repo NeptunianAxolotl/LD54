@@ -56,7 +56,7 @@ end
 
 function api.RestartWithDifficulty(newDifficulty)
 	self.difficultySetting = newDifficulty
-	api.RestartWorld()
+	api.LoadLevelByTable(LevelDefs[LevelOrder[1]])
 end
 
 --------------------------------------------------
