@@ -368,7 +368,7 @@ end
 			end
 		end
 	end
-	drawQueue:push({y=10; f=function()
+	drawQueue:push({y=-82; f=function()
 		local alpha = MapEditor.InEditMode() and 0.5 or 0.99
 		for x = 1, LevelHandler.Width() do
 			for y = LevelHandler.Height(), 1, -1 do
