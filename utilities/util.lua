@@ -627,7 +627,7 @@ function util.TableKeysToList(keyTable, indexToKey)
 end
 
 local TableToStringHelper
-local function AddTableLine(nameRaw, value, newIndent, lineFunc)
+local function AddTableLine(nameRaw, value, newIndent, indentAdd, delimiter, lineFunc, orderPreference, inlineConf)
 	local name = nameRaw and tostring(nameRaw)
 	if name and type(nameRaw) == "number" then
 		name = "[" .. name .. "]"
@@ -640,39 +640,47 @@ local function AddTableLine(nameRaw, value, newIndent, lineFunc)
 	end
 	
 	if ty == "table" then
-		lineFunc(newIndent .. name .. "{")
-		TableToStringHelper(value, newIndent, true, lineFunc)
-		lineFunc(newIndent .. "},")
+		if inlineConf and nameRaw and inlineConf[nameRaw] then
+			lineFunc(newIndent .. name .. "{")
+			local retStr = ""
+			local function AddLine(str)
+				retStr = retStr .. str
+			end
+			TableToStringHelper(value, true, "", "", " ", AddLine, orderPreference, inlineConf)
+			lineFunc(string.sub(retStr, 0, -3))
+			lineFunc("},\n")
+		else
+			lineFunc(newIndent .. name .. "{\n")
+			TableToStringHelper(value, true, newIndent, indentAdd, delimiter, lineFunc, orderPreference, inlineConf)
+			lineFunc(newIndent .. "},\n")
+		end
 	elseif ty == "boolean" then
-		lineFunc(newIndent .. name .. (value and "true," or "false,"))
+		lineFunc(newIndent .. name .. (value and "true," or "false,") .. delimiter)
 	elseif ty == "string" then
-		lineFunc(newIndent .. name .. [["]] .. string.gsub(string.gsub(value, "\n", "\\n"), "\t", "\\t") .. [[",]])
+		lineFunc(newIndent .. name .. [["]] .. string.gsub(string.gsub(value, "\n", "\\n"), "\t", "\\t") .. [[",]] .. delimiter)
 	elseif ty == "number" then
-		lineFunc(newIndent .. name .. value .. ",")
+		lineFunc(newIndent .. name .. value .. ",".. delimiter)
 	else
-		lineFunc(newIndent .. name , value)
+		lineFunc(newIndent .. name , value .. delimiter)
 	end
 end
 
-function TableToStringHelper(data, indent, tableChecked, lineFunc, orderPreference)
-	indent = indent or ""
-	local newIndent = indent .. "	"
-	
+function TableToStringHelper(data, tableChecked, newIndent, indentAdd, delimiter, lineFunc, orderPreference, inlineConf)
+	newIndent = (newIndent or "") .. indentAdd
 	local alreadyAdded = {}
 	for i = 1, #data do
 		if not data[i] then
 			break
 		end
-		AddTableLine(false, data[i], newIndent, lineFunc)
+		AddTableLine(false, data[i], newIndent, indentAdd, delimiter, lineFunc, orderPreference, inlineConf)
 		alreadyAdded[i] = true
 	end
 	
 	if orderPreference then
-		alreadyAdded = {}
 		for i = 1, #orderPreference do
 			local nameRaw = orderPreference[i]
 			if data[nameRaw] then
-				AddTableLine(nameRaw, data[nameRaw], newIndent, lineFunc)
+				AddTableLine(nameRaw, data[nameRaw], newIndent, indentAdd, delimiter, lineFunc, orderPreference, inlineConf)
 				alreadyAdded[nameRaw] = true
 			end
 		end
@@ -688,18 +696,18 @@ function TableToStringHelper(data, indent, tableChecked, lineFunc, orderPreferen
 	table.sort(remainingKeys)
 	for i = 1, #remainingKeys do
 		local nameRaw = remainingKeys[i]
-		AddTableLine(nameRaw, data[nameRaw], newIndent, lineFunc)
+		AddTableLine(nameRaw, data[nameRaw], newIndent, indentAdd, delimiter, lineFunc, orderPreference, inlineConf)
 	end
 end
 
-function util.TableToString(data, orderPreference)
+function util.TableToString(data, orderPreference, inlineConf)
 	local str = ""
 	local function Append(newLine)
-		str = str .. newLine .. "\n"
+		str = str .. newLine
 	end
-	Append("{")
-	TableToStringHelper(data, indent, tableChecked, Append, orderPreference)
-	Append("}")
+	Append("{\n")
+	TableToStringHelper(data, false, false, "\t", "\n", Append, orderPreference, inlineConf)
+	Append("}\n")
 	return str
 end
 
@@ -708,7 +716,7 @@ function util.PrintTable(data, indent, tableChecked)
 		print(data)
 		return
 	end
-	TableToStringHelper(data, indent, tableChecked, print)
+	TableToStringHelper(data, tableChecked, indent"\t", "\n", print, orderPreference, inlineConf)
 end
 
 function util.CopyTable(tableToCopy, deep, appendTo)
@@ -725,7 +733,7 @@ function util.CopyTable(tableToCopy, deep, appendTo)
 	return copy
 end
 
-function util.ToMask(listTable)
+function util.ListToMask(listTable)
 	local mapTable = {}
 	for i = 1, #listTable do
 		mapTable[listTable[i]] = true

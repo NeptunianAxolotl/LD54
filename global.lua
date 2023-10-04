@@ -92,6 +92,7 @@ local globals = {
 	END_GAME_FADE_RATE = 2.8,
 	
 	SAVE_ORDER = {"humanName", "width", "height", "cameraPos", "customVictoryText", "tileDeck", "hints", "tiles", "terrain", "doodads", "invasionMask"},
+	SAVE_INLINE = {"pos", "size"},
 }
 
 return globals

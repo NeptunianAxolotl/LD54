@@ -60,7 +60,7 @@ function api.SaveLevel(name)
 	save.terrain, save.tiles, save.invasionMask = TerrainHandler.GetSaveData()
 	save.doodads = DoodadHandler.ExportObjects()
 	
-	local saveTable = util.TableToString(save, Global.SAVE_ORDER)
+	local saveTable = util.TableToString(save, Global.SAVE_ORDER, util.ListToMask(Global.SAVE_INLINE))
 	saveTable = "local data = " .. saveTable .. [[
 
 return data
