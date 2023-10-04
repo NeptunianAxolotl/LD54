@@ -8,11 +8,26 @@ local data = {
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	
-	TooltipFunc = function() 
-		if LevelHandler.GetDifficulty().heatBoost == 1 then
-			return "Woodcutter\nProduces logs for construction and heating homes. Requires workers and trees."
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			if LevelHandler.GetDifficulty().heatBoost == 1 then
+				return "Woodcutter\nProduces logs for construction and heating homes. Requires workers and trees."
+			end
+			return string.format("Woodcutter\nProduces logs for construction and heating homes, boosting worker speed by %d%%. Requires workers and trees.", (LevelHandler.GetDifficulty().heatBoost - 1)*100)
 		end
-		return string.format("Woodcutter\nProduces logs for construction and heating homes, boosting worker speed by %d%%. Requires workers and trees.", (LevelHandler.GetDifficulty().heatBoost - 1)*100)
+		local building = self.GetFirstBuilding()
+		local text = "Woodcutter\nProduces logs.\n"
+		text = text .. string.format(" - Storing %d/%d logs\n", building.GetStockpile("worker"), self.def.needResource.worker.maximumStockpile)
+		if not building.IsResourceActive("worker") then
+			text = text .. " - Needs workers\n"
+		end
+		if building.GetStockpile("worker") == self.def.needResource.worker.maximumStockpile and building.IsResourceActive("worker") then
+			text = text .. " - No free storage\n"
+		end
+		if building.GetActive() and building.GetStockpile("worker") ~= self.def.needResource.worker.maximumStockpile then
+			text = text .. " - Producing logs\n"
+		end
+		return text
 	end,
 	
 	canBuildOn = {"grass", "desert"},

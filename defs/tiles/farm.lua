@@ -9,8 +9,23 @@ local data = {
 	spawnTilePositions = {{0, 0}},
 	canBuildOn = {"grass"},
 	
-	tooltip = "Farm\nProduces food (3). Requires workers and cannot be built on desert. An adjacent windmill improves food output (5).",
-	
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Farm\nProduces food (3). Requires workers and cannot be built on desert. An adjacent windmill improves food output (5)."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "Farm\nProduces food.\n"
+		if not building.IsResourceActive("worker") then
+			text = text .. " - Needs workers\n"
+		end
+		if building.GetActive() then
+			text = text .. string.format(" - Producing %d food\n", building.def.collectableResourceTypeFunc(building))
+		end
+		if building.HasUpgrade() then
+			text = text .. " - Mill improving yield"
+		end
+		return text
+	end,
 	upgradeBuilding = "mill",
 	upgradeDistance = 1.49,
 	

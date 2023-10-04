@@ -11,7 +11,24 @@ local data = {
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"quarry", Global.LONG_WALK_RANGE}, {"cathedral", Global.CATHEDRAL_BUILD_GAP, true}},
 	
-	tooltip = "Cathedral\nExpands build options and boosts explorer effectiveness (+20%) but requires significant stone to maintain.",
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Cathedral\nExpands build options and boosts scout effectiveness (+20%) but requires significant stone to maintain."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "Cathedral\nExpands build options and boosts scout effectiveness.\n"
+		if not building.IsResourceActive("stone") then
+			text = text .. " - Needs stone from quary\n"
+		end
+		if not building.IsResourceActive("worker") then
+			text = text .. " - Needs workers\n"
+		end
+		if building.GetActive() then
+			text = text .. " - Boosting scouts by 20%\n"
+			text = text .. " - Adding a build slot\n"
+		end
+		return text
+	end,
 	
 	bonusOnEdges = false,
 	collectableResourceType = "cathedral",

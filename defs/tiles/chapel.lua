@@ -11,7 +11,23 @@ local data = {
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"quarry", Global.LONG_WALK_RANGE}},
 	
-	tooltip = "Chapel\nAllows the shop to be refreshed. Requires stone to maintain.",
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Chapel\nAllows the shop to be refreshed. Requires stone to maintain."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "Chapel\nAllows the shop to be refreshed.\n"
+		if not building.IsResourceActive("stone") then
+			text = text .. " - Needs stone from quary\n"
+		end
+		if not building.IsResourceActive("worker") then
+			text = text .. " - Needs workers\n"
+		end
+		if building.GetActive() then
+			text = text .. " - Charging refresh\n"
+		end
+		return text
+	end,
 	
 	bonusOnEdges = true,
 	noBonusForMiddle = true,

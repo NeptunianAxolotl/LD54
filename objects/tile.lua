@@ -74,6 +74,10 @@ local function NewTile(self, terrain, buildingData)
 		return self.pos
 	end
 	
+	function self.GetFirstBuilding()
+		return IterableMap.Get(self.buildings, IterableMap.GetKeyByIndex(self.buildings, 1))
+	end
+	
 	function self.IsDestroyed()
 		return self.toDestroy
 	end

@@ -14,7 +14,26 @@ local data = {
 	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},
 	destroyIfNotNearby = "invasion",
 	
-	tooltip = "Outpost\nTrains one scout. Requires a worker and planks from the sawmill to maintain. Tools double the number of scouts.",
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Outpost\nTrains one scout. Requires a worker and planks from the sawmill to maintain. Tools double the number of scouts."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "Outpost\nTrains scouts for exploration.\n"
+		if not building.IsResourceActive("plank") then
+			text = text .. " - Needs plank from sawmill\n"
+		end
+		if not building.IsResourceActive("worker") then
+			text = text .. " - Needs workers\n"
+		end
+		if building.GetActive() then
+			text = text .. string.format(" - Providing %d scouts\n", building.def.collectableResourceTypeFunc(building))
+		end
+		if building.IsResourceActive("tool") then
+			text = text .. " - Tool providing +1 scout"
+		end
+		return text
+	end,
 	
 	bonusOnEdges = false,
 	drawWiggle = 0.05,

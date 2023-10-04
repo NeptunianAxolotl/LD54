@@ -10,7 +10,26 @@ local data = {
 	placementDrawRange = Global.INVASION_RANGE,
 	placementDrawHighlight = "invasion",
 	
-	tooltip = "Tower\nTowers train two scouts, while walls train one. Require a worker and stone to maintain. Tools double scouting.",
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Tower\nTowers train two scouts, while walls train one. Require a worker and stone to maintain. Tools double scouting."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "Tower\nTrains two scouts.\n"
+		if not building.IsResourceActive("stone") then
+			text = text .. " - Needs stone from quary\n"
+		end
+		if not building.IsResourceActive("worker") then
+			text = text .. " - Needs workers\n"
+		end
+		if building.GetActive() then
+			text = text .. string.format(" - Providing %d scouts\n", building.def.collectableResourceTypeFunc(building))
+		end
+		if building.IsResourceActive("tool") then
+			text = text .. " - Tool providing +2 scouts"
+		end
+		return text
+	end,
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"quarry", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},

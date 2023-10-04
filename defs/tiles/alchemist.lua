@@ -11,7 +11,24 @@ local data = {
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"mine", Global.LONG_WALK_RANGE}},
 	
-	tooltip = "Alchemist\nProduces explosives from ore. Explosives are used to destroy buildings when they are no longer required.",
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Alchemist\nProduces explosives from ore. Explosives are used to destroy buildings when they are no longer required."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "Alchemist\nProduces explosives from ore.\n"
+		if not building.IsResourceActive("ore") then
+			text = text .. " - Needs ore from mines\n"
+		end
+		if not building.IsResourceActive("worker") then
+			text = text .. " - Needs workers\n"
+		end
+		if building.GetActive() then
+			text = text .. " - Producing explosives\n"
+		end
+		return text
+	end,
+	
 	bonusOnEdges = false,
 	drawWiggle = 0.1,
 	collectableResourceType = "alchemist",

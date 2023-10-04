@@ -9,7 +9,27 @@ local data = {
 	
 	canBuildOn = {"grass", "desert"},
 	
-	tooltip = "Quarry\nProduces stone for advanced structures. Requires tools and workers.",
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Quarry\nProduces stone for advanced structures. Requires tools and workers."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "Quarry\nUses tools to produces stone.\n"
+		text = text .. string.format(" - Storing %d/%d stone\n", building.GetStockpile("worker"), self.def.needResource.worker.maximumStockpile)
+		if not building.IsResourceActive("tool") and not building.HasActiveOrPendingWorke("worker") then
+			text = text .. " - Needs tool from blacksmith\n"
+		end
+		if not building.IsResourceActive("worker") then
+			text = text .. " - Needs workers\n"
+		end
+		if building.GetStockpile("worker") == self.def.needResource.worker.maximumStockpile and building.IsResourceActive("worker") and building.IsResourceActive("stone") then
+			text = text .. " - No free storage\n"
+		end
+		if building.GetActive() and building.GetStockpile("worker") ~= self.def.needResource.worker.maximumStockpile then
+			text = text .. " - Producing stone\n"
+		end
+		return text
+	end,
 	
 	population = 1,
 	popType = "stone",

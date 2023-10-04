@@ -9,7 +9,28 @@ local data = {
 	cannotPairWith = {},
 	spawnTilePositions = {{0.15, -0.15}, {-0.15, 0.15}},
 	
-	tooltip = "Housing\nEach home houses one worker, which require food (2). Many buildings need workers nearby so keep expanding the town.",
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Housing\nEach home houses one worker, which require food (2). Many buildings need workers nearby so keep expanding the town."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "House\nHouses workers.\n"
+		if (building.currentPop or 1) == 1 then
+			text = text .. " - Housing 1 worker\n"
+			text = text .. " - Consuming 2 food\n"
+		else
+			text = text .. " - Housing 2 workers\n"
+			text = text .. " - Consuming 4 food\n"
+		end
+		if building.IsResourceActive("wood") then
+			text = text .. " - Has logs for heating\n"
+			local difficulty = LevelHandler.GetDifficulty()
+			if difficulty.heatBoost > 1 then
+				text = text .. string.format(" - Worker speed +%d%%\n", (difficulty.heatBoost - 1)*100)
+			end
+		end
+		return text
+	end,
 	
 	canBuildOn = {"grass", "desert"},
 	upgradeBuilding = "fountain",

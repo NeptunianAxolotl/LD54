@@ -132,6 +132,11 @@ local function NewBuilding(self, building)
 		return (resDef.count or 1) > (IterableMap.Count(resState.activeWorkers) + IterableMap.Count(resState.pendingWorkers))
 	end
 	
+	function self.HasActiveOrPendingWorke(resource)
+		local resState = self.resourceState[resource]
+		return (IterableMap.Count(resState.activeWorkers) + IterableMap.Count(resState.pendingWorkers)) > 0
+	end
+	
 	function self.DistSqWithinWorkRange(distSq, resource, rangeBuff)
 		local radius = self.def.needResource[resource].searchRadius + (rangeBuff or 0)
 		if not radius then

@@ -8,7 +8,22 @@ local data = {
 	cannotPairWith = {"tavern"},
 	spawnTilePositions = {{0, 0}},
 	
-	tooltip = "Tavern\nImproves the speed of patrons (+50%) and increases build slots. Requires planks and food (3) to maintain.",
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Tavern\nImproves the speed (+50%) and range (+1) of patrons and adds a build option. Requires planks and food (3) to maintain."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "Tavern\nImproves the speed and range of patrons.\n"
+		if not building.IsResourceActive("plank") then
+			text = text .. " - Needs planks from sawmill\n"
+		end
+		if building.GetActive() then
+			text = text .. " - Consuming 3 food\n"
+			text = text .. " - Adding a build slot\n"
+		end
+		text = text .. string.format(" - People served: %d", building.peopleServed or 0)
+		return text
+	end,
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"sawmill", Global.LONG_WALK_RANGE}},
@@ -29,6 +44,7 @@ local data = {
 	VisitFunction = function (self, guy)
 		if guy.def.resourceType == "worker" then
 			guy.GetOnTheBeers()
+			self.peopleServed = (self.peopleServed or 0) + 1
 		end
 	end,
 	

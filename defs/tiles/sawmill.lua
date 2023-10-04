@@ -8,7 +8,27 @@ local data = {
 	cannotPairWith = {"blacksmith", "mill", "sawmill"},
 	spawnTilePositions = {{0, 0}},
 	
-	tooltip = "Sawmill\nProcesses logs into planks to maintain a variety of wooden structures.",
+	TooltipFunc = function (self)
+		if not (self and self.GetFirstBuilding()) then
+			return "Sawmill\nProcesses logs into planks to maintain a variety of wooden structures."
+		end
+		local building = self.GetFirstBuilding()
+		local text = "Sawmill\nProcesses logs into planks.\n"
+		text = text .. string.format(" - Storing %d/%d planks\n", building.GetStockpile("worker"), self.def.needResource.worker.maximumStockpile)
+		if not building.IsResourceActive("wood") and not building.HasActiveOrPendingWorke("worker") then
+			text = text .. " - Needs logs from woodcutter\n"
+		end
+		if not building.IsResourceActive("worker") then
+			text = text .. " - Needs workers\n"
+		end
+		if building.GetStockpile("worker") == self.def.needResource.worker.maximumStockpile and building.IsResourceActive("worker") and building.IsResourceActive("ore") then
+			text = text .. " - No free storage\n"
+		end
+		if building.GetActive() and building.GetStockpile("worker") ~= self.def.needResource.worker.maximumStockpile then
+			text = text .. " - Producing planks\n"
+		end
+		return text
+	end,
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"woodcutter", Global.LONG_WALK_RANGE}},
