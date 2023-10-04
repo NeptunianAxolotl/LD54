@@ -116,6 +116,18 @@ local function NewTile(self, terrain, buildingData)
 		if self.def.groundImage then
 			drawQueue:push({y=-90 - (self.pos[2] - self.pos[1])*0.01; f=function()
 				Resources.DrawImage(self.def.groundImage, self.worldPos[1], self.worldPos[2])
+				local topRight = TerrainHandler.GetTile(self.pos, {0, 1})
+				if self.def.bonusOnEdges then
+					if topRight and topRight.def.defName == self.def.defName then
+						local drawPos = TerrainHandler.GridToWorld(util.Add(self.pos, {0, 0.5}))
+						Resources.DrawImage(self.def.groundImage, drawPos[1], drawPos[2])
+					end
+					local topLeft = TerrainHandler.GetTile(self.pos, {-1, 0})
+					if topLeft and topLeft.def.defName == self.def.defName then
+						local drawPos = TerrainHandler.GridToWorld(util.Add(self.pos, {-0.5, 0}))
+						Resources.DrawImage(self.def.groundImage, drawPos[1], drawPos[2])
+					end
+				end
 			end})
 		end
 	end
