@@ -56,7 +56,8 @@ end
 
 function api.RestartWithDifficulty(newDifficulty)
 	self.difficultySetting = newDifficulty
-	api.LoadLevelByTable(LevelDefs[LevelOrder[1]])
+	self.inbuiltLevelIndex = 1
+	api.LoadLevelByTable(LevelDefs[LevelOrder[self.inbuiltLevelIndex]])
 end
 
 --------------------------------------------------
