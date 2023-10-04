@@ -10,7 +10,7 @@ local data = {
 	placementDrawRange = Global.INVASION_RANGE,
 	placementDrawHighlight = "invasion",
 	
-	tooltip = "Tower\nTrains two scouts, each wall trains one. Supply tools to double scout power. Requires stone to maintain.",
+	tooltip = "Tower\nTowers train two scouts, while walls train one. Require a worker and stone to maintain. Tools double scouting.",
 	
 	canBuildOn = {"grass", "desert"},
 	needBuildingNearby = {{"quarry", Global.LONG_WALK_RANGE}, {"invasion", Global.INVASION_RANGE}},
