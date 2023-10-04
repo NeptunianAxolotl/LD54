@@ -276,7 +276,7 @@ function api.Draw()
 	love.graphics.replaceTransform(self.emptyTransform)
 end
 
-function api.Initialize(cosmos, levelData)
+function api.Initialize(cosmos, levelData, difficulty)
 	self = {}
 	self.cosmos = cosmos
 	self.rightInterfaceTransform = love.math.newTransform()
@@ -297,7 +297,7 @@ function api.Initialize(cosmos, levelData)
 	MapEditor.Initialize(api)
 	BuildingHandler.Initialize(api)
 	GuyHandler.Initialize(api)
-	LevelHandler.Initialize(api, levelData)
+	LevelHandler.Initialize(api, levelData, difficulty)
 	TerrainHandler.Initialize(api)
 	DoodadHandler.Initialize(api)
 	ShopHandler.Initialize(api)

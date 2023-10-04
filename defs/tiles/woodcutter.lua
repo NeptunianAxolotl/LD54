@@ -8,7 +8,12 @@ local data = {
 	cannotPairWith = {},
 	spawnTilePositions = {{0, 0}},
 	
-	tooltip = "Woodcutter\nProduces logs for construction and heating homes, boosting speed and productivity by 50%. Requires workers and trees.",
+	TooltipFunc = function() 
+		if LevelHandler.GetDifficulty().heatBoost == 1 then
+			return "Woodcutter\nProduces logs for construction and heating homes. Requires workers and trees."
+		end
+		return string.format("Woodcutter\nProduces logs for construction and heating homes, boosting speed and productivity by %d%%. Requires workers and trees.", (LevelHandler.GetDifficulty().heatBoost - 1)*100)
+	end,
 	
 	canBuildOn = {"grass", "desert"},
 	mustBuildNear = {"forest"},

@@ -2,6 +2,7 @@ local hugeFont
 local bigFont
 local medFont
 local smallFont
+local tinyFont
 
 local externalFunc = {}
 local _size = 1
@@ -25,6 +26,9 @@ function externalFunc.SetSize(size)
 	elseif size == 3 then
 		love.graphics.setFont(smallFont)
 		_size = 3
+	elseif size == 4 then
+		love.graphics.setFont(tinyFont)
+		_size = 4
 	end
 end
 
@@ -47,6 +51,7 @@ function externalFunc.Load()
 	bigFont      = love.graphics.newFont('include/fonts/' .. FONT, 48)
 	medFont      = love.graphics.newFont('include/fonts/' .. FONT, 32)
 	smallFont    = love.graphics.newFont('include/fonts/' .. FONT, 24)
+	tinyFont     = love.graphics.newFont('include/fonts/' .. FONT, 16)
 end
 
 return externalFunc

@@ -599,6 +599,14 @@ local function DrawTooltipArea()
 	love.graphics.printf(toWrite, shopItemsX, 750, Global.SHOP_WIDTH*0.8, "left")
 end
 
+local function DrawDifficulty()
+	if LevelHandler.GetDifficulty().difficultyName then
+		Font.SetSize(4)
+		love.graphics.setColor(0, 0, 0, 1)
+		love.graphics.printf(LevelHandler.GetDifficulty().difficultyName, math.floor(Global.VIEW_WIDTH -  Global.SHOP_WIDTH) - 16, math.floor(Global.VIEW_HEIGHT - 28), Global.SHOP_WIDTH, "right")
+	end
+end
+
 function api.DrawInterface()
 	self.hoveredItem = false
 	self.hoveredEndLevelAction = false
@@ -648,6 +656,7 @@ function api.DrawInterface()
 	if not endLevelState then
 		DrawHeldTile()
 	end
+	DrawDifficulty()
 	
 	--love.graphics.printf("Plank " .. self.resources.plank, 20, 80, 400, "left")
 	

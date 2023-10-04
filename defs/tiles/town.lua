@@ -34,10 +34,11 @@ local data = {
 		},
 	},
 	residentSpeedFunc = function (self, guy)
+		local difficulty = LevelHandler.GetDifficulty()
 		if self.GetActive() then
-			return 1.5 * Global.WORKER_SPEED
+			return difficulty.heatBoost * difficulty.workerSpeed
 		end
-		return 1 * Global.WORKER_SPEED
+		return difficulty.workerSpeed
 	end
 }
 

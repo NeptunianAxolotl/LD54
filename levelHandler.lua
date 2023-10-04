@@ -26,6 +26,10 @@ function api.TileScale()
 	return 1
 end
 
+function api.GetDifficulty()
+	return self.difficulty
+end
+
 function api.LoadLevel(name)
 	print("load level")
 	local contents = love.filesystem.read("levels/" .. name .. ".lua")
@@ -101,11 +105,44 @@ function api.KeyPressed(key, scancode, isRepeat)
 		return true
 	end
 	
+	if self.setDifficultyMode then
+		if key == "1" or key == "kp1" then
+			self.world.GetCosmos().RestartWithDifficulty({
+				workerSpeed = 1,
+				heatBoost = 1,
+				armyRequireMult = 1,
+			})
+			return true
+		elseif key == "2" or key == "kp2" then
+			self.world.GetCosmos().RestartWithDifficulty({
+				workerSpeed = 2/3,
+				heatBoost = 3/2,
+				armyRequireMult = 1,
+				difficultyName = "Winter Mode",
+			})
+			return true
+		elseif key == "3" or key == "kp3" then
+			self.world.GetCosmos().RestartWithDifficulty({
+				workerSpeed = 2/3,
+				heatBoost = 3/2,
+				armyRequireMult = 3/2,
+				difficultyName = "Ice Age Mode",
+			})
+			return true
+		end
+	end
+	
 	if key == "l" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		self.loadingLevelGetName = true
+		return true
 	end
 	if key == "k" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		self.saveLevelGetName = true
+		return true
+	end
+	if key == "h" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+		self.setDifficultyMode = not self.setDifficultyMode
+		return true
 	end
 end
 
@@ -161,7 +198,7 @@ function api.DrawInterface()
 	local overY = windowY*0.3
 	local overHeight = windowY*0.4
 	
-	local drawWindow = self.loadingLevelGetName or self.saveLevelGetName or self.townWantConf
+	local drawWindow = self.loadingLevelGetName or self.saveLevelGetName or self.townWantConf or self.setDifficultyMode
 	if drawWindow then
 		love.graphics.setColor(Global.PANEL_COL[1], Global.PANEL_COL[2], Global.PANEL_COL[3], 0.97)
 		love.graphics.setLineWidth(4)
@@ -172,28 +209,7 @@ function api.DrawInterface()
 		
 	end
 	
-	if self.townWantConf then
-		Font.SetSize(2)
-		love.graphics.setColor(0, 0, 0, 0.8)
-		love.graphics.printf("Configure Town", overX, overY + overHeight * 0.04, overWidth, "center")
-	
-		Font.SetSize(3)
-		love.graphics.printf([[
-- QWE: Set resource
-- N/M: Tweak count
-- A: Add line
-- D: Delete line
-- Enter: Done
-Hold shift for +5/-5
-]], overX + overWidth*0.5, overY + overHeight * 0.2, overWidth*0.8, "left")
-		local needStr = "Town needs:"
-		util.PrintTable(self.townWantConf)
-		for i = 1, #self.townWantConf do
-			local line = self.townWantConf[i]
-			needStr = needStr .. "\n" .. line.good .. ": " .. line.count
-		end
-		love.graphics.printf(needStr, overX + overWidth*0.15, overY + overHeight * 0.2, overWidth*0.4, "left")
-	elseif self.loadingLevelGetName then
+	if self.loadingLevelGetName then
 		Font.SetSize(0)
 		love.graphics.setColor(0, 0, 0, 0.8)
 		love.graphics.printf("Loading Level", overX, overY + overHeight * 0.04, overWidth, "center")
@@ -214,14 +230,26 @@ Hold shift for +5/-5
 		
 		Font.SetSize(3)
 		love.graphics.printf("Saving to " .. (love.filesystem.getSaveDirectory() or "DIR_ERROR") .. "/levels", overX + overWidth*0.05, overY + overHeight * 0.65, overWidth*0.9, "center")
+	elseif self.setDifficultyMode then
+		Font.SetSize(0)
+		love.graphics.setColor(0, 0, 0, 0.8)
+		love.graphics.printf("Select difficulty", overX, overY + overHeight * 0.04, overWidth, "center")
+		Font.SetSize(3)
+		love.graphics.printf(
+			"Press a number key to select difficulty\n" ..
+			"1: Standard Mode - The default game\n" ..
+			"2: Winter Mode -  Workers move at 2/3 speed. Heating houses restores them to normal speed (implementing the original intended 50% speed boost).\n"..
+			"3: Ice Age Mode - Winter mode, plus 50% harder scout requirements.", 
+			overX + overWidth*0.05, overY + overHeight * 0.32 , overWidth*0.9, "left")
 	end
 	return drawWindow
 end
 
-function api.Initialize(world, levelData)
+function api.Initialize(world, levelData, difficulty)
 	self = {
 		world = world,
 		levelData = levelData,
+		difficulty = difficulty,
 	}
 end
 

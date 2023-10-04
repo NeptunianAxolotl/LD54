@@ -68,6 +68,7 @@ local data = {
 			def = "invasion",
 			extraData = {
 				armySize = 4,
+				armySizeDifficultyLimit = 4,
 				invasionIndex = 1,
 			},
 		},

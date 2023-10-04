@@ -4,6 +4,14 @@ local function GetNearbyArmySize(self)
 	return math.floor(BuildingHandler.CountResourceType("army", self.pos, Global.INVASION_RANGE) * GameHandler.GetArmyMultiplier())
 end
 
+local function GetRequiredArmySize(self)
+	local size = math.ceil(self.armySize * LevelHandler.GetDifficulty().armyRequireMult)
+	if self.armySizeDifficultyLimit and size > self.armySizeDifficultyLimit then
+		size = self.armySizeDifficultyLimit
+	end
+	return size
+end
+
 local function GetColor(self, wantBack, hover)
 	local flipIt = self.animDt > self.def.animDtMax/2
 	if (not wantBack) and hover then
@@ -35,7 +43,7 @@ local data = {
 	
 	onClick = function (self)
 		local nearbyArmy = GetNearbyArmySize(self)
-		if nearbyArmy < self.armySize and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
+		if nearbyArmy < GetRequiredArmySize(self) and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
 			return
 		end
 		local invasionsLeft = BuildingHandler.CountResourceType("invasion")
@@ -63,16 +71,16 @@ local data = {
 		
 		
 		love.graphics.setColor(0, 0, 0, 1)
-		if nearbyArmy < self.armySize and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
+		if nearbyArmy < GetRequiredArmySize(self) and not Global.DEBUG_CAN_ALWAYS_EXPLORE then
 			Font.SetSize(0)
-            love.graphics.printf(nearbyArmy .. "/" .. self.armySize, pos[1] + 60, pos[2] + 10, 380, "right")
+            love.graphics.printf(nearbyArmy .. "/" .. GetRequiredArmySize(self), pos[1] + 60, pos[2] + 10, 380, "right")
             Font.SetSize(1)
             love.graphics.printf("scouts", pos[1] + 455, pos[2] + 25, 380, "left")
 			love.graphics.printf("Too few scouts for expedition.", pos[1] + 280, pos[2] + 100, 380, "left")
 			return
 		else
             Font.SetSize(0)
-            love.graphics.printf(nearbyArmy .. "/" .. self.armySize, pos[1] + 60, pos[2] + 10, 380, "right")
+            love.graphics.printf(nearbyArmy .. "/" .. GetRequiredArmySize(self), pos[1] + 60, pos[2] + 10, 380, "right")
             Font.SetSize(1)
             love.graphics.printf("scouts", pos[1] + 455, pos[2] + 25, 380, "left")
 		end

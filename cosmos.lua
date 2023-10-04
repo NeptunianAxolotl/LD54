@@ -31,18 +31,18 @@ end
 --------------------------------------------------
 
 function api.RestartWorld()
-	World.Initialize(api, self.curLevelData)
+	World.Initialize(api, self.curLevelData, self.difficultySetting)
 end
 
 function api.LoadLevelByTable(levelTable)
 	self.curLevelData = levelTable
-	World.Initialize(api, self.curLevelData)
+	World.Initialize(api, self.curLevelData, self.difficultySetting)
 end
 
 function api.SwitchLevel(goNext)
 	self.inbuiltLevelIndex = math.max(1, math.min(#LevelOrder, self.inbuiltLevelIndex + (goNext and 1 or -1)))
 	self.curLevelData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
-	World.Initialize(api, self.curLevelData)
+	World.Initialize(api, self.curLevelData, self.difficultySetting)
 end
 
 function api.TestSwitchLevel(goNext)
@@ -52,6 +52,11 @@ function api.TestSwitchLevel(goNext)
 		return false
 	end
 	return true
+end
+
+function api.RestartWithDifficulty(newDifficulty)
+	self.difficultySetting = newDifficulty
+	api.RestartWorld()
 end
 
 --------------------------------------------------
@@ -135,11 +140,16 @@ function api.Initialize()
 		realTime = 0,
 		inbuiltLevelIndex = Global.DEBUG_MODE_START_LEVEL or 1,
 		musicEnabled = true,
+		difficultySetting = {
+			workerSpeed = 1,
+			heatBoost = 1,
+			armyRequireMult = 1,
+		},
 	}
 	self.curLevelData = LevelDefs[LevelOrder[self.inbuiltLevelIndex]]
 	--MusicHandler.Initialize(api)
 	SoundHandler.Initialize(api)
-	World.Initialize(api, self.curLevelData)
+	World.Initialize(api, self.curLevelData, self.difficultySetting)
 end
 
 return api

@@ -173,8 +173,8 @@ local function NewGuy(self, building)
 			end
 		end
 		-- Note that heated homes do not affect beer timer
-		if self.homeBuilding.residentSpeedFunc then
-			dt = dt*self.homeBuilding.residentSpeedFunc(self.homeBuilding, self)
+		if self.homeBuilding.def.residentSpeedFunc then
+			dt = dt*self.homeBuilding.def.residentSpeedFunc(self.homeBuilding, self)
 		end
 		
 		HandleGoHome(self, dt)
