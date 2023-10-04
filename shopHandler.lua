@@ -6,6 +6,13 @@ local TileDefs, TileDefList = util.LoadDefDirectory("defs/tiles", "defName")
 local api = {}
 local self = {}
 
+local TILE_SIDES = {
+	{0, 0},
+	{1, 0},
+	{1, 1},
+	{0, 1},
+}
+
 local function InitializeDeck(deckFrequency)
 	local deck = {}
 	local validItems = {}
@@ -398,7 +405,7 @@ function api.Draw(drawQueue)
 				
 				if tileDef.placementDrawHighlight then
 					local nearby = BuildingHandler.GetAllNearbyBuildings(dominoPos[i].pos, tileDef.placementDrawHighlight, tileDef.placementDrawRange)
-					love.graphics.setColor(37/255, 152/255, 219/255, 0.6 * goodAlpha + 0.2)
+					love.graphics.setColor(198/255, 206/255, 105/255, 0.8 * goodAlpha + 0.2)
 					for i = 1, #nearby do
 						local nearPos = TerrainHandler.GridToWorld(nearby[i].GetPos())
 						love.graphics.line(pos[1], pos[2], nearPos[1], nearPos[2])
@@ -412,8 +419,29 @@ function api.Draw(drawQueue)
 				if info.valid then
 					--love.graphics.setColor(0.6, 0.6, 0.6, 0.2)
 				else
-					love.graphics.setColor(209/255, 66/255, 33/255, 0.6 * badAlpha + 0.2)
+					love.graphics.setColor(209/255, 66/255, 33/255, 0.8 * badAlpha + 0.2)
 					love.graphics.line(pos[1], pos[2], info.pos[1], info.pos[2])
+				end
+			end
+		end
+	end})
+	drawQueue:push({y=-84; f=function()
+		for i = 1, 2 do
+			local x, y = dominoPos[i].pos[1], dominoPos[i].pos[2]
+			local corner   = TerrainHandler.GridToWorld({x, y}, true)
+			local right    = TerrainHandler.GridToWorld({x + 1, y}, true)
+			local rightBot = TerrainHandler.GridToWorld({x + 1, y + 1}, true)
+			local bot      = TerrainHandler.GridToWorld({x, y + 1}, true)
+			if dominoPos[i].valid then
+				love.graphics.setColor(198/255, 206/255, 105/255, 0.8)
+			else
+				love.graphics.setColor(209/255, 66/255, 33/255, 0.8)
+			end
+			for side = 0, 3 do
+				if (self.tileRotation + 3)%4 ~= (side + i*2)%4 then
+					local startPos = TerrainHandler.GridToWorld(util.Add(dominoPos[i].pos, TILE_SIDES[side%4 + 1]), true)
+					local endPos = TerrainHandler.GridToWorld(util.Add(dominoPos[i].pos, TILE_SIDES[(side + 1)%4 + 1]), true)
+					love.graphics.line(startPos[1], startPos[2], endPos[1], endPos[2])
 				end
 			end
 		end
