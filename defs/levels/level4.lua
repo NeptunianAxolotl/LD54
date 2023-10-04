@@ -30,9 +30,9 @@ local data = {
 	},
 	hints = {
 		{
-			pos = {5, 21},
-			size = {2.2, 1.32},
-			text = "- A tile is only offered if you have somewhere to place it\n- Outposts must be built in range of exploration markers.\n- Improve scouts with tools.\n- Tools are made by Blacksmiths using ore from Mines.",
+			pos = {4.5, 20.5},
+			size = {2.3, 1.32},
+			text = "- A tile is only offered if you have somewhere to place it.\n- Outposts must be built in range of exploration markers.\n- Make more scouts by sending tools to Outposts. Tools are made by Blacksmiths with ore from Mines.",
 		},
 	},
 	tiles = {
